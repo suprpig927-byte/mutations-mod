@@ -42,7 +42,6 @@ public class MutationScreen extends Screen {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
-        this.extractBackground(g, mouseX, mouseY, partialTick);
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null && mc.level != null) {
             drawPanel(g, mc, mc.player.getData(ModAttachments.DATA));
