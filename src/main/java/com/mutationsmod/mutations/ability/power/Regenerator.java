@@ -51,7 +51,7 @@ public final class Regenerator {
             Powers.effect(p, MobEffects.SPEED, 30, 1);
         }
         Powers.add(p, Attributes.ARMOR, "thick_hide",
-                d.has(Secondary.THICK_HIDE) && p.getHealth() >= p.getMaxHealth() ? 4 : 0);
+                d.has(Secondary.THICK_HIDE) ? 4 : 0);
         if (d.has(Secondary.VITAL_AURA) && now % 40 == 0) {
             for (LivingEntity e : Powers.around(p, 8)) {
                 if (e instanceof Player ally) Powers.effect(ally, MobEffects.REGENERATION, 60, 0);

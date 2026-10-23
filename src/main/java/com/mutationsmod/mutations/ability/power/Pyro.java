@@ -23,6 +23,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -48,6 +51,7 @@ public final class Pyro {
                 e.igniteForSeconds(5f);
                 Powers.hurt(p, e, 1.5f * Powers.power(d));
             }
+            heatFurnace(level, p, range);
             Vec3 look = p.getLookAngle();
             Vec3 eye = p.getEyePosition().subtract(0, 0.3, 0);
             for (int i = 0; i < 6; i++) {
@@ -78,6 +82,32 @@ public final class Pyro {
             if (under.is(Blocks.SOUL_SAND) || under.is(Blocks.SOUL_SOIL) || under.is(Blocks.MAGMA_BLOCK) || in.is(Blocks.SOUL_SAND)) {
                 Powers.effect(p, MobEffects.SPEED, 40, 1);
             }
+        }
+    }
+
+    /** Flamethrower aimed at a furnace, smoker or blast furnace lights it and cooks fast. */
+    private static void heatFurnace(ServerLevel level, ServerPlayer p, double range) {
+        var hit = com.mutationsmod.mutations.ability.Raycast.block(p, range);
+        if (hit.getType() != net.minecraft.world.phys.HitResult.Type.BLOCK) return;
+        BlockPos pos = hit.getBlockPos();
+        if (!(level.getBlockEntity(pos) instanceof AbstractFurnaceBlockEntity furnace)) return;
+        try {
+            int lit = ObfuscationReflectionHelper.getPrivateValue(AbstractFurnaceBlockEntity.class, furnace, "litTimeRemaining");
+            if (lit < 40) {
+                ObfuscationReflectionHelper.setPrivateValue(AbstractFurnaceBlockEntity.class, furnace, 40, "litTimeRemaining");
+                ObfuscationReflectionHelper.setPrivateValue(AbstractFurnaceBlockEntity.class, furnace, 40, "litTotalTime");
+            }
+            BlockState state = level.getBlockState(pos);
+            if (state.hasProperty(BlockStateProperties.LIT) && !state.getValue(BlockStateProperties.LIT)) {
+                state = state.setValue(BlockStateProperties.LIT, true);
+                level.setBlock(pos, state, 3);
+            }
+            // Pyro flames burn hot: two extra cooking ticks every time.
+            AbstractFurnaceBlockEntity.serverTick(level, pos, state, furnace);
+            AbstractFurnaceBlockEntity.serverTick(level, pos, state, furnace);
+            furnace.setChanged();
+        } catch (RuntimeException ignored) {
+            // If the furnace internals ever change, the flamethrower just won't cook.
         }
     }
 

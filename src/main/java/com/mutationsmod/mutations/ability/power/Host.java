@@ -26,7 +26,7 @@ public final class Host {
 
     /** Ticks the organism can go between kills before it starts feeding on you. */
     public static int graceTicks(MutationData d) {
-        return (d.has(Secondary.WELL_FED) ? 5 : 3) * 60 * 20;
+        return (d.has(Secondary.WELL_FED) ? 15 : 10) * 60 * 20;
     }
 
     public static void tick(ServerPlayer p, MutationData d) {
@@ -61,6 +61,10 @@ public final class Host {
         } else if (!p.isShiftKeyDown()) {
             p.setForcedPose(null);
         }
+    }
+
+    public static void onHurt(LivingIncomingDamageEvent event, ServerPlayer p, MutationData d) {
+        if (event.getSource().is(net.minecraft.tags.DamageTypeTags.IS_FALL)) event.setAmount(event.getAmount() * 0.25f);
     }
 
     public static void onMelee(LivingIncomingDamageEvent event, ServerPlayer p, MutationData d, LivingEntity target) {

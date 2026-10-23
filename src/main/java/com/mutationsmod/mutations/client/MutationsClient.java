@@ -39,6 +39,12 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
+import net.neoforged.neoforge.client.renderstate.AvatarRenderStateModifier;
+import net.minecraft.client.entity.ClientAvatarEntity;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.world.entity.Avatar;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 @Mod(value = MutationsMod.MODID, dist = Dist.CLIENT)
 public class MutationsClient {
@@ -88,6 +94,19 @@ public class MutationsClient {
                 (entity, state) -> {
                     if (ClientPowers.GLOWING.contains(entity.getId())) state.outlineColor = 0xFFFFFFFF;
                 });
+        // Chameleon's Mirror Skin: armor turns invisible along with the player.
+        event.registerAvatarEntityModifier(new AvatarRenderStateModifier() {
+            @Override
+            public <T extends Avatar & ClientAvatarEntity> void accept(T avatar, AvatarRenderState state) {
+                if (avatar instanceof Player player && player.isInvisible()
+                        && player.getData(ModAttachments.DATA).has(Secondary.MIRROR_SKIN)) {
+                    state.headEquipment = ItemStack.EMPTY;
+                    state.chestEquipment = ItemStack.EMPTY;
+                    state.legsEquipment = ItemStack.EMPTY;
+                    state.feetEquipment = ItemStack.EMPTY;
+                }
+            }
+        });
     }
 
     private static void onClientTick(ClientTickEvent.Post event) {
@@ -194,13 +213,15 @@ public class MutationsClient {
         List<String> out = new java.util.ArrayList<>();
         if (d.has(Mutation.PHASER) && d.speedTier() > 0) out.add("Speed tier " + d.speedTier());
         if (d.has(Mutation.ABSORBER)) {
-            out.add(String.format("Charge %.0f / %.0f", d.charge(), Absorber.capacity(d)));
+            float cap = Absorber.capacity(d);
+            out.add(String.format("Charge %.0f / %.0f", d.charge(), cap) + (d.charge() > cap ? "  OVERCHARGED!" : ""));
         }
         if (d.has(Mutation.HOST) && d.timer("host_fed") > 0) {
             long left = d.timer("host_fed") + Host.graceTicks(d) - now;
             out.add(left > 0 ? "Organism fed: " + formatTime(left) : "Organism STARVING");
         }
         if (d.has(Mutation.PYRO) && d.timer("flame_flight") > now) out.add("Flame Flight: " + formatTime(d.timer("flame_flight") - now));
+        if (d.has(Secondary.ITEM_MAGNET) && d.timer("magnet") > 0) out.add("Item Magnet: ON");
         if (d.timer("levitate") > now) out.add("Levitating: " + formatTime(d.timer("levitate") - now));
         if (d.timer("barrier") > now) out.add("Barrier: " + formatTime(d.timer("barrier") - now));
         if (d.timer("immune") > now) out.add("IMMUNE: " + formatTime(d.timer("immune") - now));

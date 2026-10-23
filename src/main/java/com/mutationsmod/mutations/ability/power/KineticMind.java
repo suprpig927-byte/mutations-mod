@@ -31,7 +31,7 @@ public final class KineticMind {
         ServerLevel level = (ServerLevel) p.level();
         long now = level.getGameTime();
 
-        if (d.has(Secondary.ITEM_MAGNET)) {
+        if (d.has(Secondary.ITEM_MAGNET) && magnetOn(d)) {
             for (ItemEntity item : level.getEntitiesOfClass(ItemEntity.class, p.getBoundingBox().inflate(8))) {
                 Vec3 pull = p.position().add(0, 0.5, 0).subtract(item.position());
                 if (pull.lengthSqr() > 1) item.setDeltaMovement(pull.normalize().scale(0.35));
@@ -82,6 +82,19 @@ public final class KineticMind {
         level.sendParticles(ParticleTypes.CLOUD, p.getX() + look.x * 2, p.getEyeY() + look.y * 2, p.getZ() + look.z * 2, 25, 0.6, 0.6, 0.6, 0.15);
         Powers.sound(p, SoundEvents.ILLUSIONER_CAST_SPELL, 0.8f, 0.7f);
         Telekinesis.addStrain(p);
+        return true;
+    }
+
+    public static boolean magnetOn(MutationData d) {
+        return d.timer("magnet") > 0;
+    }
+
+    /** Item Magnet toggle. The timer holds 1 while on, 0 while off. */
+    public static boolean toggleMagnet(ServerPlayer p, MutationData d) {
+        boolean on = !magnetOn(d);
+        com.mutationsmod.mutations.ModAttachments.set(p, com.mutationsmod.mutations.ModAttachments.get(p).withTimer("magnet", on ? 1 : 0));
+        p.sendOverlayMessage(Component.literal("Item Magnet: " + (on ? "ON" : "OFF")).withStyle(on ? ChatFormatting.GREEN : ChatFormatting.GRAY));
+        Powers.sound(p, SoundEvents.ILLUSIONER_CAST_SPELL, 0.4f, on ? 1.8f : 1.2f);
         return true;
     }
 

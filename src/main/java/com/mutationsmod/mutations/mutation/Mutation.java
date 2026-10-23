@@ -34,15 +34,15 @@ public enum Mutation {
     COLOSSUS("Colossus", 0xFFC9A27A,
             "Huge melee damage, knockback resistance, and much faster mining.",
             "Slow, sinks in water, and can't sprint for long.",
-            List.of(ActiveAbility.GROUND_POUND)),
+            List.of(ActiveAbility.GROUND_POUND, ActiveAbility.TITAN_LEAP)),
     SIREN("Siren", 0xFFFF8FB8,
             "You hear mobs through walls (they glow for you).",
             "You're loud: sneaking draws nearby monsters to you.",
             List.of(ActiveAbility.SONIC_SCREAM)),
     ABSORBER("Absorber", 0xFFFFA64D,
             "Half of all damage you take is stored as charge instead.",
-            "Hold more charge than you can contain and it slowly hurts you.",
-            List.of(ActiveAbility.RELEASE)),
+            "Charge has no limit, but holding more than your capacity slowly hurts you.",
+            List.of(ActiveAbility.RELEASE, ActiveAbility.CHARGED_LEAP)),
     CHAMELEON("Chameleon", 0xFF7FE07F,
             "Invisible while sneaking and standing still. Your first hit from hiding deals huge damage.",
             "Your armor stays visible: mobs still notice you if you wear any.",
@@ -53,7 +53,7 @@ public enum Mutation {
             List.of(ActiveAbility.FLAMETHROWER, ActiveAbility.FLAME_FLIGHT)),
     HOST("Host", 0xFF8A8AA8,
             "A living organism: extra reach, wall climbing, stronger right after a kill.",
-            "It's always hungry: go too long without a kill and it feeds on you.",
+            "It's always hungry: go 10 minutes without a kill and it feeds on you. Takes 75% less fall damage.",
             List.of(ActiveAbility.TENDRIL, ActiveAbility.BONDED_ARMOR));
 
     private final String displayName;

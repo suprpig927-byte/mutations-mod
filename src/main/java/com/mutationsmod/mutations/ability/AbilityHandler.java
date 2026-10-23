@@ -164,6 +164,7 @@ public final class AbilityHandler {
         if (event.isCanceled()) return;
         if (d.has(Mutation.CHAMELEON)) Chameleon.onHurt(event, p, d);
         if (event.isCanceled()) return;
+        if (d.has(Mutation.HOST)) Host.onHurt(event, p, d);
         if (d.has(Mutation.ABSORBER)) Absorber.onHurt(event, p, d);
         if (event.isCanceled()) return;
         if (d.has(Mutation.BLINKER)) Blinker.onHurt(event, p, d);
@@ -270,6 +271,9 @@ public final class AbilityHandler {
             case RECALL -> Blinker.recall(p, d);
             case SWAP -> Blinker.swap(p, d);
             case GROUND_POUND -> Colossus.groundPound(p, d);
+            case TITAN_LEAP -> Colossus.titanLeap(p, d);
+            case CHARGED_LEAP -> Absorber.chargedLeap(p, d);
+            case ITEM_MAGNET -> KineticMind.toggleMagnet(p, d);
             case CHARGE -> Colossus.charge(p, d);
             case SONIC_SCREAM -> Siren.sonicScream(p, d);
             case LULLABY -> Siren.lullaby(p, d);
@@ -293,8 +297,12 @@ public final class AbilityHandler {
             ModAttachments.set(p, ModAttachments.get(p).withCooldown(ability, now + cooldown(ability, d)));
             if (ability == ActiveAbility.BLINK && d.has(Secondary.ECHO_BLINK)) Powers.setTimer(p, "echo_blink", 40);
         }
-        if (ability != ActiveAbility.TELEKINESIS) Mastery.addXp(p, Mastery.XP_PER_ABILITY_USE);
-        else if (used) Mastery.addXp(p, 1);
+        if (ability == ActiveAbility.TELEKINESIS || ability == ActiveAbility.ITEM_MAGNET
+                || ability == ActiveAbility.TITAN_LEAP || ability == ActiveAbility.CHARGED_LEAP) {
+            Mastery.addXp(p, 1); // cheap, spammable abilities give less XP
+        } else {
+            Mastery.addXp(p, Mastery.XP_PER_ABILITY_USE);
+        }
     }
 
     /** Effective cooldown in ticks, after the Mutation stat and secondary mutations. */

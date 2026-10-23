@@ -56,13 +56,13 @@ public final class Phaser {
 
         // Sonic Boom: at tier 4+ while sprinting, a shockwave every 30 seconds.
         if (tier >= 4 && p.isSprinting() && !Powers.timerActive(d, p.level(), "sonic_boom")) {
-            for (LivingEntity e : Powers.around(p, 5)) {
+            for (LivingEntity e : Powers.around(p, 15)) {
                 if (!Powers.isHostile(e)) continue;
                 Powers.hurt(p, e, 3f * Powers.power(d));
                 Powers.knockAway(e, p.position(), 1.4, 0.4);
             }
             Powers.particles(p, ParticleTypes.SONIC_BOOM, 1, 0, 0);
-            Powers.particles(p, ParticleTypes.CLOUD, 30, 1.5, 0.3);
+            Powers.particles(p, ParticleTypes.CLOUD, 60, 4.0, 0.4);
             Powers.sound(p, SoundEvents.WARDEN_SONIC_BOOM, 0.6f, 1.5f);
             Powers.setTimer(p, "sonic_boom", 30 * 20);
         }

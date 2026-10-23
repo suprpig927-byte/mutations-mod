@@ -57,6 +57,13 @@ public final class Colossus {
         return true;
     }
 
+    /** Leaps about 3 blocks up. */
+    public static boolean titanLeap(ServerPlayer p, MutationData d) {
+        Powers.impulse(p, new Vec3(0, 0.75, 0), false);
+        Powers.particles(p, ParticleTypes.CLOUD, 10, 0.4, 0.05);
+        return true;
+    }
+
     public static boolean charge(ServerPlayer p, MutationData d) {
         Vec3 look = p.getLookAngle().multiply(1, 0, 1).normalize();
         Powers.impulse(p, look.scale(1.8).add(0, 0.2, 0), true);

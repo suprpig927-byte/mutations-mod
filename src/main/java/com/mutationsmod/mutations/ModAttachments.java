@@ -11,12 +11,12 @@ public final class ModAttachments {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =
             DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, MutationsMod.MODID);
 
-    /** Saved with the player, kept through death, and synced to that player's own client. */
+    /** Saved with the player, kept through death, and synced to clients that can see the player. */
     public static final Supplier<AttachmentType<MutationData>> DATA = ATTACHMENT_TYPES.register("data",
             () -> AttachmentType.builder(() -> MutationData.EMPTY)
                     .serialize(MutationData.CODEC)
                     .copyOnDeath()
-                    .sync((holder, to) -> holder == to, MutationData.STREAM_CODEC)
+                    .sync(MutationData.STREAM_CODEC)
                     .build());
 
     private ModAttachments() {}

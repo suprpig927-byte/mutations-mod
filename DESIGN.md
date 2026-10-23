@@ -21,7 +21,7 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 | Adaptive Immunity | Bad effects flip into good ones (poison heals, slowness speeds you up...). Others wear off twice as fast. |
 | Iron Stomach | Rotten flesh and raw food never give you Hunger. |
 | Second Wind | Survive one killing blow every 10 minutes. |
-| Thick Hide | +4 armor while at full health. |
+| Thick Hide | +4 armor. |
 | Vital Aura | Nearby players slowly regenerate. |
 | [A] Transfusion | Drain health from the mob you're looking at. |
 
@@ -35,7 +35,7 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 |---|---|
 | Long Reach | +10 blocks of telekinesis range. |
 | Mind Shield | Arrows bounce off you. |
-| Item Magnet | Dropped items fly to you. |
+| [A] Item Magnet | Toggle on to make dropped items fly to you. |
 | [A] Levitate | Float upward for 15 seconds (press again to stop). |
 | Heavy Lifter | Hold up to 3 blocks at once and throw them as a volley. |
 | [A] Disarm | Rip the held item out of a mob's hands. |
@@ -112,6 +112,7 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 - **Upside:** Huge melee damage, knockback resistance, and much faster mining.
 - **Downside:** Slow, sinks in water, and can't sprint for long.
 - **[A] Ground Pound** (10s): Slam the ground, launching everything around you.
+- **[A] Titan Leap** (2s): Leap 3 blocks into the air.
 
 | Secondary | Effect |
 |---|---|
@@ -142,17 +143,18 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 
 ## Absorber
 - **Upside:** Half of all damage you take is stored as charge instead.
-- **Downside:** Hold more charge than you can contain and it slowly hurts you.
-- **[A] Release** (3s): Blast out all your stored charge around you.
+- **Downside:** Charge has no limit, but holding more than your capacity slowly hurts you.
+- **[A] Release** (1s): Spend 10 charge to blast everything around you.
+- **[A] Charged Leap** (1s): Spend 5 charge to leap 10 blocks up.
 
 | Secondary | Effect |
 |---|---|
 | Deep Reservoir | +50% charge capacity. |
 | Kinetic Feedback | Your melee hits add charge too. |
 | Shockwave | Release also hurls everything back. |
-| Overflow Shield | When full, extra charge becomes absorption hearts (up to 4). |
+| Overflow Shield | Charge taken while over capacity also gives absorption hearts (up to 4). |
 | Elemental Sponge | Fire, lava and lightning damage is fully absorbed. |
-| [A] Focused Beam | Fire all your charge as one long-range beam. |
+| [A] Focused Beam | Spend 15 charge on one powerful long-range beam. |
 | Steady Vessel | Overflow damage halved. |
 | Afterglow | Regenerate for a few seconds after releasing. |
 
@@ -171,7 +173,7 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 | Scentless | Wolves, bees and other animals never attack you. |
 | [A] Smoke Burst | Blind nearby mobs and vanish. |
 | Backstab | +50% damage when hitting from behind. |
-| Mirror Skin | Armor no longer gives you away. |
+| Mirror Skin | Your armor turns invisible with you, and no longer gives you away. |
 
 ## Pyro
 - **Upside:** Immune to fire and lava. Sneak + right-click a lava bucket to drink it (heals like a golden apple).
@@ -192,7 +194,7 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 
 ## Host
 - **Upside:** A living organism: extra reach, wall climbing, stronger right after a kill.
-- **Downside:** It's always hungry: go too long without a kill and it feeds on you.
+- **Downside:** It's always hungry: go 10 minutes without a kill and it feeds on you. Takes 75% less fall damage.
 - **[A] Tendril** (4s): Yank a mob to you, or pull yourself to a block.
 - **[A] Bonded Armor** (40s): The organism hardens over you: big damage resistance and strength.
 
@@ -204,5 +206,5 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 | Wall Crawler | Climb faster, and hold jump to cling to ceilings. |
 | Shapeless | Sneak into a 1-block gap to squeeze through it. |
 | [A] Lash | Whip every mob around you. |
-| Well Fed | The organism can go 5 minutes between kills instead of 3. |
+| Well Fed | The organism can go 15 minutes between kills instead of 10. |
 | Parasite | Your hits heal you for 20% of the damage. |

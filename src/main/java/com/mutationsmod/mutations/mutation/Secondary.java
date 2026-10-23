@@ -19,14 +19,14 @@ public enum Secondary {
     ADAPTIVE_IMMUNITY(REGENERATOR, "Adaptive Immunity", "Bad effects flip into good ones (poison heals, slowness speeds you up...). Others wear off twice as fast."),
     IRON_STOMACH(REGENERATOR, "Iron Stomach", "Rotten flesh and raw food never give you Hunger."),
     SECOND_WIND(REGENERATOR, "Second Wind", "Survive one killing blow every 10 minutes."),
-    THICK_HIDE(REGENERATOR, "Thick Hide", "+4 armor while at full health."),
+    THICK_HIDE(REGENERATOR, "Thick Hide", "+4 armor."),
     VITAL_AURA(REGENERATOR, "Vital Aura", "Nearby players slowly regenerate."),
     TRANSFUSION(REGENERATOR, "Transfusion", "Drain health from the mob you're looking at.", ActiveAbility.TRANSFUSION),
 
     // ---------------- Kinetic Mind ----------------
     LONG_REACH(KINETIC_MIND, "Long Reach", "+10 blocks of telekinesis range."),
     MIND_SHIELD(KINETIC_MIND, "Mind Shield", "Arrows bounce off you."),
-    ITEM_MAGNET(KINETIC_MIND, "Item Magnet", "Dropped items fly to you."),
+    ITEM_MAGNET(KINETIC_MIND, "Item Magnet", "Toggle on to make dropped items fly to you.", ActiveAbility.ITEM_MAGNET),
     LEVITATE(KINETIC_MIND, "Levitate", "Float upward for 15 seconds (press again to stop).", ActiveAbility.LEVITATE),
     HEAVY_LIFTER(KINETIC_MIND, "Heavy Lifter", "Hold up to 3 blocks at once and throw them as a volley."),
     DISARM(KINETIC_MIND, "Disarm", "Rip the held item out of a mob's hands.", ActiveAbility.DISARM),
@@ -97,9 +97,9 @@ public enum Secondary {
     DEEP_RESERVOIR(ABSORBER, "Deep Reservoir", "+50% charge capacity."),
     KINETIC_FEEDBACK(ABSORBER, "Kinetic Feedback", "Your melee hits add charge too."),
     SHOCKWAVE(ABSORBER, "Shockwave", "Release also hurls everything back."),
-    OVERFLOW_SHIELD(ABSORBER, "Overflow Shield", "When full, extra charge becomes absorption hearts (up to 4)."),
+    OVERFLOW_SHIELD(ABSORBER, "Overflow Shield", "Charge taken while over capacity also gives absorption hearts (up to 4)."),
     ELEMENTAL_SPONGE(ABSORBER, "Elemental Sponge", "Fire, lava and lightning damage is fully absorbed."),
-    FOCUSED_BEAM(ABSORBER, "Focused Beam", "Fire all your charge as one long-range beam.", ActiveAbility.FOCUSED_BEAM),
+    FOCUSED_BEAM(ABSORBER, "Focused Beam", "Spend 15 charge on one powerful long-range beam.", ActiveAbility.FOCUSED_BEAM),
     STEADY_VESSEL(ABSORBER, "Steady Vessel", "Overflow damage halved."),
     AFTERGLOW(ABSORBER, "Afterglow", "Regenerate for a few seconds after releasing."),
 
@@ -111,7 +111,7 @@ public enum Secondary {
     SCENTLESS(CHAMELEON, "Scentless", "Wolves, bees and other animals never attack you."),
     SMOKE_BURST(CHAMELEON, "Smoke Burst", "Blind nearby mobs and vanish.", ActiveAbility.SMOKE_BURST),
     BACKSTAB(CHAMELEON, "Backstab", "+50% damage when hitting from behind."),
-    MIRROR_SKIN(CHAMELEON, "Mirror Skin", "Armor no longer gives you away."),
+    MIRROR_SKIN(CHAMELEON, "Mirror Skin", "Your armor turns invisible with you, and no longer gives you away."),
 
     // ---------------- Pyro ----------------
     EMBER_STRIKES(PYRO, "Ember Strikes", "Your hits set enemies on fire."),
@@ -130,7 +130,7 @@ public enum Secondary {
     WALL_CRAWLER(HOST, "Wall Crawler", "Climb faster, and hold jump to cling to ceilings."),
     SHAPELESS(HOST, "Shapeless", "Sneak into a 1-block gap to squeeze through it."),
     LASH(HOST, "Lash", "Whip every mob around you.", ActiveAbility.LASH),
-    WELL_FED(HOST, "Well Fed", "The organism can go 5 minutes between kills instead of 3."),
+    WELL_FED(HOST, "Well Fed", "The organism can go 15 minutes between kills instead of 10."),
     PARASITE(HOST, "Parasite", "Your hits heal you for 20% of the damage.");
 
     private final Mutation base;

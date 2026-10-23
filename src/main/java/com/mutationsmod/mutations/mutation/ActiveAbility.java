@@ -18,8 +18,10 @@ public enum ActiveAbility {
     BLINK("Blink", "Teleport to where you're looking.", 4),
     DISPLACE("Displace", "Teleport the mob or player you're looking at somewhere nearby.", 15),
     GROUND_POUND("Ground Pound", "Slam the ground, launching everything around you.", 10),
+    TITAN_LEAP("Titan Leap", "Leap 3 blocks into the air.", 2),
     SONIC_SCREAM("Sonic Scream", "A scream that damages and disorients everything in front of you.", 8),
-    RELEASE("Release", "Blast out all your stored charge around you.", 3),
+    RELEASE("Release", "Spend 10 charge to blast everything around you.", 1),
+    CHARGED_LEAP("Charged Leap", "Spend 5 charge to leap 10 blocks up.", 1),
     MIMIC("Mimic", "Hostile mobs ignore you for 8 seconds.", 45),
     COPYCAT("Copycat", "Borrow a trait from the last mob type you killed.", 90),
     FLAMETHROWER("Flamethrower", "Spray fire in front of you for 2 seconds.", 10),
@@ -29,6 +31,7 @@ public enum ActiveAbility {
 
     // ---- secondary mutation actives ----
     TRANSFUSION("Transfusion", "Drain health from the mob you're looking at.", 20),
+    ITEM_MAGNET("Item Magnet", "Toggle: pull dropped items to you.", 0.5),
     LEVITATE("Levitate", "Float upward for 15 seconds. Press again to stop.", 30),
     DISARM("Disarm", "Rip the held item out of a mob's or player's hands.", 15),
     PSYCHIC_BARRIER("Psychic Barrier", "A dome that repels mobs and projectiles for 6 seconds.", 40),
@@ -39,7 +42,7 @@ public enum ActiveAbility {
     SWAP("Swap", "Trade places with the mob or player you're looking at.", 15),
     CHARGE("Charge", "Rush forward, flinging mobs aside.", 12),
     LULLABY("Lullaby", "Nearby mobs fall asleep until hit (5 seconds).", 40),
-    FOCUSED_BEAM("Focused Beam", "Fire all your charge as one long-range beam.", 3),
+    FOCUSED_BEAM("Focused Beam", "Spend 15 charge on one powerful long-range beam.", 1),
     SMOKE_BURST("Smoke Burst", "Blind nearby mobs and vanish.", 30),
     FLARE("Flare", "A blinding flash that dazzles everything nearby.", 20),
     LASH("Lash", "Whip every mob around you and drag them closer.", 10);
