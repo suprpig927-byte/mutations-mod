@@ -224,6 +224,8 @@ public class MutationsClient {
         if (d.has(Secondary.ITEM_MAGNET) && d.timer("magnet") > 0) out.add("Item Magnet: ON");
         if (d.timer("levitate") > now) out.add("Levitating: " + formatTime(d.timer("levitate") - now));
         if (d.timer("barrier") > now) out.add("Barrier: " + formatTime(d.timer("barrier") - now));
+        if (d.timer("phasing") > now) out.add("Phasing: " + formatTime(d.timer("phasing") - now));
+        if (d.timer("vibrate") > now) out.add("Vibrating!");
         if (d.timer("immune") > now) out.add("IMMUNE: " + formatTime(d.timer("immune") - now));
         for (Chameleon.Trait t : Chameleon.Trait.values()) {
             if (d.timer(t.timer()) > now) out.add("Copycat (" + t.label + "): " + formatTime(d.timer(t.timer()) - now));

@@ -22,7 +22,7 @@ public enum Mutation {
     PHASER("Phaser", 0xFFFFE05A,
             "Faster base speed with adjustable speed tiers. Projectiles partly pass through you. Sonic boom at tier 4+.",
             "You can't wear anything in your chest slot. Top speeds burn hunger.",
-            List.of(ActiveAbility.PHASE_DASH)),
+            List.of(ActiveAbility.PHASE_DASH, ActiveAbility.SPEED_PUNCH, ActiveAbility.VIBRATE, ActiveAbility.PHASE_THROUGH)),
     CRYO("Cryo", 0xFF9FE8FF,
             "Immune to freezing. Water freezes beneath your feet.",
             "Weakened in hot biomes and the Nether (overworld heat doesn't bother you at night).",

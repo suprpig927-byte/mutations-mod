@@ -28,6 +28,21 @@ public final class Phaser {
     /** Ticks spent running fast, for Static Build-Up. */
     private static final Map<UUID, Integer> RUN_TICKS = new HashMap<>();
 
+    /** Speed Punch flurries in progress. */
+    private static final class Flurry {
+        final LivingEntity target;
+        int hitsLeft;
+        final float damage;
+
+        Flurry(LivingEntity target, int hits, float damage) {
+            this.target = target;
+            this.hitsLeft = hits;
+            this.damage = damage;
+        }
+    }
+
+    private static final Map<UUID, Flurry> FLURRIES = new HashMap<>();
+
     public static int maxSpeedTier(MutationData d) {
         return Math.min(5, 1 + d.level() / 8);
     }
@@ -67,6 +82,27 @@ public final class Phaser {
             Powers.setTimer(p, "sonic_boom", 30 * 20);
         }
 
+        // Speed Punch: one hit every other tick until the flurry ends.
+        Flurry f = FLURRIES.get(p.getUUID());
+        if (f != null && now % 2 == 0) {
+            if (f.hitsLeft <= 0 || !f.target.isAlive() || f.target.distanceTo(p) > 5) {
+                FLURRIES.remove(p.getUUID());
+            } else {
+                f.hitsLeft--;
+                f.target.setInvulnerableTime(0);
+                Powers.hurt(p, f.target, f.damage);
+                f.target.setDeltaMovement(f.target.getDeltaMovement().multiply(0.3, 1, 0.3));
+                Powers.particles(f.target, ParticleTypes.CRIT, 6, 0.4, 0.2);
+                Powers.sound(p, SoundEvents.PLAYER_ATTACK_SWEEP, 0.4f, 1.8f);
+            }
+        }
+        if (Powers.timerActive(d, p.level(), "vibrate") && now % 2 == 0) {
+            Powers.particles(p, ParticleTypes.END_ROD, 3, 0.3, 0.02);
+        }
+        if (Powers.timerActive(d, p.level(), "phasing") && now % 4 == 0) {
+            Powers.particles(p, ParticleTypes.PORTAL, 3, 0.3, 0.1);
+        }
+
         // Static Build-Up: 3 seconds of running at tier 2+ charges your next hit.
         if (d.has(Secondary.STATIC_BUILD_UP)) {
             int run = (tier >= 2 && p.isSprinting()) ? RUN_TICKS.getOrDefault(p.getUUID(), 0) + 1 : 0;
@@ -83,7 +119,7 @@ public final class Phaser {
 
     public static void onHurt(LivingIncomingDamageEvent event, ServerPlayer p, MutationData d) {
         var source = event.getSource();
-        if (Powers.timerActive(d, p.level(), "dash")) {
+        if (Powers.timerActive(d, p.level(), "dash") || Powers.timerActive(d, p.level(), "vibrate")) {
             event.setCanceled(true);
             return;
         }
@@ -129,6 +165,56 @@ public final class Phaser {
         return true;
     }
 
+    public static boolean speedPunch(ServerPlayer p, MutationData d) {
+        LivingEntity target = com.mutationsmod.mutations.ability.Raycast.entity(p, 4.5);
+        if (target == null) {
+            p.sendOverlayMessage(Component.literal("Nothing in punching range.").withStyle(ChatFormatting.GRAY));
+            return false;
+        }
+        int hits = 4 + 2 * tier(d);
+        FLURRIES.put(p.getUUID(), new Flurry(target, hits, 1.5f * Powers.power(d)));
+        return true;
+    }
+
+    public static boolean vibrate(ServerPlayer p, MutationData d) {
+        Powers.setTimer(p, "vibrate", (long) (40 * Powers.power(d)));
+        for (LivingEntity e : Powers.around(p, 4)) Powers.knockAway(e, p.position(), 1.2, 0.3);
+        Powers.particles(p, ParticleTypes.CLOUD, 20, 0.6, 0.1);
+        Powers.sound(p, SoundEvents.WARDEN_SONIC_BOOM, 0.3f, 2.0f);
+        return true;
+    }
+
+    public static boolean phaseThrough(ServerPlayer p, MutationData d) {
+        Powers.setTimer(p, "phasing", (long) (6 * 20 * Powers.power(d)));
+        Powers.sound(p, SoundEvents.ENDERMAN_TELEPORT, 0.4f, 2.0f);
+        p.sendOverlayMessage(Component.literal("Phasing... walk into a wall").withStyle(ChatFormatting.YELLOW));
+        return true;
+    }
+
+    /**
+     * Called by the client when a phasing player walks into a wall. Moves them to the first open
+     * space behind it (up to 3 blocks), at the same height: walls only, never floors.
+     */
+    public static void tryPhase(ServerPlayer p) {
+        MutationData d = ModAttachments.get(p);
+        if (!d.has(com.mutationsmod.mutations.mutation.Mutation.PHASER) || !Powers.timerActive(d, p.level(), "phasing")) return;
+        Vec3 look = p.getLookAngle().multiply(1, 0, 1);
+        if (look.lengthSqr() < 1.0E-4) return;
+        look = look.normalize();
+        Vec3 start = p.position();
+        for (double dist = 1.0; dist <= 3.5; dist += 0.5) {
+            Vec3 to = start.add(look.scale(dist));
+            var box = p.getBoundingBox().move(to.subtract(start));
+            if (p.level().noCollision(p, box)) {
+                if (dist <= 1.0) return; // nothing to phase through
+                Powers.particles(p, ParticleTypes.PORTAL, 15, 0.3, 0.2);
+                Powers.teleport(p, to);
+                Powers.sound(p, SoundEvents.ENDERMAN_TELEPORT, 0.3f, 2.0f);
+                return;
+            }
+        }
+    }
+
     public static boolean blitz(ServerPlayer p, MutationData d) {
         Powers.startRush(p, 10 * 20, (3f + tier(d)) * Powers.power(d), 1.0);
         Powers.sound(p, SoundEvents.WARDEN_SONIC_BOOM, 0.4f, 2.0f);
@@ -151,5 +237,6 @@ public final class Phaser {
 
     public static void forget(UUID id) {
         RUN_TICKS.remove(id);
+        FLURRIES.remove(id);
     }
 }

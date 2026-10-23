@@ -63,6 +63,9 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 - **Upside:** Faster base speed with adjustable speed tiers. Projectiles partly pass through you. Sonic boom at tier 4+.
 - **Downside:** You can't wear anything in your chest slot. Top speeds burn hunger.
 - **[A] Phase Dash** (6s): Dash forward, passing harmlessly through everything.
+- **[A] Speed Punch** (8s): A blur of punches on the mob in front of you. More hits at higher speed tiers.
+- **[A] Vibrate** (20s): Vibrate so fast nothing can touch you for 2 seconds, knocking nearby mobs away.
+- **[A] Phase Through** (25s): For 6 seconds, walk through walls (never through the floor).
 
 | Secondary | Effect |
 |---|---|

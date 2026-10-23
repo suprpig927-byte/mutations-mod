@@ -263,6 +263,9 @@ public final class AbilityHandler {
             case SUMMON_STORM -> Stormcaller.summonStorm(p, d);
             case THUNDERCLAP -> Stormcaller.thunderclap(p, d);
             case PHASE_DASH -> Phaser.phaseDash(p, d);
+            case SPEED_PUNCH -> Phaser.speedPunch(p, d);
+            case VIBRATE -> Phaser.vibrate(p, d);
+            case PHASE_THROUGH -> Phaser.phaseThrough(p, d);
             case BLITZ -> Phaser.blitz(p, d);
             case ICE_BLAST -> Cryo.iceBlast(p, d);
             case ICE_WALL -> Cryo.iceWall(p, d);

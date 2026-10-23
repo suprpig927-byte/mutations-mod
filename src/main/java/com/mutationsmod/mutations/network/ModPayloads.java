@@ -70,7 +70,7 @@ public final class ModPayloads {
      * 2 = choose roll option {@code arg}, 3 = open Pocket Space.
      */
     public record ScreenAction(int action, String arg) implements CustomPacketPayload {
-        public static final int RESPEC = 0, START_ROLL = 1, CHOOSE_ROLL = 2, OPEN_POCKET = 3;
+        public static final int RESPEC = 0, START_ROLL = 1, CHOOSE_ROLL = 2, OPEN_POCKET = 3, PHASE = 4;
         public static final Type<ScreenAction> TYPE = new Type<>(id("screen_action"));
         public static final StreamCodec<RegistryFriendlyByteBuf, ScreenAction> CODEC = StreamCodec.of(
                 (RegistryFriendlyByteBuf buf, ScreenAction p) -> {
@@ -158,6 +158,7 @@ public final class ModPayloads {
                 case ScreenAction.START_ROLL -> Mastery.startRoll(sp, false);
                 case ScreenAction.CHOOSE_ROLL -> Mastery.chooseRoll(sp, payload.arg());
                 case ScreenAction.OPEN_POCKET -> Blinker.openPocket(sp);
+                case ScreenAction.PHASE -> com.mutationsmod.mutations.ability.power.Phaser.tryPhase(sp);
                 default -> {}
             }
         });

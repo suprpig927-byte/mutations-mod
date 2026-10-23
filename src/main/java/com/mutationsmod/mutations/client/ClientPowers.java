@@ -30,6 +30,7 @@ public final class ClientPowers {
     private ClientPowers() {}
 
     private static int sprintTicks = 0;
+    private static long lastPhaseRequest = 0;
     private static int sprintLock = 0;
     /** Entity ids that should glow for this player (read by the render-state modifier). */
     public static final Set<Integer> GLOWING = java.util.concurrent.ConcurrentHashMap.newKeySet();
@@ -46,6 +47,15 @@ public final class ClientPowers {
         if (flying && !p.isCreative() && (flameFlight || rainFlight) && mc.options.keyUp.isDown()) {
             p.setDeltaMovement(p.getLookAngle().scale(flameFlight ? 1.0 : 0.9));
             dm = p.getDeltaMovement();
+        }
+
+        // Phase Through: walking into a wall asks the server to slip you through it.
+        if (d.has(Mutation.PHASER) && d.timer("phasing") > now && p.horizontalCollision
+                && mc.options.keyUp.isDown() && now - lastPhaseRequest >= 5) {
+            lastPhaseRequest = now;
+            net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(
+                    new com.mutationsmod.mutations.network.ModPayloads.ScreenAction(
+                            com.mutationsmod.mutations.network.ModPayloads.ScreenAction.PHASE, ""));
         }
 
         // Colossus: sinks in water, can't sprint for long.
