@@ -5,47 +5,66 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-/**
- * Every base mutation in the mod. Only the ones marked {@code implemented} can be rolled
- * or given with commands; the rest are planned and shown as "coming soon".
- */
+/** The 12 base mutations. One is rolled for every player on their first spawn. */
 public enum Mutation {
-    REGENERATOR("Regenerator", 0xFF5BD46A, true,
+    REGENERATOR("Regenerator", 0xFF5BD46A,
             "Rapid regeneration. Immune to poison.",
             "Hunger drains much faster.",
             List.of(ActiveAbility.SURGE, ActiveAbility.IMMUNITY)),
-    KINETIC_MIND("Kinetic Mind", 0xFFB57BFF, true,
+    KINETIC_MIND("Kinetic Mind", 0xFFB57BFF,
             "Telekinetically grab, carry and throw blocks. Range and lift strength grow with mastery.",
             "Heavy use gives you headaches (nausea).",
             List.of(ActiveAbility.TELEKINESIS, ActiveAbility.FORCE_PUSH)),
-    STORMCALLER("Stormcaller", 0xFF6FB8FF, true,
+    STORMCALLER("Stormcaller", 0xFF6FB8FF,
             "Immune to lightning. Faster in the rain.",
             "All of your abilities are weaker in clear weather.",
             List.of(ActiveAbility.LIGHTNING_STRIKE, ActiveAbility.SUMMON_STORM)),
-    PHASER("Phaser", 0xFFFFE05A, true,
-            "Faster base speed with adjustable speed tiers. Projectiles partly pass through you.",
+    PHASER("Phaser", 0xFFFFE05A,
+            "Faster base speed with adjustable speed tiers. Projectiles partly pass through you. Sonic boom at tier 4+.",
             "You can't wear anything in your chest slot. Top speeds burn hunger.",
             List.of(ActiveAbility.PHASE_DASH)),
-    CRYO("Cryo", 0xFF9FE8FF, false, "Coming soon.", "", List.of()),
-    BLINKER("Blinker", 0xFFD58CFF, false, "Coming soon.", "", List.of()),
-    COLOSSUS("Colossus", 0xFFC9A27A, false, "Coming soon.", "", List.of()),
-    SIREN("Siren", 0xFFFF8FB8, false, "Coming soon.", "", List.of()),
-    ABSORBER("Absorber", 0xFFFFA64D, false, "Coming soon.", "", List.of()),
-    CHAMELEON("Chameleon", 0xFF7FE07F, false, "Coming soon.", "", List.of()),
-    PYRO("Pyro", 0xFFFF6A3D, false, "Coming soon.", "", List.of()),
-    HOST("Host", 0xFF8A8AA8, false, "Coming soon.", "", List.of());
+    CRYO("Cryo", 0xFF9FE8FF,
+            "Immune to freezing. Water freezes beneath your feet.",
+            "Weakened in hot biomes and the Nether (overworld heat doesn't bother you at night).",
+            List.of(ActiveAbility.ICE_BLAST)),
+    BLINKER("Blinker", 0xFFD58CFF,
+            "Mobs lose track of you easily.",
+            "Taking damage sometimes blinks you somewhere random.",
+            List.of(ActiveAbility.BLINK, ActiveAbility.DISPLACE)),
+    COLOSSUS("Colossus", 0xFFC9A27A,
+            "Huge melee damage, knockback resistance, and much faster mining.",
+            "Slow, sinks in water, and can't sprint for long.",
+            List.of(ActiveAbility.GROUND_POUND)),
+    SIREN("Siren", 0xFFFF8FB8,
+            "You hear mobs through walls (they glow for you).",
+            "You're loud: sneaking draws nearby monsters to you.",
+            List.of(ActiveAbility.SONIC_SCREAM)),
+    ABSORBER("Absorber", 0xFFFFA64D,
+            "Half of all damage you take is stored as charge instead.",
+            "Hold more charge than you can contain and it slowly hurts you.",
+            List.of(ActiveAbility.RELEASE)),
+    CHAMELEON("Chameleon", 0xFF7FE07F,
+            "Invisible while sneaking and standing still. Your first hit from hiding deals huge damage.",
+            "Your armor stays visible: mobs still notice you if you wear any.",
+            List.of(ActiveAbility.MIMIC, ActiveAbility.COPYCAT)),
+    PYRO("Pyro", 0xFFFF6A3D,
+            "Immune to fire and lava. Sneak + right-click a lava bucket to drink it (heals like a golden apple).",
+            "Water and rain hurt you.",
+            List.of(ActiveAbility.FLAMETHROWER, ActiveAbility.FLAME_FLIGHT)),
+    HOST("Host", 0xFF8A8AA8,
+            "A living organism: extra reach, wall climbing, stronger right after a kill.",
+            "It's always hungry: go too long without a kill and it feeds on you.",
+            List.of(ActiveAbility.TENDRIL, ActiveAbility.BONDED_ARMOR));
 
     private final String displayName;
     private final int color;
-    private final boolean implemented;
     private final String upside;
     private final String downside;
     private final List<ActiveAbility> actives;
 
-    Mutation(String displayName, int color, boolean implemented, String upside, String downside, List<ActiveAbility> actives) {
+    Mutation(String displayName, int color, String upside, String downside, List<ActiveAbility> actives) {
         this.displayName = displayName;
         this.color = color;
-        this.implemented = implemented;
         this.upside = upside;
         this.downside = downside;
         this.actives = actives;
@@ -64,10 +83,6 @@ public enum Mutation {
         return color;
     }
 
-    public boolean implemented() {
-        return implemented;
-    }
-
     public String upside() {
         return upside;
     }
@@ -80,11 +95,11 @@ public enum Mutation {
         return actives;
     }
 
-    public static Optional<Mutation> byId(String id) {
-        return Arrays.stream(values()).filter(m -> m.id().equals(id)).findFirst();
+    public List<Secondary> secondaries() {
+        return Secondary.forBase(this);
     }
 
-    public static List<Mutation> implementedValues() {
-        return Arrays.stream(values()).filter(Mutation::implemented).toList();
+    public static Optional<Mutation> byId(String id) {
+        return Arrays.stream(values()).filter(m -> m.id().equals(id)).findFirst();
     }
 }

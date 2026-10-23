@@ -20,8 +20,25 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RenderFrameEvent;
+import com.mutationsmod.mutations.ability.Telekinesis;
+import com.mutationsmod.mutations.ability.power.Absorber;
+import com.mutationsmod.mutations.ability.power.Chameleon;
+import com.mutationsmod.mutations.ability.power.Host;
+import com.mutationsmod.mutations.mastery.Mastery;
+import com.mutationsmod.mutations.mutation.Secondary;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.common.NeoForge;
+import com.google.common.reflect.TypeToken;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
 
 @Mod(value = MutationsMod.MODID, dist = Dist.CLIENT)
 public class MutationsClient {
@@ -48,7 +65,9 @@ public class MutationsClient {
     public MutationsClient(IEventBus modEventBus) {
         modEventBus.addListener(MutationsClient::registerKeys);
         modEventBus.addListener(MutationsClient::registerHud);
+        modEventBus.addListener(MutationsClient::registerRenderState);
         NeoForge.EVENT_BUS.addListener(MutationsClient::onClientTick);
+        NeoForge.EVENT_BUS.addListener(MutationsClient::onRenderFrame);
     }
 
     private static void registerKeys(RegisterKeyMappingsEvent event) {
@@ -61,6 +80,14 @@ public class MutationsClient {
 
     private static void registerHud(RegisterGuiLayersEvent event) {
         event.registerAboveAll(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "hud"), MutationsClient::renderHud);
+    }
+
+    /** Siren / Spatial Sense: draws a glowing outline on creatures only this player can sense. */
+    private static void registerRenderState(RegisterRenderStateModifiersEvent event) {
+        event.registerEntityModifier(new TypeToken<LivingEntityRenderer<LivingEntity, LivingEntityRenderState, ?>>() {},
+                (entity, state) -> {
+                    if (ClientPowers.GLOWING.contains(entity.getId())) state.outlineColor = 0xFFFFFFFF;
+                });
     }
 
     private static void onClientTick(ClientTickEvent.Post event) {
@@ -77,6 +104,50 @@ public class MutationsClient {
         }
         while (SPEED_UP.consumeClick()) ClientPacketDistributor.sendToServer(new ModPayloads.ChangeSpeed(1));
         while (SPEED_DOWN.consumeClick()) ClientPacketDistributor.sendToServer(new ModPayloads.ChangeSpeed(-1));
+        if (mc.level != null) ClientPowers.tick(mc, mc.player, mc.player.getData(ModAttachments.DATA));
+    }
+
+    /**
+     * Glues the block you're holding with telekinesis to your view every frame (not just 20 times
+     * a second), so it flows smoothly as you look around.
+     */
+    private static void onRenderFrame(RenderFrameEvent.Pre event) {
+        if (ModPayloads.LOCAL_HELD.isEmpty()) return;
+        Minecraft mc = Minecraft.getInstance();
+        LocalPlayer player = mc.player;
+        if (player == null || mc.level == null) return;
+        long nowMs = System.currentTimeMillis();
+        for (var entry : List.copyOf(ModPayloads.LOCAL_HELD.entrySet())) {
+            Entity block = mc.level.getEntity(entry.getKey());
+            Long seen = ModPayloads.LOCAL_HELD_SEEN.get(entry.getKey());
+            if (block == null || seen == null || nowMs - seen > 500) {
+                ModPayloads.LOCAL_HELD.remove(entry.getKey());
+                ModPayloads.LOCAL_HELD_SEEN.remove(entry.getKey());
+                continue;
+            }
+            placeHeld(event, mc, player, block, entry.getValue());
+        }
+    }
+
+    private static void placeHeld(RenderFrameEvent.Pre event, Minecraft mc, LocalPlayer player, Entity block, int slot) {
+        float pt = event.getPartialTick().getGameTimeDeltaPartialTick(true);
+        Vec3 eye = new Vec3(
+                Mth.lerp(pt, player.xo, player.getX()),
+                Mth.lerp(pt, player.yo, player.getY()) + player.getEyeHeight(),
+                Mth.lerp(pt, player.zo, player.getZ()));
+        float yaw = player.getViewYRot(pt) * Mth.DEG_TO_RAD;
+        float pitch = player.getViewXRot(pt) * Mth.DEG_TO_RAD;
+        Vec3 look = new Vec3(-Math.sin(yaw) * Math.cos(pitch), -Math.sin(pitch), Math.cos(yaw) * Math.cos(pitch));
+        Vec3 target = Telekinesis.holdPosition(eye, look, slot);
+
+        AABB box = block.getBoundingBox().move(target.subtract(block.position()));
+        if (!mc.level.noCollision(block, box)) return; // don't push it through walls
+        block.setPos(target);
+        block.setDeltaMovement(Vec3.ZERO);
+        // Same position for "last tick" too, so the renderer draws it exactly here this frame.
+        block.xo = block.xOld = target.x;
+        block.yo = block.yOld = target.y;
+        block.zo = block.zOld = target.z;
     }
 
     /** Small top-left HUD: your mutation(s) and each active ability's key and cooldown. */
@@ -105,9 +176,40 @@ public class MutationsClient {
             graphics.text(font, "[" + keyName + "] " + a.displayName() + ": " + status, x, y, color, true);
             y += font.lineHeight + 1;
         }
-        if (data.has(Mutation.PHASER) && data.speedTier() > 0) {
-            graphics.text(font, "Speed tier " + data.speedTier(), x, y, 0xFFFFE05A, true);
+        y += 2;
+        for (String line : statusLines(mc, data, now)) {
+            graphics.text(font, line, x, y, 0xFFE0E0E0, true);
+            y += font.lineHeight + 1;
         }
+        if (data.has(Secondary.TUNED_EARS) && data.has(Mutation.SIREN)) {
+            for (String line : ClientPowers.tunedEars(mc.level, mc.player)) {
+                graphics.text(font, line, x, y, 0xFFFF8FB8, true);
+                y += font.lineHeight + 1;
+            }
+        }
+    }
+
+    /** Extra HUD lines: meters and timers for whatever mutations you have. */
+    private static List<String> statusLines(Minecraft mc, MutationData d, long now) {
+        List<String> out = new java.util.ArrayList<>();
+        if (d.has(Mutation.PHASER) && d.speedTier() > 0) out.add("Speed tier " + d.speedTier());
+        if (d.has(Mutation.ABSORBER)) {
+            out.add(String.format("Charge %.0f / %.0f", d.charge(), Absorber.capacity(d)));
+        }
+        if (d.has(Mutation.HOST) && d.timer("host_fed") > 0) {
+            long left = d.timer("host_fed") + Host.graceTicks(d) - now;
+            out.add(left > 0 ? "Organism fed: " + formatTime(left) : "Organism STARVING");
+        }
+        if (d.has(Mutation.PYRO) && d.timer("flame_flight") > now) out.add("Flame Flight: " + formatTime(d.timer("flame_flight") - now));
+        if (d.timer("levitate") > now) out.add("Levitating: " + formatTime(d.timer("levitate") - now));
+        if (d.timer("barrier") > now) out.add("Barrier: " + formatTime(d.timer("barrier") - now));
+        if (d.timer("immune") > now) out.add("IMMUNE: " + formatTime(d.timer("immune") - now));
+        for (Chameleon.Trait t : Chameleon.Trait.values()) {
+            if (d.timer(t.timer()) > now) out.add("Copycat (" + t.label + "): " + formatTime(d.timer(t.timer()) - now));
+        }
+        if (Mastery.canRoll(d) || !d.rollOptions().isEmpty()) out.add("Secondary roll ready! (" + OPEN_SCREEN.getTranslatedKeyMessage().getString() + ")");
+        else if (d.statPoints() > 0) out.add(d.statPoints() + " stat points to spend (" + OPEN_SCREEN.getTranslatedKeyMessage().getString() + ")");
+        return out;
     }
 
     public static String formatTime(long ticks) {

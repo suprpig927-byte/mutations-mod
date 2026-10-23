@@ -24,9 +24,14 @@ public class MutationsMod {
         game.addListener(AbilityHandler::onRespawn);
         game.addListener(AbilityHandler::onChangeDimension);
         game.addListener(AbilityHandler::onPlayerTick);
+        game.addListener(AbilityHandler::onLevelTick);
         game.addListener(AbilityHandler::onIncomingDamage);
         game.addListener(AbilityHandler::onEffectApplicable);
+        game.addListener(AbilityHandler::onStruckByLightning);
         game.addListener(AbilityHandler::onDeath);
+        game.addListener(AbilityHandler::onDrops);
+        game.addListener(AbilityHandler::onChangeTarget);
+        game.addListener(AbilityHandler::onRightClickItem);
         game.addListener(MutationCommand::register);
     }
 }

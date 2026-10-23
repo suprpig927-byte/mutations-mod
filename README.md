@@ -1,99 +1,66 @@
-# Mutations — v0.1.0 (NeoForge, Minecraft 26.3)
+# Mutations — v0.3.0 (NeoForge, Minecraft 26.3)
 
 Every player is born with a random, permanent mutation. Use your powers to earn mastery XP,
-level up, and (in a later version) unlock secondary mutations and spend stat points.
+level up, spend stat points, and evolve secondary mutations.
+See **DESIGN.md** for every mutation, ability and secondary.
 
 ## What's in this version
 
-- **Random mutation on first join**, saved permanently (kept through death).
-- **4 playable mutations:** Regenerator, Kinetic Mind, Stormcaller, Phaser.
-  The other 8 are listed in-game as "coming soon".
-- **Mastery levels:** XP from killing mobs (tougher mobs give more) and from using active abilities.
-  Passives give no XP. No level cap. +3 stat points per level.
-- **Mutation screen** (M): your mutation, abilities, cooldowns, mastery level, XP bar,
-  stat points, and the secondary-roll slots (levels 10 / 25 / 50).
-- **HUD** in the top-left corner showing your abilities and cooldowns.
-- **Admin commands** (see below).
+- **All 12 base mutations:** Regenerator, Kinetic Mind, Stormcaller, Phaser, Cryo, Blinker,
+  Colossus, Siren, Absorber, Chameleon, Pyro, Host.
+- **96 secondary mutations** (8 per base). At mastery levels **10, 25 and 50** you're offered
+  3 random ones from your base's list and pick one.
+- **Stats:** Strength, Vitality, Agility, Endurance, Luck, Mutation. +3 points per mastery level,
+  no caps. **Respec** refunds everything for 30 Minecraft XP levels.
+- **Mutation screen (M)** with two tabs: *Mutation* (abilities, secondaries, rolls) and *Stats*.
+- **HUD** (top-left): abilities and cooldowns, plus meters like Absorber charge and the Host's hunger.
+- Kinetic Mind: smooth telekinesis; thrown blocks set into the world where they land.
 
 ## Controls (rebind in Options → Controls → Mutations)
 
 | Key | Action |
 |---|---|
 | M | Open mutation screen |
-| R, V, G, B, N, K | Ability 1–6 (your active abilities, in order) |
+| R, V, G, B, N, K | Ability 1–6 (base abilities first, then secondary ones, in order) |
 | U / J | Phaser speed tier up / down |
 
-## The mutations
-
-**Regenerator**: heals quickly (faster with mastery), immune to poison. Hunger drains much faster.
-- Surge: heal 4 hearts, costs 6 hunger (30s cooldown).
-- Immunity: totally immune to damage for 8 seconds (3 min cooldown).
-
-**Kinetic Mind**: telekinesis. Strong use gives headaches (nausea).
-- Telekinesis: grab the block you're looking at. It floats in front of you. Press again to drop it.
-  Range and the hardest block you can lift grow with mastery (obsidian at level ~48).
-  Blocks with contents (chests, furnaces...) can't be lifted.
-- Force Push: knock back and damage mobs in front of you. While holding a block, it throws the block instead.
-
-**Stormcaller**: immune to lightning, faster in the rain. All abilities are weaker in clear weather.
-- Lightning Strike: lightning where you look. Strongest in thunderstorms, weakest in clear skies (6s cooldown).
-- Summon Storm: starts a thunderstorm for everyone (20 min cooldown).
-
-**Phaser**: speedster. Faster base speed, adjustable speed tiers (more tiers unlock every 8 mastery levels,
-up to 5), takes less projectile damage. Can't wear anything in the chest slot; tiers 2+ burn hunger.
-- Phase Dash: dash forward, immune to damage during the dash (6s cooldown).
+Other controls:
+- **Rainwalker / Flame Flight:** double-tap jump to take off (Flame Flight launches you automatically), hold forward to fly where you look.
+- **Pyro:** sneak + right-click a lava bucket to drink it. With Hearthbound, right-click coal to eat it.
+- **Host:** walk into a wall while holding forward to climb. Shapeless: sneak into a 1-block gap to crawl.
+- **Chameleon:** sneak and stand still to turn invisible.
+- **Pocket Space (Blinker):** button on the mutation screen.
 
 ## Commands (operators only, i.e. cheats on in single player)
 
-`<players>` can be a name, `@s` (yourself), `@a` (everyone), etc.
+`<players>` can be a name, `@s` (yourself), `@a` (everyone), etc. Tab-complete shows every id.
 
 | Command | What it does |
 |---|---|
-| `/mutation list` | List every mutation id |
-| `/mutation info [player]` | Show a player's mutations, mastery, stat points, cooldowns |
-| `/mutation set <players> <mutation>` | Replace their mutations with this one as the base |
-| `/mutation add <players> <mutation>` | Add a mutation to their roster (max 4) |
-| `/mutation remove <players> <mutation>` | Remove a mutation from their roster |
+| `/mutation list` | List every base mutation |
+| `/mutation list <mutation>` | List that base's secondary mutations |
+| `/mutation info [player]` | Mutations, secondaries, mastery, stats, cooldowns |
+| `/mutation set <players> <mutation>` | Set the base mutation (clears secondaries) |
+| `/mutation add <players> <mutation>` | Add an extra base mutation (max 4) |
+| `/mutation remove <players> <mutation>` | Remove a base mutation |
 | `/mutation clear <players>` | Remove all mutations |
-| `/mutation reroll <players>` | Give them a new random base mutation |
-| `/mutation cooldowns reset <players>` | Make every ability ready right now |
+| `/mutation reroll <players>` | New random base mutation |
+| `/mutation secondary add <players> <secondary>` | Give a secondary mutation |
+| `/mutation secondary remove <players> <secondary>` | Remove a secondary mutation |
+| `/mutation secondary clear <players>` | Remove all secondaries |
+| `/mutation roll <players>` | Offer a secondary roll right now (ignores level) |
+| `/mutation cooldowns reset <players>` | Make every ability ready now |
 | `/mutation mastery set <players> <level>` | Set mastery level |
 | `/mutation mastery add <players> <levels>` | Add (or with a negative number, remove) levels |
-| `/mutation mastery xp <players> <amount>` | Give mastery XP (levels up normally) |
-| `/mutation mastery reset <players>` | Back to level 1, 0 XP, 0 stat points |
+| `/mutation mastery xp <players> <amount>` | Give mastery XP |
+| `/mutation mastery reset <players>` | Back to level 1, no stats or points |
 | `/mutation statpoints set <players> <amount>` | Set unspent stat points |
+| `/mutation stats set <players> <stat> <amount>` | Set a stat directly |
+| `/mutation stats respec <players>` | Free respec (refund all points) |
 
-## Building the jar
+Testing tip: `/mutation set @s cryo`, `/mutation mastery set @s 50`, then open the screen (M) to roll secondaries.
 
-1. Install **JDK 25** (for example Eclipse Temurin 25 from adoptium.net).
-2. Open a terminal in this folder and run:
-   - Windows: `gradlew.bat build`
-   - Mac/Linux: `./gradlew build`
-   The first build downloads Minecraft and NeoForge, so it takes a few minutes.
-3. The mod is at `build/libs/mutations-0.1.0.jar`.
+## Building
 
-## Installing with CurseForge
-
-1. Create a profile with **Minecraft 26.3** and **NeoForge** (pick the newest NeoForge version).
-2. On the profile, click the three dots → **Open Folder**, and put the jar in the `mods` folder.
-3. Launch and make a new world (or join an existing one). You'll get your mutation right away.
-
-Testing tip: in a creative world with cheats on, use `/mutation set @s phaser` (etc.) to try each one,
-and `/mutation cooldowns reset @s` to skip cooldowns.
-
-## Project layout
-
-```
-src/main/java/com/mutationsmod/mutations/
-  MutationsMod.java          main mod class, wires everything up
-  ModAttachments.java        saved per-player data
-  data/MutationData.java     what's saved: mutations, mastery, cooldowns...
-  mutation/Mutation.java     the 12 base mutations (text, colors, actives)
-  mutation/ActiveAbility.java  every active ability + cooldown
-  ability/AbilityHandler.java  all gameplay logic (passives, downsides, actives)
-  ability/Telekinesis.java   Kinetic Mind's block grabbing
-  mastery/Mastery.java       XP and levels
-  command/MutationCommand.java  /mutation commands
-  network/ModPayloads.java   client <-> server messages
-  client/                    keybinds, HUD, mutation screen
-```
+Push to GitHub and download the jar from the **Actions** tab (see `.github/workflows/build.yml`),
+or build locally with JDK 25: `gradlew.bat build` → `build/libs/mutations-0.3.0.jar`.
