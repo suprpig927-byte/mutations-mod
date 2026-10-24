@@ -34,8 +34,8 @@ public class HostLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
         if (data == null || state.isInvisible) return;
         // The armor render type draws on top of the same model without flickering (like armor trims).
         collector.submitModel(this.getParentModel(), state, poseStack,
-                RenderTypes.armorCutoutNoCull(data.bonded() ? FULL : FAINT), light, OverlayTexture.NO_OVERLAY, -1);
+                RenderTypes.armorCutoutNoCull(data.bonded() ? FULL : FAINT), light, OverlayTexture.NO_OVERLAY, state.outlineColor);
         collector.submitModel(this.tendrils, state, poseStack,
-                RenderTypes.armorCutoutNoCull(TENDRIL), light, OverlayTexture.NO_OVERLAY, -1);
+                RenderTypes.armorCutoutNoCull(TENDRIL), light, OverlayTexture.NO_OVERLAY, state.outlineColor);
     }
 }
