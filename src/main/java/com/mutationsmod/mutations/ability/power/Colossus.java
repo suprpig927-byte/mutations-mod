@@ -19,7 +19,27 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 public final class Colossus {
     private Colossus() {}
 
+    private static final java.util.Map<java.util.UUID, Vec3> LAST_POS = new java.util.HashMap<>();
+
     public static void tick(ServerPlayer p, MutationData d) {
+        // Heavy steps: a deep thud and a puff of dust as you walk.
+        ServerLevel level = (ServerLevel) p.level();
+        Vec3 last = LAST_POS.put(p.getUUID(), p.position());
+        double moved = last == null ? 0 : last.subtract(p.position()).horizontalDistance();
+        if (p.onGround() && moved > 0.08 && level.getGameTime() % (p.isSprinting() ? 6 : 9) == 0) {
+            BlockState under = level.getBlockState(p.blockPosition().below());
+            if (!under.isAir()) {
+                level.playSound(null, p.getX(), p.getY(), p.getZ(), under.getSoundType(level, p.blockPosition().below(), p).getStepSound(),
+                        net.minecraft.sounds.SoundSource.PLAYERS, 0.9f, 0.5f);
+                level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, under, p.blockPosition().below()),
+                        p.getX(), p.getY() + 0.05, p.getZ(), 6, 0.25, 0.02, 0.25, 0.05);
+            }
+        }
+        // Charge: a trail of dust behind you.
+        if (Powers.rushing(p)) {
+            level.sendParticles(ParticleTypes.CLOUD, p.getX(), p.getY() + 0.2, p.getZ(), 4, 0.3, 0.1, 0.3, 0.02);
+        }
+
         Powers.add(p, Attributes.ATTACK_DAMAGE, "colossus_damage", 4.0);
         Powers.add(p, Attributes.KNOCKBACK_RESISTANCE, "colossus_knockback", d.has(Secondary.UNSTOPPABLE) ? 1.0 : 0.6);
         Powers.mult(p, Attributes.MOVEMENT_SPEED, "colossus_slow", -0.15);
@@ -54,6 +74,7 @@ public final class Colossus {
         }
         Powers.particles(p, ParticleTypes.EXPLOSION, 3, 1.0, 0);
         Powers.sound(p, SoundEvents.GENERIC_EXPLODE.value(), 0.8f, 0.7f);
+        Powers.setTimer(p, "pound_anim", 30);
         return true;
     }
 

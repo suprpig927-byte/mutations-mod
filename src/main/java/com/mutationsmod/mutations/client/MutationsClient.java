@@ -42,6 +42,8 @@ import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEve
 import net.neoforged.neoforge.client.renderstate.AvatarRenderStateModifier;
 import com.mutationsmod.mutations.client.render.HostLayer;
 import com.mutationsmod.mutations.client.render.CryoLayer;
+import com.mutationsmod.mutations.client.render.ColossusLayer;
+import com.mutationsmod.mutations.client.render.ColossusRenderData;
 import com.mutationsmod.mutations.client.render.CryoRenderData;
 import com.mutationsmod.mutations.client.render.CrystalModel;
 import net.minecraft.client.model.HumanoidModel;
@@ -93,6 +95,8 @@ public class MutationsClient {
         NeoForge.EVENT_BUS.addListener(MutationsClient::onClientTick);
         NeoForge.EVENT_BUS.addListener(MutationsClient::onRenderFrame);
         NeoForge.EVENT_BUS.addListener(FirstPersonTendrils::onSubmit);
+        NeoForge.EVENT_BUS.addListener(ColossusLayer::onRenderPre);
+        NeoForge.EVENT_BUS.addListener(ColossusLayer::onRenderPost);
     }
 
     private static void registerKeys(RegisterKeyMappingsEvent event) {
@@ -125,6 +129,13 @@ public class MutationsClient {
                         state.setRenderData(HostRenderData.KEY, HostRenderLogic.compute(hostPlayer, hd, state.bodyRot, pt));
                     } else {
                         state.setRenderData(HostRenderData.KEY, null);
+                    }
+                    // Colossus: steel body, cracks while Ground Pound's effect lasts.
+                    if (hd.has(Mutation.COLOSSUS)) {
+                        boolean cracks = hd.timer("pound_anim") > hostPlayer.level().getGameTime();
+                        state.setRenderData(ColossusRenderData.KEY, new ColossusRenderData(cracks));
+                    } else {
+                        state.setRenderData(ColossusRenderData.KEY, null);
                     }
                     // Cryo: crystals shrink in the heat and pulse on Ice Blast.
                     if (hd.has(Mutation.CRYO)) {
@@ -176,6 +187,7 @@ public class MutationsClient {
             if (renderer != null) {
                 var models = event.getEntityModels();
                 renderer.addLayer(new HostLayer(renderer, new TendrilModel(models.bakeLayer(TENDRILS))));
+                renderer.addLayer(new ColossusLayer(renderer));
                 renderer.addLayer(new CryoLayer(renderer, new CrystalModel(models.bakeLayer(CRYSTALS)),
                         new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[0])), new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[1])),
                         new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[2])), new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[3]))));
