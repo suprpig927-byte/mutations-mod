@@ -12,10 +12,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
 
-/** Stormcaller: dark storm skin, glowing lightning veins and eyes, wisps, arcs and wind rings. */
+/** Stormcaller: lightning arcs in the rain and wind rings in flight (the player keeps their own skin). */
 public class StormLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
-    private static final Identifier SKIN = tex("skin");
-    private static final Identifier VEINS = tex("veins");
     private static final Identifier FX = tex("fx");
 
     private final StormFxModel fx;
@@ -32,10 +30,6 @@ public class StormLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
     @Override
     public void submit(PoseStack poseStack, SubmitNodeCollector collector, int light, AvatarRenderState state, float yRot, float xRot) {
         if (state.getRenderData(StormRenderData.KEY) == null || state.isInvisible) return;
-        collector.submitModel(this.getParentModel(), state, poseStack, RenderTypes.armorCutoutNoCull(SKIN),
-                light, OverlayTexture.NO_OVERLAY, state.outlineColor);
-        collector.submitModel(this.getParentModel(), state, poseStack, RenderTypes.armorCutoutNoCull(VEINS),
-                LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, state.outlineColor);
         collector.submitModel(this.fx, state, poseStack, RenderTypes.armorCutoutNoCull(FX),
                 LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, state.outlineColor);
     }
