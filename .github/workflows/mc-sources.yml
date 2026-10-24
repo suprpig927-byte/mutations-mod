@@ -22,9 +22,10 @@ jobs:
         shell: bash
         run: |
           set -x
+          echo "::notice title=Build jars::$(find "$GITHUB_WORKSPACE/build" "$GITHUB_WORKSPACE/.gradle" -name '*.jar' 2>/dev/null | head -30 | awk '{printf "%s%%0A", $0}')"
           SRC=""
-          for j in $(find "$GITHUB_WORKSPACE" ~/.gradle -name "*.jar" 2>/dev/null); do
-            if unzip -l "$j" 2>/dev/null | grep -q "net/minecraft/world/level/block/Block.java"; then SRC="$j"; break; fi
+          for j in $(find "$GITHUB_WORKSPACE" -name "*.jar" 2>/dev/null); do
+            if unzip -l "$j" 2>/dev/null | grep -q " net/minecraft/world/level/block/Block.java$"; then SRC="$j"; break; fi
           done
           if [ -z "$SRC" ]; then
             echo "::error title=No sources jar::$(find "$GITHUB_WORKSPACE/build" -name '*.jar' 2>/dev/null | head -30 | awk '{printf "%s%%0A", $0}')"
