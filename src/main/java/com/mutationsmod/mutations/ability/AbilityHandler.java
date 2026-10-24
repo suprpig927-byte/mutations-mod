@@ -76,6 +76,7 @@ public final class AbilityHandler {
         if (event.getEntity() instanceof ServerPlayer p) {
             Telekinesis.release(p, false);
             forget(p);
+            Suppression.forget(p.getUUID());
         }
     }
 
@@ -93,6 +94,7 @@ public final class AbilityHandler {
         if (!(event.getEntity() instanceof ServerPlayer p)) return;
         MutationData d = ModAttachments.get(p);
         if (p.level().getGameTime() % 10 == 0) StatEffects.apply(p, d);
+        if (Suppression.tick(p)) return; // Nullite: powers are off
         if (d.mutations().isEmpty()) return;
         Powers.tickRush(p);
 
@@ -126,9 +128,18 @@ public final class AbilityHandler {
         Siren.onMobHurt(victim);
         var source = event.getSource();
 
+        // Nullite Spear: a jab suppresses a mutant's powers for 5s, a charged hit for 15s.
+        if (victim instanceof ServerPlayer hit && source.getEntity() instanceof LivingEntity spearman) {
+            var weapon = source.getWeaponItem();
+            if (weapon != null && weapon.is(com.mutationsmod.mutations.registry.ModContent.NULLITE_SPEAR.get())) {
+                Suppression.apply(hit, spearman.isUsingItem() ? Suppression.CHARGE : Suppression.JAB, true);
+            }
+        }
+
         // Offense: a mutant hitting something in melee.
         if (source.getEntity() instanceof ServerPlayer attacker && source.getDirectEntity() == attacker
-                && !Powers.ABILITY_DAMAGE.get() && attacker != victim) {
+                && !Powers.ABILITY_DAMAGE.get() && attacker != victim
+                && !Suppression.active(ModAttachments.get(attacker), attacker.level())) {
             MutationData a = ModAttachments.get(attacker);
             if (a.has(Mutation.STORMCALLER)) Stormcaller.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.PHASER)) Phaser.onMelee(event, attacker, a, victim);
@@ -143,7 +154,7 @@ public final class AbilityHandler {
         // Defense: a mutant getting hurt.
         if (!(victim instanceof ServerPlayer p) || Powers.SELF_DAMAGE.get()) return;
         MutationData d = ModAttachments.get(p);
-        if (d.mutations().isEmpty()) return;
+        if (d.mutations().isEmpty() || Suppression.active(d, p.level())) return;
         if (d.has(Mutation.REGENERATOR) && Powers.timerActive(d, p.level(), "immune")) {
             event.setCanceled(true);
             return;
@@ -173,6 +184,7 @@ public final class AbilityHandler {
     public static void onEffectApplicable(MobEffectEvent.Applicable event) {
         if (!(event.getEntity() instanceof Player p) || p.level().isClientSide()) return;
         MutationData d = ModAttachments.get(p);
+        if (Suppression.active(d, p.level())) return;
         if (d.has(Mutation.REGENERATOR)) Regenerator.onEffect(event, p, d);
         if (d.has(Mutation.SIREN)) Siren.onEffect(event, d);
     }
@@ -180,6 +192,7 @@ public final class AbilityHandler {
     public static void onStruckByLightning(EntityStruckByLightningEvent event) {
         if (event.getEntity() instanceof ServerPlayer p) {
             MutationData d = ModAttachments.get(p);
+            if (Suppression.active(d, p.level())) return;
             if (d.has(Mutation.STORMCALLER)) Stormcaller.onStruck(event, p, d);
         }
     }
@@ -192,8 +205,9 @@ public final class AbilityHandler {
 
         if (victim instanceof ServerPlayer p) {
             MutationData d = ModAttachments.get(p);
-            if (d.has(Mutation.REGENERATOR) && Regenerator.secondWind(event, p, d)) return;
-            if (d.has(Mutation.PYRO) && Pyro.phoenix(event, p, d)) return;
+            boolean powered = !Suppression.active(d, p.level());
+            if (powered && d.has(Mutation.REGENERATOR) && Regenerator.secondWind(event, p, d)) return;
+            if (powered && d.has(Mutation.PYRO) && Pyro.phoenix(event, p, d)) return;
             Telekinesis.release(p, false);
         }
 
@@ -211,12 +225,16 @@ public final class AbilityHandler {
     }
 
     public static void onChangeTarget(LivingChangeTargetEvent event) {
-        if (!event.getEntity().level().isClientSide()) Chameleon.onChangeTarget(event);
+        if (event.getEntity().level().isClientSide()) return;
+        if (event.getNewAboutToBeSetTarget() instanceof ServerPlayer target
+                && Suppression.active(ModAttachments.get(target), target.level())) return;
+        Chameleon.onChangeTarget(event);
     }
 
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
         if (!(event.getEntity() instanceof ServerPlayer p)) return;
         MutationData d = ModAttachments.get(p);
+        if (Suppression.active(d, p.level())) return;
         if (d.has(Mutation.PYRO)) Pyro.onRightClickItem(event, p, d);
     }
 
@@ -226,6 +244,11 @@ public final class AbilityHandler {
     public static void useSlot(ServerPlayer p, int slot) {
         if (!p.isAlive() || p.isSpectator()) return;
         MutationData d = ModAttachments.get(p);
+        if (Suppression.active(d, p.level())) {
+            p.sendOverlayMessage(net.minecraft.network.chat.Component.literal("Your powers are suppressed!")
+                    .withStyle(net.minecraft.ChatFormatting.GREEN));
+            return;
+        }
         List<ActiveAbility> actives = d.actives();
         if (slot < 0 || slot >= actives.size()) return;
         ActiveAbility ability = actives.get(slot);

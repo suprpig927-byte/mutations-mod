@@ -131,6 +131,10 @@ public class MutationsClient {
                 // Host: tell the organism layer how to draw this player.
                 if (avatar instanceof Player hostPlayer) {
                     MutationData hd = hostPlayer.getData(ModAttachments.DATA);
+                    if (hd.timer("suppressed") > hostPlayer.level().getGameTime()) {
+                        // Nullite: no mutation looks while suppressed.
+                        hd = MutationData.EMPTY;
+                    }
                     if (hd.has(Mutation.HOST)) {
                         float pt = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
                         state.setRenderData(HostRenderData.KEY, HostRenderLogic.compute(hostPlayer, hd, state.bodyRot, pt));
@@ -349,6 +353,7 @@ public class MutationsClient {
         if (d.has(Secondary.ITEM_MAGNET) && d.timer("magnet") > 0) out.add("Item Magnet: ON");
         if (d.timer("levitate") > now) out.add("Levitating: " + formatTime(d.timer("levitate") - now));
         if (d.timer("barrier") > now) out.add("Barrier: " + formatTime(d.timer("barrier") - now));
+        if (d.timer("suppressed") > now) out.add("SUPPRESSED: " + formatTime(d.timer("suppressed") - now));
         if (d.has(Mutation.HOST)) out.add(d.timer("bonded") > 0 ? "Organism: BONDED" : "Organism: dormant");
         if (d.has(Mutation.PYRO)) out.add(d.timer("flame_on") > 0 ? "Flame On" : "Flames: out");
         if (d.has(Mutation.COLOSSUS)) out.add(d.timer("steel") > 0 ? "Steel Form: ON" : "Steel Form: off");

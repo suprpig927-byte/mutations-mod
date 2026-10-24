@@ -17,5 +17,10 @@
   "block.mutations.gene_splicer": "Gene Splicer",
   "item.mutations.mutagen_ingot": "Mutagen Ingot",
   "item.mutations.mutagen_crystal": "Mutagen Crystal",
-  "item.mutations.mastery_tome": "Mastery Tome"
+  "item.mutations.mastery_tome": "Mastery Tome",
+  "block.mutations.nullite_cluster": "Nullite Cluster",
+  "item.mutations.nullite_shard": "Nullite Shard",
+  "item.mutations.containment_rod": "Containment Rod",
+  "item.mutations.nullite_spear": "Nullite Spear",
+  "effect.mutations.suppressed": "Suppressed"
 }

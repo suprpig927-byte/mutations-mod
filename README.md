@@ -79,3 +79,14 @@ or build locally with JDK 25: `gradlew.bat build` → `build/libs/mutations-0.3.
   - **Respec stats**: 2 Mutagen Crystals + 10 XP levels (instead of 30 levels from the mutation screen).
   - **Splice out a secondary**: 4 Mutagen Crystals + 20 XP levels. Removes that secondary and offers 3 new ones from your base mutation's list (never the one you removed). Pick one in the Splicer or the mutation screen.
 - **Mastery Tome**: right-click to read it for enough mastery XP to gain about two levels. Found (with Mutagen Crystals) in dungeon, mineshaft, desert and jungle temple, stronghold library, ancient city and woodland mansion chests.
+
+## Nullite and the Nullite Spear
+
+Nullite is a green crystal that shuts mutant powers off, like kryptonite.
+
+- **Nullite Clusters** will grow at the heart of Meteor Craters (structure coming soon; creative tab for now). Mine with an iron pickaxe: 1-2 **Nullite Shards**.
+- **Containment Rods** will be found in Gene Lab chests (structure coming soon; creative tab for now).
+- **Nullite Spear**: Nullite Shard, Nullite Shard, Containment Rod stacked vertically (shards on top). A real spear (jab and charge attacks), between iron and diamond. Repaired with Nullite Shards.
+  - A **jab** suppresses the mutant you hit for **5 seconds**; a **charged hit** for **15 seconds**.
+  - **Suppressed**: no active abilities, no passives, no toggled forms, no mutation looks. The HUD shows a countdown.
+  - **Holding** the spear (either hand) suppresses your own powers while you hold it.

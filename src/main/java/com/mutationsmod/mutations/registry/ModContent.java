@@ -15,6 +15,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.resources.Identifier;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.ToolMaterial;
+import com.mutationsmod.mutations.effect.SuppressedEffect;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -27,6 +33,7 @@ public final class ModContent {
 
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MutationsMod.MODID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MutationsMod.MODID);
+    public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MutationsMod.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MutationsMod.MODID);
 
     // ---------------------------------------------------------------- blocks
@@ -45,7 +52,26 @@ public final class ModContent {
             GeneSplicerBlock::new,
             p -> p.mapColor(MapColor.METAL).strength(3.5f, 6f).requiresCorrectToolForDrops().sound(SoundType.METAL).lightLevel(s -> 7));
 
+    public static final DeferredBlock<AmethystClusterBlock> NULLITE_CLUSTER = BLOCKS.registerBlock("nullite_cluster",
+            p -> new AmethystClusterBlock(7f, 3f, p),
+            p -> p.mapColor(MapColor.COLOR_GREEN).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST_CLUSTER)
+                    .strength(2.5f).requiresCorrectToolForDrops().lightLevel(s -> 9).pushReaction(PushReaction.POPPED));
+
+    // ---------------------------------------------------------------- effects
+
+    public static final net.neoforged.neoforge.registries.DeferredHolder<MobEffect, SuppressedEffect> SUPPRESSED =
+            EFFECTS.register("suppressed", SuppressedEffect::new);
+
     // ---------------------------------------------------------------- items
+
+    /** Nullite: between iron and diamond. Repaired with Nullite Shards. */
+    public static final ToolMaterial NULLITE_MATERIAL = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 900, 7.0f, 2.5f, 12,
+            TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MutationsMod.MODID, "nullite_tool_materials")));
+
+    public static final DeferredItem<Item> NULLITE_SHARD = ITEMS.registerSimpleItem("nullite_shard", p -> p.rarity(Rarity.UNCOMMON));
+    public static final DeferredItem<Item> CONTAINMENT_ROD = ITEMS.registerSimpleItem("containment_rod", p -> p.rarity(Rarity.UNCOMMON));
+    public static final DeferredItem<Item> NULLITE_SPEAR = ITEMS.registerItem("nullite_spear", Item::new,
+            p -> p.spear(NULLITE_MATERIAL, 1.0f, 1.0f, 0.55f, 2.75f, 10.5f, 6.6f, 5.1f, 10.6f, 4.6f).rarity(Rarity.RARE));
 
     public static final DeferredItem<Item> MUTAGEN_INGOT = ITEMS.registerSimpleItem("mutagen_ingot");
     public static final DeferredItem<Item> MUTAGEN_CRYSTAL = ITEMS.registerSimpleItem("mutagen_crystal");
@@ -56,6 +82,7 @@ public final class ModContent {
     public static final DeferredItem<BlockItem> DEEPSLATE_MUTAGEN_ORE_ITEM = ITEMS.registerSimpleBlockItem("deepslate_mutagen_ore", DEEPSLATE_MUTAGEN_ORE);
     public static final DeferredItem<BlockItem> MUTAGEN_CRYSTAL_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("mutagen_crystal_block", MUTAGEN_CRYSTAL_BLOCK);
     public static final DeferredItem<BlockItem> MUTAGEN_CLUSTER_ITEM = ITEMS.registerSimpleBlockItem("mutagen_cluster", MUTAGEN_CLUSTER);
+    public static final DeferredItem<BlockItem> NULLITE_CLUSTER_ITEM = ITEMS.registerSimpleBlockItem("nullite_cluster", NULLITE_CLUSTER);
     public static final DeferredItem<BlockItem> GENE_SPLICER_ITEM = ITEMS.registerSimpleBlockItem("gene_splicer", GENE_SPLICER);
 
     // ---------------------------------------------------------------- creative tab
@@ -73,11 +100,16 @@ public final class ModContent {
                 out.accept(MUTAGEN_CRYSTAL_BLOCK_ITEM.get());
                 out.accept(GENE_SPLICER_ITEM.get());
                 out.accept(MASTERY_TOME.get());
+                out.accept(NULLITE_CLUSTER_ITEM.get());
+                out.accept(NULLITE_SHARD.get());
+                out.accept(CONTAINMENT_ROD.get());
+                out.accept(NULLITE_SPEAR.get());
             }).build());
 
     public static void register(IEventBus modBus) {
         BLOCKS.register(modBus);
         ITEMS.register(modBus);
         TABS.register(modBus);
+        EFFECTS.register(modBus);
     }
 }

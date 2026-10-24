@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "N": "mutations:nullite_shard",
+    "R": "mutations:containment_rod"
+  },
+  "pattern": [
+    "N",
+    "N",
+    "R"
+  ],
+  "result": {
+    "id": "mutations:nullite_spear"
+  }
+}

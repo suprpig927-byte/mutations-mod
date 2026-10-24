@@ -40,6 +40,7 @@ public final class ClientPowers {
         long now = level.getGameTime();
         Vec3 dm = p.getDeltaMovement();
         boolean flying = p.getAbilities().flying;
+        if (d.timer("suppressed") > now) return; // Nullite: powers are off
 
         // Superman-style flight: hold forward to soar wherever you look.
         boolean flameFlight = d.has(Mutation.PYRO) && d.timer("flame_flight") > now;
