@@ -85,6 +85,9 @@ public final class Pyro {
         }
     }
 
+    /** Ticks of burn time the flamethrower keeps a furnace topped up to (30 seconds). */
+    private static final int FURNACE_FUEL = 600;
+
     /** Flamethrower aimed at a furnace, smoker or blast furnace lights it and cooks fast. */
     private static void heatFurnace(ServerLevel level, ServerPlayer p, double range) {
         var hit = com.mutationsmod.mutations.ability.Raycast.block(p, range);
@@ -93,9 +96,9 @@ public final class Pyro {
         if (!(level.getBlockEntity(pos) instanceof AbstractFurnaceBlockEntity furnace)) return;
         try {
             int lit = ObfuscationReflectionHelper.getPrivateValue(AbstractFurnaceBlockEntity.class, furnace, "litTimeRemaining");
-            if (lit < 40) {
-                ObfuscationReflectionHelper.setPrivateValue(AbstractFurnaceBlockEntity.class, furnace, 40, "litTimeRemaining");
-                ObfuscationReflectionHelper.setPrivateValue(AbstractFurnaceBlockEntity.class, furnace, 40, "litTotalTime");
+            if (lit < FURNACE_FUEL) {
+                ObfuscationReflectionHelper.setPrivateValue(AbstractFurnaceBlockEntity.class, furnace, FURNACE_FUEL, "litTimeRemaining");
+                ObfuscationReflectionHelper.setPrivateValue(AbstractFurnaceBlockEntity.class, furnace, FURNACE_FUEL, "litTotalTime");
             }
             BlockState state = level.getBlockState(pos);
             if (state.hasProperty(BlockStateProperties.LIT) && !state.getValue(BlockStateProperties.LIT)) {
@@ -183,7 +186,7 @@ public final class Pyro {
     // ------------------------------------------------------------------ actives
 
     public static boolean flamethrower(ServerPlayer p, MutationData d) {
-        Powers.setTimer(p, "flamethrower", 40);
+        Powers.setTimer(p, "flamethrower", 80);
         Powers.sound(p, SoundEvents.BLAZE_SHOOT, 1.0f, 0.8f);
         return true;
     }

@@ -181,7 +181,7 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 ## Pyro
 - **Upside:** Immune to fire and lava. Sneak + right-click a lava bucket to drink it (heals like a golden apple).
 - **Downside:** Water and rain hurt you.
-- **[A] Flamethrower** (10s): Spray fire in front of you for 2 seconds.
+- **[A] Flamethrower** (10s): Spray fire in front of you for 4 seconds. Lights and fuels furnaces.
 - **[A] Flame Flight** (45s): Fly on jets of fire for 10 seconds.
 
 | Secondary | Effect |

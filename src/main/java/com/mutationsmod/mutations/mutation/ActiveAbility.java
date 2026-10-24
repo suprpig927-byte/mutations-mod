@@ -27,7 +27,7 @@ public enum ActiveAbility {
     CHARGED_LEAP("Charged Leap", "Spend 5 charge to leap 10 blocks up.", 1),
     MIMIC("Mimic", "Hostile mobs ignore you for 8 seconds.", 45),
     COPYCAT("Copycat", "Borrow a trait from the last mob type you killed.", 90),
-    FLAMETHROWER("Flamethrower", "Spray fire in front of you for 2 seconds.", 10),
+    FLAMETHROWER("Flamethrower", "Spray fire in front of you for 4 seconds. Lights and fuels furnaces.", 10),
     FLAME_FLIGHT("Flame Flight", "Fly on jets of fire for 10 seconds.", 45),
     TENDRIL("Tendril", "Yank a mob to you, or pull yourself to a block.", 4),
     BONDED_ARMOR("Bonded Armor", "The organism hardens over you: big damage resistance and strength.", 40),
