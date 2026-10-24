@@ -112,10 +112,11 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 | Echo Blink | After a Blink, you can Blink once more for free within 2 seconds. |
 
 ## Colossus
-- **Upside:** Huge melee damage, knockback resistance, and much faster mining.
-- **Downside:** Slow, sinks in water, and can't sprint for long.
+- **Upside:** In Steel Form: huge melee damage, knockback resistance, and much faster mining.
+- **Downside:** In Steel Form: slow, sinks in water, and can't sprint for long.
 - **[A] Ground Pound** (10s): Slam the ground, launching everything around you.
 - **[A] Titan Leap** (2s): Leap 3 blocks into the air.
+- **[A] Steel Form** (0.5s): Toggle: armor up in living steel. All your Colossus powers and drawbacks only work while it's on.
 
 | Secondary | Effect |
 |---|---|

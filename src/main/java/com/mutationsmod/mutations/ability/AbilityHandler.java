@@ -133,7 +133,7 @@ public final class AbilityHandler {
             if (a.has(Mutation.STORMCALLER)) Stormcaller.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.PHASER)) Phaser.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.CRYO)) Cryo.onMelee(event, attacker, a, victim);
-            if (a.has(Mutation.COLOSSUS)) Colossus.onMelee(event, attacker, a, victim);
+            if (a.has(Mutation.COLOSSUS) && Colossus.steel(a)) Colossus.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.CHAMELEON)) Chameleon.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.PYRO)) Pyro.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.ABSORBER)) Absorber.onMelee(event, attacker, a, victim);
@@ -275,6 +275,7 @@ public final class AbilityHandler {
             case SWAP -> Blinker.swap(p, d);
             case GROUND_POUND -> Colossus.groundPound(p, d);
             case TITAN_LEAP -> Colossus.titanLeap(p, d);
+            case STEEL_FORM -> Colossus.toggleSteel(p, d);
             case CHARGED_LEAP -> Absorber.chargedLeap(p, d);
             case ITEM_MAGNET -> KineticMind.toggleMagnet(p, d);
             case CHARGE -> Colossus.charge(p, d);
@@ -301,6 +302,7 @@ public final class AbilityHandler {
             if (ability == ActiveAbility.BLINK && d.has(Secondary.ECHO_BLINK)) Powers.setTimer(p, "echo_blink", 40);
         }
         if (ability == ActiveAbility.TELEKINESIS || ability == ActiveAbility.ITEM_MAGNET || ability == ActiveAbility.BOND
+                || ability == ActiveAbility.STEEL_FORM
                 || ability == ActiveAbility.TITAN_LEAP || ability == ActiveAbility.CHARGED_LEAP) {
             Mastery.addXp(p, 1); // cheap, spammable abilities give less XP
         } else {

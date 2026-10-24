@@ -22,6 +22,7 @@ public enum ActiveAbility {
     DISPLACE("Displace", "Teleport the mob or player you're looking at somewhere nearby.", 15),
     GROUND_POUND("Ground Pound", "Slam the ground, launching everything around you.", 10),
     TITAN_LEAP("Titan Leap", "Leap 3 blocks into the air.", 2),
+    STEEL_FORM("Steel Form", "Toggle: armor up in living steel. All your Colossus powers and drawbacks only work while it's on.", 0.5),
     SONIC_SCREAM("Sonic Scream", "A scream that damages and disorients everything in front of you.", 8),
     RELEASE("Release", "Spend 10 charge to blast everything around you.", 1),
     CHARGED_LEAP("Charged Leap", "Spend 5 charge to leap 10 blocks up.", 1),

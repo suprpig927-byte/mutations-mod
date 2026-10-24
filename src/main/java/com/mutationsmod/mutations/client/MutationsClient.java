@@ -131,7 +131,7 @@ public class MutationsClient {
                         state.setRenderData(HostRenderData.KEY, null);
                     }
                     // Colossus: steel body, cracks while Ground Pound's effect lasts.
-                    if (hd.has(Mutation.COLOSSUS)) {
+                    if (hd.has(Mutation.COLOSSUS) && hd.timer("steel") > 0) {
                         boolean cracks = hd.timer("pound_anim") > hostPlayer.level().getGameTime();
                         state.setRenderData(ColossusRenderData.KEY, new ColossusRenderData(cracks));
                     } else {
@@ -314,6 +314,7 @@ public class MutationsClient {
         if (d.timer("levitate") > now) out.add("Levitating: " + formatTime(d.timer("levitate") - now));
         if (d.timer("barrier") > now) out.add("Barrier: " + formatTime(d.timer("barrier") - now));
         if (d.has(Mutation.HOST)) out.add(d.timer("bonded") > 0 ? "Organism: BONDED" : "Organism: dormant");
+        if (d.has(Mutation.COLOSSUS)) out.add(d.timer("steel") > 0 ? "Steel Form: ON" : "Steel Form: off");
         if (d.timer("phasing") > now) out.add("Phasing: " + formatTime(d.timer("phasing") - now));
         if (d.timer("vibrate") > now) out.add("Vibrating!");
         if (d.timer("immune") > now) out.add("IMMUNE: " + formatTime(d.timer("immune") - now));

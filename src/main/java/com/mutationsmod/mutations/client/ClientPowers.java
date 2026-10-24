@@ -59,7 +59,7 @@ public final class ClientPowers {
         }
 
         // Colossus: sinks in water, can't sprint for long.
-        if (d.has(Mutation.COLOSSUS)) {
+        if (d.has(Mutation.COLOSSUS) && d.timer("steel") > 0) {
             if (p.isInWater() && !flying) p.setDeltaMovement(dm.x, dm.y - 0.035, dm.z);
             if (sprintLock > 0) {
                 sprintLock--;
