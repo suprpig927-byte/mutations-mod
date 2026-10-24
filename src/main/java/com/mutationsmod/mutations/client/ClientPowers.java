@@ -90,7 +90,8 @@ public final class ClientPowers {
         // Wall climbing (Host, or Copycat after killing a spider).
         boolean climber = d.has(Mutation.HOST) || d.timer(Chameleon.Trait.CLIMB.timer()) > now;
         if (climber && p.horizontalCollision && mc.options.keyUp.isDown() && !flying) {
-            double up = d.has(Secondary.WALL_CRAWLER) ? 0.3 : 0.2;
+            boolean bonded = d.timer("bonded") > 0 || !d.has(Mutation.HOST);
+            double up = (d.has(Secondary.WALL_CRAWLER) ? 0.3 : 0.2) * (bonded ? 1.0 : 0.6);
             p.setDeltaMovement(dm.x, Math.max(dm.y, up), dm.z);
             p.resetFallDistance();
             dm = p.getDeltaMovement();

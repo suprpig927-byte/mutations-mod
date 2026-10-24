@@ -40,6 +40,14 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
 import net.neoforged.neoforge.client.renderstate.AvatarRenderStateModifier;
+import com.mutationsmod.mutations.client.render.HostLayer;
+import com.mutationsmod.mutations.client.render.HostRenderData;
+import com.mutationsmod.mutations.client.render.TendrilModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.world.entity.player.PlayerModelType;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.world.entity.Avatar;
@@ -72,6 +80,8 @@ public class MutationsClient {
         modEventBus.addListener(MutationsClient::registerKeys);
         modEventBus.addListener(MutationsClient::registerHud);
         modEventBus.addListener(MutationsClient::registerRenderState);
+        modEventBus.addListener(MutationsClient::registerLayerDefinitions);
+        modEventBus.addListener(MutationsClient::addLayers);
         NeoForge.EVENT_BUS.addListener(MutationsClient::onClientTick);
         NeoForge.EVENT_BUS.addListener(MutationsClient::onRenderFrame);
     }
@@ -98,6 +108,18 @@ public class MutationsClient {
         event.registerAvatarEntityModifier(new AvatarRenderStateModifier() {
             @Override
             public <T extends Avatar & ClientAvatarEntity> void accept(T avatar, AvatarRenderState state) {
+                // Host: tell the organism layer how to draw this player.
+                if (avatar instanceof Player hostPlayer) {
+                    MutationData hd = hostPlayer.getData(ModAttachments.DATA);
+                    if (hd.has(Mutation.HOST)) {
+                        long t = hostPlayer.level().getGameTime();
+                        float strike = Math.max(0, hd.timer("tendril_anim") - t) / 10f;
+                        float lash = Math.max(0, hd.timer("lash_anim") - t) / 12f;
+                        state.setRenderData(HostRenderData.KEY, new HostRenderData(hd.timer("bonded") > 0, strike, lash));
+                    } else {
+                        state.setRenderData(HostRenderData.KEY, null);
+                    }
+                }
                 if (avatar instanceof Player player && player.isInvisible()
                         && player.getData(ModAttachments.DATA).has(Secondary.MIRROR_SKIN)) {
                     state.headEquipment = ItemStack.EMPTY;
@@ -107,6 +129,23 @@ public class MutationsClient {
                 }
             }
         });
+    }
+
+    public static final ModelLayerLocation TENDRILS =
+            new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "host_tendrils"), "main");
+
+    private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(TENDRILS, TendrilModel::createLayer);
+    }
+
+    /** Adds the Host organism layer to both player models (wide and slim arms). */
+    private static void addLayers(EntityRenderersEvent.AddLayers event) {
+        for (PlayerModelType type : event.getSkins()) {
+            AvatarRenderer<AbstractClientPlayer> renderer = event.getPlayerRenderer(type);
+            if (renderer != null) {
+                renderer.addLayer(new HostLayer(renderer, new TendrilModel(event.getEntityModels().bakeLayer(TENDRILS))));
+            }
+        }
     }
 
     private static void onClientTick(ClientTickEvent.Post event) {
@@ -225,6 +264,7 @@ public class MutationsClient {
         if (d.has(Secondary.ITEM_MAGNET) && d.timer("magnet") > 0) out.add("Item Magnet: ON");
         if (d.timer("levitate") > now) out.add("Levitating: " + formatTime(d.timer("levitate") - now));
         if (d.timer("barrier") > now) out.add("Barrier: " + formatTime(d.timer("barrier") - now));
+        if (d.has(Mutation.HOST)) out.add(d.timer("bonded") > 0 ? "Organism: BONDED" : "Organism: dormant");
         if (d.timer("phasing") > now) out.add("Phasing: " + formatTime(d.timer("phasing") - now));
         if (d.timer("vibrate") > now) out.add("Vibrating!");
         if (d.timer("immune") > now) out.add("IMMUNE: " + formatTime(d.timer("immune") - now));

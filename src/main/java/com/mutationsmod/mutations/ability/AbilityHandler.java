@@ -289,7 +289,7 @@ public final class AbilityHandler {
             case FLAME_FLIGHT -> Pyro.flameFlight(p, d);
             case FLARE -> Pyro.flare(p, d);
             case TENDRIL -> Host.tendril(p, d);
-            case BONDED_ARMOR -> Host.bondedArmor(p, d);
+            case BOND -> Host.toggleBond(p, d);
             case LASH -> Host.lash(p, d);
         };
         if (!used) return;
@@ -300,7 +300,7 @@ public final class AbilityHandler {
             ModAttachments.set(p, ModAttachments.get(p).withCooldown(ability, now + cooldown(ability, d)));
             if (ability == ActiveAbility.BLINK && d.has(Secondary.ECHO_BLINK)) Powers.setTimer(p, "echo_blink", 40);
         }
-        if (ability == ActiveAbility.TELEKINESIS || ability == ActiveAbility.ITEM_MAGNET
+        if (ability == ActiveAbility.TELEKINESIS || ability == ActiveAbility.ITEM_MAGNET || ability == ActiveAbility.BOND
                 || ability == ActiveAbility.TITAN_LEAP || ability == ActiveAbility.CHARGED_LEAP) {
             Mastery.addXp(p, 1); // cheap, spammable abilities give less XP
         } else {

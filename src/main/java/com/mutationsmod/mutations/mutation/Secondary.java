@@ -125,7 +125,7 @@ public enum Secondary {
 
     // ---------------- Host ----------------
     HUNGRY_TENDRILS(HOST, "Hungry Tendrils", "Tendril cooldown halved."),
-    SYMBIOTE_ARMOR(HOST, "Symbiote Armor", "Bonded Armor lasts twice as long."),
+    SYMBIOTE_ARMOR(HOST, "Symbiote Armor", "While bonded, Resistance II instead of Resistance I."),
     DEVOUR(HOST, "Devour", "Kills restore hunger."),
     WALL_CRAWLER(HOST, "Wall Crawler", "Climb faster, and hold jump to cling to ceilings."),
     SHAPELESS(HOST, "Shapeless", "Sneak into a 1-block gap to squeeze through it."),

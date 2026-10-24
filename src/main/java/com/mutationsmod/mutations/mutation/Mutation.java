@@ -52,9 +52,9 @@ public enum Mutation {
             "Water and rain hurt you.",
             List.of(ActiveAbility.FLAMETHROWER, ActiveAbility.FLAME_FLIGHT)),
     HOST("Host", 0xFF8A8AA8,
-            "A living organism: extra reach, wall climbing, stronger right after a kill.",
+            "A living organism with tendrils: extra reach, wall climbing, stronger after a kill. Bond with it for full power.",
             "It's always hungry: go 10 minutes without a kill and it feeds on you. Takes 75% less fall damage.",
-            List.of(ActiveAbility.TENDRIL, ActiveAbility.BONDED_ARMOR));
+            List.of(ActiveAbility.TENDRIL, ActiveAbility.BOND));
 
     private final String displayName;
     private final int color;

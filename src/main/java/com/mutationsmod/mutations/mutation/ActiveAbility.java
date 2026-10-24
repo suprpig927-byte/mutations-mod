@@ -30,7 +30,7 @@ public enum ActiveAbility {
     FLAMETHROWER("Flamethrower", "Spray fire in front of you for 4 seconds. Lights and fuels furnaces.", 10),
     FLAME_FLIGHT("Flame Flight", "Fly on jets of fire for 10 seconds.", 45),
     TENDRIL("Tendril", "Yank a mob to you, or pull yourself to a block.", 4),
-    BONDED_ARMOR("Bonded Armor", "The organism hardens over you: big damage resistance and strength.", 40),
+    BOND("Bond", "Toggle: let the organism fully bond with you. Full power, but it hungers twice as fast.", 0.5),
 
     // ---- secondary mutation actives ----
     TRANSFUSION("Transfusion", "Drain health from the mob you're looking at.", 20),

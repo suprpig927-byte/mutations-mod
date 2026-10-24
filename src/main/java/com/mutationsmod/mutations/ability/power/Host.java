@@ -39,7 +39,15 @@ public final class Host {
         }
         long sinceFed = now - fed;
 
-        Powers.add(p, Attributes.ENTITY_INTERACTION_RANGE, "host_reach", 1.5);
+        boolean bonded = bonded(d);
+        Powers.add(p, Attributes.ENTITY_INTERACTION_RANGE, "host_reach", bonded ? 1.5 : 0.75);
+        if (bonded && now % 20 == 0) {
+            Powers.effect(p, MobEffects.STRENGTH, 40, 0);
+            Powers.effect(p, MobEffects.RESISTANCE, 40, d.has(Secondary.SYMBIOTE_ARMOR) ? 1 : 0);
+            // Bonded, the organism burns energy: its hunger clock runs twice as fast.
+            com.mutationsmod.mutations.ModAttachments.set(p,
+                    com.mutationsmod.mutations.ModAttachments.get(p).withTimer("host_fed", Math.max(1, fed - 20)));
+        }
         // Stronger right after a kill.
         Powers.add(p, Attributes.ATTACK_DAMAGE, "host_fed", sinceFed < 60 * 20 ? 3.0 : 0);
 
@@ -81,39 +89,58 @@ public final class Host {
 
     public static boolean tendril(ServerPlayer p, MutationData d) {
         ServerLevel level = (ServerLevel) p.level();
-        LivingEntity target = Raycast.entity(p, 16);
+        boolean bonded = bonded(d);
+        double range = bonded ? 16 : 8;
+        double force = bonded ? 1.0 : 0.6;
+        Powers.setTimer(p, "tendril_anim", 10);
+        LivingEntity target = Raycast.entity(p, range);
         if (target != null) {
             Vec3 pull = p.position().subtract(target.position());
-            Powers.impulse(target, pull.normalize().scale(Math.min(2.0, pull.length() * 0.25)).add(0, 0.35, 0), false);
-            Powers.hurt(p, target, 2f * Powers.power(d));
+            Powers.impulse(target, pull.normalize().scale(Math.min(2.0, pull.length() * 0.25) * force).add(0, 0.35, 0), false);
+            Powers.hurt(p, target, (bonded ? 2f : 1f) * Powers.power(d));
             Powers.line(level, p.getEyePosition(), target.getBoundingBox().getCenter(), ParticleTypes.SQUID_INK, 0.4);
         } else {
-            BlockHitResult hit = Raycast.block(p, 20);
+            BlockHitResult hit = Raycast.block(p, bonded ? 20 : 10);
             if (hit.getType() != HitResult.Type.BLOCK) {
                 p.sendOverlayMessage(Component.literal("Nothing to grab.").withStyle(ChatFormatting.GRAY));
                 return false;
             }
             Vec3 pull = hit.getLocation().subtract(p.position());
-            Powers.impulse(p, pull.normalize().scale(Math.min(2.2, pull.length() * 0.25)).add(0, 0.4, 0), true);
+            Powers.impulse(p, pull.normalize().scale(Math.min(2.2, pull.length() * 0.25) * force).add(0, 0.4, 0), true);
             Powers.line(level, p.getEyePosition(), hit.getLocation(), ParticleTypes.SQUID_INK, 0.4);
         }
         Powers.sound(p, SoundEvents.PLAYER_ATTACK_SWEEP, 0.8f, 0.6f);
         return true;
     }
 
-    public static boolean bondedArmor(ServerPlayer p, MutationData d) {
-        int ticks = (int) ((d.has(Secondary.SYMBIOTE_ARMOR) ? 240 : 120) * Powers.power(d));
-        Powers.effect(p, MobEffects.RESISTANCE, ticks, 1);
-        Powers.effect(p, MobEffects.STRENGTH, ticks, 0);
-        Powers.particles(p, ParticleTypes.SQUID_INK, 30, 0.5, 0.05);
-        Powers.sound(p, SoundEvents.ANVIL_HIT, 0.5f, 0.6f);
+    public static boolean bonded(MutationData d) {
+        return d.timer("bonded") > 0;
+    }
+
+    /** Bond toggle: free, instant. Bonded = full look and full-power abilities. */
+    public static boolean toggleBond(ServerPlayer p, MutationData d) {
+        boolean on = !bonded(d);
+        com.mutationsmod.mutations.ModAttachments.set(p, com.mutationsmod.mutations.ModAttachments.get(p).withTimer("bonded", on ? 1 : 0));
+        if (on) {
+            Powers.particles(p, ParticleTypes.SQUID_INK, 40, 0.5, 0.05);
+            Powers.particles(p, ParticleTypes.SCULK_SOUL, 10, 0.5, 0.05);
+            Powers.sound(p, SoundEvents.ANVIL_HIT, 0.5f, 0.5f);
+            p.sendOverlayMessage(Component.literal("BONDED").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.BOLD));
+        } else {
+            p.removeEffect(MobEffects.STRENGTH);
+            p.removeEffect(MobEffects.RESISTANCE);
+            Powers.particles(p, ParticleTypes.SQUID_INK, 15, 0.4, 0.05);
+            p.sendOverlayMessage(Component.literal("The organism recedes.").withStyle(ChatFormatting.GRAY));
+        }
         return true;
     }
 
     public static boolean lash(ServerPlayer p, MutationData d) {
-        for (LivingEntity e : Powers.around(p, 5)) {
+        boolean bonded = bonded(d);
+        Powers.setTimer(p, "lash_anim", 12);
+        for (LivingEntity e : Powers.around(p, bonded ? 5 : 3)) {
             if (!Powers.isHostile(e) && !(e instanceof Player)) continue;
-            Powers.hurt(p, e, 5f * Powers.power(d));
+            Powers.hurt(p, e, (bonded ? 5f : 2.5f) * Powers.power(d));
             Vec3 pull = p.position().subtract(e.position());
             Powers.impulse(e, pull.normalize().scale(0.6).add(0, 0.2, 0), false);
             Powers.line((ServerLevel) p.level(), p.getEyePosition(), e.getBoundingBox().getCenter(), ParticleTypes.SQUID_INK, 0.5);

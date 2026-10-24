@@ -196,15 +196,16 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 | Phoenix | Once every 20 minutes, revive from death in a burst of flame. |
 
 ## Host
-- **Upside:** A living organism: extra reach, wall climbing, stronger right after a kill.
+- **Upside:** A living organism with tendrils: extra reach, wall climbing, stronger after a kill. Bond with it for full power.
 - **Downside:** It's always hungry: go 10 minutes without a kill and it feeds on you. Takes 75% less fall damage.
 - **[A] Tendril** (4s): Yank a mob to you, or pull yourself to a block.
-- **[A] Bonded Armor** (40s): The organism hardens over you: big damage resistance and strength.
+- **[A] Bond** (0.5s): Toggle: let the organism fully bond with you. Full power, but it hungers twice as fast.
+- **Dormant vs bonded:** dormant = faint look, small tendrils, weaker Tendril (8 blocks) and Lash (3 blocks, half damage), +0.75 reach, slow climbing. Bonded = full Warden-like look, big tendrils, full-power abilities, +1.5 reach, Strength I + Resistance I, hunger clock runs 2x.
 
 | Secondary | Effect |
 |---|---|
 | Hungry Tendrils | Tendril cooldown halved. |
-| Symbiote Armor | Bonded Armor lasts twice as long. |
+| Symbiote Armor | While bonded, Resistance II instead of Resistance I. |
 | Devour | Kills restore hunger. |
 | Wall Crawler | Climb faster, and hold jump to cling to ceilings. |
 | Shapeless | Sneak into a 1-block gap to squeeze through it. |
