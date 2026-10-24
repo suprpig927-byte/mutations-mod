@@ -22,14 +22,19 @@ jobs:
         shell: bash
         run: |
           set -x
-          SRC=$(find "$GITHUB_WORKSPACE" ~/.gradle -name "*.jar" 2>/dev/null | grep -iE "sources" | grep -iE "neoforge|minecraft" | head -1)
+          SRC=""
+          for j in $(find "$GITHUB_WORKSPACE" ~/.gradle -name "*.jar" 2>/dev/null); do
+            if unzip -l "$j" 2>/dev/null | grep -q "net/minecraft/world/level/block/Block.java"; then SRC="$j"; break; fi
+          done
           if [ -z "$SRC" ]; then
-            echo "::error title=No sources jar::$(find "$GITHUB_WORKSPACE/build" "$GITHUB_WORKSPACE/.gradle" -name '*.jar' 2>/dev/null | head -30 | awk '{printf "%s%%0A", $0}')"
+            echo "::error title=No sources jar::$(find "$GITHUB_WORKSPACE/build" -name '*.jar' 2>/dev/null | head -30 | awk '{printf "%s%%0A", $0}')"
             exit 1
           fi
           echo "::notice title=Sources jar::$SRC"
           mkdir -p /tmp/out && cd /tmp/out
-          unzip -q "$SRC" 'net/minecraft/*' 'net/neoforged/*' 'com/mojang/*' 'data/*' || unzip -q "$SRC"
+          unzip -q "$SRC" || true
+          find . -name "*.class" -delete
+          echo "::notice title=Files::$(find . -type f | wc -l)"
           git init -q -b mc-sources
           git add -A
           git -c user.name=ci -c user.email=ci@example.com commit -q -m "Minecraft + NeoForge sources (reference only)"
