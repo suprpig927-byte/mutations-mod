@@ -50,7 +50,7 @@ public final class FirstPersonTendrils {
         stack.pushPose();
         stack.translate(pos.x - cam.x, pos.y - cam.y, pos.z - cam.z);
         // Same transform the entity renderer applies to the player model.
-        stack.mulPose(Axis.YP.rotationDegrees(180.0f - bodyRot));
+        stack.rotate(Axis.YP, (180.0f - bodyRot) * Mth.DEG_TO_RAD);
         stack.scale(-1.0f, -1.0f, 1.0f);
         stack.translate(0.0f, -1.501f, 0.0f);
         int light = LightCoordsUtil.getLightCoords(mc.level, BlockPos.containing(player.getEyePosition(pt)));
