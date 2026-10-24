@@ -22,10 +22,14 @@ jobs:
         shell: bash
         run: |
           set -x
-          find build -name "*sources*.jar" | head
-          SRC=$(find build -name "*sources*.jar" | head -1)
+          SRC=$(find "$GITHUB_WORKSPACE" ~/.gradle -name "*.jar" 2>/dev/null | grep -iE "sources" | grep -iE "neoforge|minecraft" | head -1)
+          if [ -z "$SRC" ]; then
+            echo "::error title=No sources jar::$(find "$GITHUB_WORKSPACE/build" "$GITHUB_WORKSPACE/.gradle" -name '*.jar' 2>/dev/null | head -30 | awk '{printf "%s%%0A", $0}')"
+            exit 1
+          fi
+          echo "::notice title=Sources jar::$SRC"
           mkdir -p /tmp/out && cd /tmp/out
-          unzip -q "$GITHUB_WORKSPACE/$SRC" 'net/minecraft/*' 'net/neoforged/*' 'com/mojang/*' 'data/*' || unzip -q "$GITHUB_WORKSPACE/$SRC"
+          unzip -q "$SRC" 'net/minecraft/*' 'net/neoforged/*' 'com/mojang/*' 'data/*' || unzip -q "$SRC"
           git init -q -b mc-sources
           git add -A
           git -c user.name=ci -c user.email=ci@example.com commit -q -m "Minecraft + NeoForge sources (reference only)"
