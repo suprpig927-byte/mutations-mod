@@ -29,7 +29,7 @@ jobs:
         if: failure()
         shell: bash
         run: |
-          ls -la
+          set +e +o pipefail
           msg=$( (grep -iE "error|wrong|exception" -A3 build.log || tail -40 build.log || echo "no build.log") | head -80 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
           echo "::error title=Build errors::${msg}"
 
