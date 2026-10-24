@@ -47,6 +47,9 @@ import com.mutationsmod.mutations.client.render.ColossusPlatesModel;
 import com.mutationsmod.mutations.client.render.PyroFlamesModel;
 import com.mutationsmod.mutations.client.render.PyroLayer;
 import com.mutationsmod.mutations.client.render.PyroRenderData;
+import com.mutationsmod.mutations.client.render.StormFxModel;
+import com.mutationsmod.mutations.client.render.StormLayer;
+import com.mutationsmod.mutations.client.render.StormRenderData;
 import com.mutationsmod.mutations.client.render.ColossusRenderData;
 import com.mutationsmod.mutations.client.render.CryoRenderData;
 import com.mutationsmod.mutations.client.render.CrystalModel;
@@ -150,6 +153,15 @@ public class MutationsClient {
                     } else {
                         state.setRenderData(PyroRenderData.KEY, null);
                     }
+                    // Stormcaller: storm skin always; arcs in the rain, wind rings in flight.
+                    if (hd.has(Mutation.STORMCALLER)) {
+                        float st = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
+                        float time = (hostPlayer.level().getGameTime() % 100000L) + st + hostPlayer.getId() * 5;
+                        boolean rain = hostPlayer.level().isRainingAt(hostPlayer.blockPosition().above());
+                        state.setRenderData(StormRenderData.KEY, new StormRenderData(time, rain, hd.timer("storm_fly") > 0));
+                    } else {
+                        state.setRenderData(StormRenderData.KEY, null);
+                    }
                     // Cryo: crystals shrink in the heat and pulse on Ice Blast.
                     if (hd.has(Mutation.CRYO)) {
                         float scale = CryoVisuals.hot(hostPlayer) ? 0.5f : 1f;
@@ -178,6 +190,8 @@ public class MutationsClient {
             new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "colossus_plates"), "main");
     public static final ModelLayerLocation PYRO_FLAMES =
             new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "pyro_flames"), "main");
+    public static final ModelLayerLocation STORM_FX =
+            new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "storm_fx"), "main");
     public static final ModelLayerLocation CRYSTALS =
             new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "cryo_crystals"), "main");
     /** Frost shells slightly bigger than armor: helmet, chestplate, leggings, boots. */
@@ -192,6 +206,7 @@ public class MutationsClient {
         event.registerLayerDefinition(CRYSTALS, CrystalModel::createLayer);
         event.registerLayerDefinition(COLOSSUS_PLATES, ColossusPlatesModel::createLayer);
         event.registerLayerDefinition(PYRO_FLAMES, PyroFlamesModel::createLayer);
+        event.registerLayerDefinition(STORM_FX, StormFxModel::createLayer);
         var frost = HumanoidModel.createArmorMeshSet(new CubeDeformation(0.6f), new CubeDeformation(1.1f));
         event.registerLayerDefinition(FROST_ARMOR[0], () -> LayerDefinition.create(frost.head(), 64, 32));
         event.registerLayerDefinition(FROST_ARMOR[1], () -> LayerDefinition.create(frost.chest(), 64, 32));
@@ -208,6 +223,7 @@ public class MutationsClient {
                 renderer.addLayer(new HostLayer(renderer, new TendrilModel(models.bakeLayer(TENDRILS))));
                 renderer.addLayer(new ColossusLayer(renderer, new ColossusPlatesModel(models.bakeLayer(COLOSSUS_PLATES))));
                 renderer.addLayer(new PyroLayer(renderer, new PyroFlamesModel(models.bakeLayer(PYRO_FLAMES))));
+                renderer.addLayer(new StormLayer(renderer, new StormFxModel(models.bakeLayer(STORM_FX))));
                 renderer.addLayer(new CryoLayer(renderer, new CrystalModel(models.bakeLayer(CRYSTALS)),
                         new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[0])), new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[1])),
                         new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[2])), new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[3]))));
