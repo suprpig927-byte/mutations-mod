@@ -181,8 +181,9 @@ public class MutationsClient {
         int x = 4;
         int y = 4;
         Mutation base = muts.get(0);
-        graphics.text(font, base.displayName() + "  • Lv " + data.level(), x, y, base.color(), true);
-        y += font.lineHeight + 2;
+        MutationIcons.draw(graphics, base, x, y, 16);
+        graphics.text(font, base.displayName() + "  • Lv " + data.level(), x + 20, y + 4, base.color(), true);
+        y += 20;
 
         long now = mc.level.getGameTime();
         List<ActiveAbility> actives = data.actives();

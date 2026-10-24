@@ -175,15 +175,17 @@ public class MutationScreen extends Screen {
             return;
         }
         Mutation base = muts.get(0);
+        MutationIcons.draw(g, base, x, y, 32);
         String title = base.displayName().toUpperCase();
-        g.text(this.font, title, x, y, base.color(), true);
-        g.text(this.font, "Lv " + d.level(), x + this.font.width(title) + 8, y, 0xFFFFD45A, false);
-        y += 13;
+        g.text(this.font, title, x + 38, y + 6, base.color(), true);
+        g.text(this.font, "Mastery level " + d.level(), x + 38, y + 18, 0xFFFFD45A, false);
+        y += 38;
         y = wrapped(g, "+ " + base.upside(), x, y, 196, 0xFF7CE38B);
         y = wrapped(g, "- " + base.downside(), x, y, 196, 0xFFE07C7C);
         for (int i = 1; i < muts.size(); i++) {
-            g.text(this.font, "+ " + muts.get(i).displayName() + " (extra)", x, y, muts.get(i).color(), false);
-            y += 10;
+            MutationIcons.draw(g, muts.get(i), x, y - 1, 10);
+            g.text(this.font, muts.get(i).displayName() + " (extra)", x + 13, y, muts.get(i).color(), false);
+            y += 12;
         }
         y += 6;
 
