@@ -17,6 +17,8 @@ import net.minecraft.util.Mth;
  */
 public class TendrilModel extends EntityModel<AvatarRenderState> {
     public static final int SEGMENTS = 8;
+    static final float BIG_LEN = 3.0f;
+    static final float SMALL_LEN = 1.6f;
     /** Anchor x/y on the back, and which side (+1 right, -1 left) and row (upper/lower). */
     private static final float[][] ANCHORS = {{-2.5f, 2.5f}, {2.5f, 2.5f}, {-2.0f, 7.0f}, {2.0f, 7.0f}};
 
@@ -46,8 +48,8 @@ public class TendrilModel extends EntityModel<AvatarRenderState> {
     public static LayerDefinition createLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        build(root.addOrReplaceChild("big", CubeListBuilder.create(), PartPose.ZERO), 3.0f, 3.0f);
-        build(root.addOrReplaceChild("small", CubeListBuilder.create(), PartPose.ZERO), 1.6f, 1.6f);
+        build(root.addOrReplaceChild("big", CubeListBuilder.create(), PartPose.ZERO), 3.0f, BIG_LEN);
+        build(root.addOrReplaceChild("small", CubeListBuilder.create(), PartPose.ZERO), 1.6f, SMALL_LEN);
         return LayerDefinition.create(mesh, 16, 16);
     }
 
@@ -89,10 +91,12 @@ public class TendrilModel extends EntityModel<AvatarRenderState> {
         small.visible = !data.bonded();
         ModelPart[][] segs = data.bonded() ? bigSegs : smallSegs;
 
-        // Follow the body when crouching.
+        boolean anyReach = false;
+        for (float l : data.reachLen()) anyReach |= l > 0;
+        // Follow the body when crouching (skipped while reaching so aim stays exact).
         ModelPart set = data.bonded() ? big : small;
-        set.xRot = state.isCrouching ? 0.5f : 0f;
-        set.y = state.isCrouching ? 3.2f : 0f;
+        set.xRot = state.isCrouching && !anyReach ? 0.5f : 0f;
+        set.y = state.isCrouching && !anyReach ? 3.2f : 0f;
         // Lash: the whole set whips around once.
         set.yRot = data.lash() > 0 ? (1f - data.lash()) * (float) (Math.PI * 2) : 0f;
 
@@ -114,16 +118,18 @@ public class TendrilModel extends EntityModel<AvatarRenderState> {
                 }
                 seg.zRot = 0f;
             }
-            // Tendril ability: every tendril snaps straight forward over the shoulders.
-            if (data.strike() > 0) {
-                float s = data.strike();
+            // Reaching (grabbing a target or gripping a wall): straighten and stretch to the target.
+            float reach = data.reachLen()[t];
+            if (reach > 0) {
                 ModelPart first = segs[t][0];
-                first.xRot = Mth.lerp(s, first.xRot, upper ? 2.6f : 2.2f);
-                first.yRot = Mth.lerp(s, first.yRot, side * 0.25f);
+                first.yRot = data.reachYaw()[t];
+                first.xRot = data.reachPitch()[t];
                 for (int i = 1; i < SEGMENTS; i++) {
-                    segs[t][i].xRot = Mth.lerp(s, segs[t][i].xRot, 0.02f);
-                    segs[t][i].yRot = Mth.lerp(s, segs[t][i].yRot, 0f);
+                    segs[t][i].xRot = 0f;
+                    segs[t][i].yRot = 0f;
                 }
+                float natural = SEGMENTS * (data.bonded() ? BIG_LEN : SMALL_LEN) + 2f;
+                first.zScale = Math.max(0.2f, reach / natural);
             }
         }
     }

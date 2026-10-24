@@ -42,6 +42,7 @@ import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEve
 import net.neoforged.neoforge.client.renderstate.AvatarRenderStateModifier;
 import com.mutationsmod.mutations.client.render.HostLayer;
 import com.mutationsmod.mutations.client.render.HostRenderData;
+import com.mutationsmod.mutations.client.render.HostRenderLogic;
 import com.mutationsmod.mutations.client.render.TendrilModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -112,10 +113,8 @@ public class MutationsClient {
                 if (avatar instanceof Player hostPlayer) {
                     MutationData hd = hostPlayer.getData(ModAttachments.DATA);
                     if (hd.has(Mutation.HOST)) {
-                        long t = hostPlayer.level().getGameTime();
-                        float strike = Math.max(0, hd.timer("tendril_anim") - t) / 10f;
-                        float lash = Math.max(0, hd.timer("lash_anim") - t) / 12f;
-                        state.setRenderData(HostRenderData.KEY, new HostRenderData(hd.timer("bonded") > 0, strike, lash));
+                        float pt = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
+                        state.setRenderData(HostRenderData.KEY, HostRenderLogic.compute(hostPlayer, hd, state.bodyRot, pt));
                     } else {
                         state.setRenderData(HostRenderData.KEY, null);
                     }

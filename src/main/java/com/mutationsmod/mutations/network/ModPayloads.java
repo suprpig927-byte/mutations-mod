@@ -130,6 +130,26 @@ public final class ModPayloads {
         }
     }
 
+    /** Server -> clients: a Host's tendril shot out and grabbed something (entity id, or -1 for a block position). */
+    public record TendrilStrike(int playerId, int targetEntity, double x, double y, double z, int ticks) implements CustomPacketPayload {
+        public static final Type<TendrilStrike> TYPE = new Type<>(id("tendril_strike"));
+        public static final StreamCodec<RegistryFriendlyByteBuf, TendrilStrike> CODEC = StreamCodec.of(
+                (RegistryFriendlyByteBuf buf, TendrilStrike p) -> {
+                    buf.writeVarInt(p.playerId);
+                    buf.writeVarInt(p.targetEntity + 1);
+                    buf.writeDouble(p.x);
+                    buf.writeDouble(p.y);
+                    buf.writeDouble(p.z);
+                    buf.writeVarInt(p.ticks);
+                },
+                buf -> new TendrilStrike(buf.readVarInt(), buf.readVarInt() - 1, buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readVarInt()));
+
+        @Override
+        public Type<? extends CustomPacketPayload> type() {
+            return TYPE;
+        }
+    }
+
     /** Client-side: blocks the local player is holding. entity id -> slot, plus last update time. */
     public static final Map<Integer, Integer> LOCAL_HELD = new ConcurrentHashMap<>();
     public static final Map<Integer, Long> LOCAL_HELD_SEEN = new ConcurrentHashMap<>();
@@ -167,6 +187,13 @@ public final class ModPayloads {
             var player = ctx.player();
             Vec3 v = new Vec3(payload.x(), payload.y(), payload.z());
             player.setDeltaMovement(payload.replace() ? v : player.getDeltaMovement().add(v));
+        });
+
+        registrar.playToClient(TendrilStrike.TYPE, TendrilStrike.CODEC, (payload, ctx) -> {
+            long now = ctx.player().level().getGameTime();
+            com.mutationsmod.mutations.client.render.HostRenderLogic.STRIKES.put(payload.playerId(),
+                    new com.mutationsmod.mutations.client.render.HostRenderLogic.Strike(payload.targetEntity(),
+                            new Vec3(payload.x(), payload.y(), payload.z()), now, payload.ticks()));
         });
 
         registrar.playToClient(KineticBlock.TYPE, KineticBlock.CODEC, (payload, ctx) -> {

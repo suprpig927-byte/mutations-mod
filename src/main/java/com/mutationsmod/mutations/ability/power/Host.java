@@ -43,6 +43,8 @@ public final class Host {
         Powers.add(p, Attributes.ENTITY_INTERACTION_RANGE, "host_reach", bonded ? 1.5 : 0.75);
         if (bonded && now % 20 == 0) {
             Powers.effect(p, MobEffects.STRENGTH, 40, 0);
+            Powers.effect(p, MobEffects.JUMP_BOOST, 40, 4);
+            Powers.effect(p, MobEffects.SPEED, 40, 1);
             Powers.effect(p, MobEffects.RESISTANCE, 40, d.has(Secondary.SYMBIOTE_ARMOR) ? 1 : 0);
             // Bonded, the organism burns energy: its hunger clock runs twice as fast.
             com.mutationsmod.mutations.ModAttachments.set(p,
@@ -92,13 +94,12 @@ public final class Host {
         boolean bonded = bonded(d);
         double range = bonded ? 16 : 8;
         double force = bonded ? 1.0 : 0.6;
-        Powers.setTimer(p, "tendril_anim", 10);
         LivingEntity target = Raycast.entity(p, range);
         if (target != null) {
             Vec3 pull = p.position().subtract(target.position());
             Powers.impulse(target, pull.normalize().scale(Math.min(2.0, pull.length() * 0.25) * force).add(0, 0.35, 0), false);
             Powers.hurt(p, target, (bonded ? 2f : 1f) * Powers.power(d));
-            Powers.line(level, p.getEyePosition(), target.getBoundingBox().getCenter(), ParticleTypes.SQUID_INK, 0.4);
+            strike(p, target.getId(), target.getBoundingBox().getCenter(), 10);
         } else {
             BlockHitResult hit = Raycast.block(p, bonded ? 20 : 10);
             if (hit.getType() != HitResult.Type.BLOCK) {
@@ -107,7 +108,8 @@ public final class Host {
             }
             Vec3 pull = hit.getLocation().subtract(p.position());
             Powers.impulse(p, pull.normalize().scale(Math.min(2.2, pull.length() * 0.25) * force).add(0, 0.4, 0), true);
-            Powers.line(level, p.getEyePosition(), hit.getLocation(), ParticleTypes.SQUID_INK, 0.4);
+            strike(p, -1, hit.getLocation(), 14);
+            level.sendParticles(ParticleTypes.SCULK_SOUL, hit.getLocation().x, hit.getLocation().y, hit.getLocation().z, 4, 0.1, 0.1, 0.1, 0.01);
         }
         Powers.sound(p, SoundEvents.PLAYER_ATTACK_SWEEP, 0.8f, 0.6f);
         return true;
@@ -129,10 +131,18 @@ public final class Host {
         } else {
             p.removeEffect(MobEffects.STRENGTH);
             p.removeEffect(MobEffects.RESISTANCE);
+            p.removeEffect(MobEffects.JUMP_BOOST);
+            p.removeEffect(MobEffects.SPEED);
             Powers.particles(p, ParticleTypes.SQUID_INK, 15, 0.4, 0.05);
             p.sendOverlayMessage(Component.literal("The organism recedes.").withStyle(ChatFormatting.GRAY));
         }
         return true;
+    }
+
+    /** Tells nearby clients to draw a tendril reaching to the target. */
+    private static void strike(ServerPlayer p, int entityId, Vec3 at, int ticks) {
+        net.neoforged.neoforge.network.PacketDistributor.sendToPlayersTrackingEntityAndSelf(p,
+                new com.mutationsmod.mutations.network.ModPayloads.TendrilStrike(p.getId(), entityId, at.x, at.y, at.z, ticks));
     }
 
     public static boolean lash(ServerPlayer p, MutationData d) {

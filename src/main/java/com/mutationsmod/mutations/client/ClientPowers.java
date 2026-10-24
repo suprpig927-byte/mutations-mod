@@ -96,6 +96,19 @@ public final class ClientPowers {
             p.resetFallDistance();
             dm = p.getDeltaMovement();
         }
+        // Bonded Host: tendrils grip walls. Hang in place, hold forward to climb, sneak to slide down.
+        if (d.has(Mutation.HOST) && d.timer("bonded") > 0 && !p.onGround() && !flying
+                && com.mutationsmod.mutations.client.render.HostRenderLogic.wallSide(p) != null) {
+            dm = p.getDeltaMovement();
+            double vy;
+            if (mc.options.keyUp.isDown()) vy = d.has(Secondary.WALL_CRAWLER) ? 0.3 : 0.2;
+            else if (p.isShiftKeyDown()) vy = -0.12;
+            else vy = 0.075; // just cancels gravity: hang in place
+            p.setDeltaMovement(dm.x * 0.85, vy, dm.z * 0.85);
+            p.resetFallDistance();
+            dm = p.getDeltaMovement();
+        }
+
         // Wall Crawler: hold jump under a ceiling to cling to it.
         if (d.has(Secondary.WALL_CRAWLER) && mc.options.keyJump.isDown() && !p.onGround() && !flying) {
             BlockPos above = BlockPos.containing(p.getX(), p.getBoundingBox().maxY + 0.2, p.getZ());
