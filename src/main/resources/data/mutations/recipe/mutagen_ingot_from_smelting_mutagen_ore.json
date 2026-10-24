@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": "mutations:mutagen_ore",
+  "result": {
+    "id": "mutations:mutagen_ingot"
+  },
+  "experience": 1.0,
+  "cookingtime": 200
+}

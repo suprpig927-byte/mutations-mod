@@ -70,7 +70,8 @@ public final class ModPayloads {
      * 2 = choose roll option {@code arg}, 3 = open Pocket Space.
      */
     public record ScreenAction(int action, String arg) implements CustomPacketPayload {
-        public static final int RESPEC = 0, START_ROLL = 1, CHOOSE_ROLL = 2, OPEN_POCKET = 3, PHASE = 4;
+        public static final int RESPEC = 0, START_ROLL = 1, CHOOSE_ROLL = 2, OPEN_POCKET = 3, PHASE = 4,
+                SPLICE_RESPEC = 5, SPLICE_REROLL = 6;
         public static final Type<ScreenAction> TYPE = new Type<>(id("screen_action"));
         public static final StreamCodec<RegistryFriendlyByteBuf, ScreenAction> CODEC = StreamCodec.of(
                 (RegistryFriendlyByteBuf buf, ScreenAction p) -> {
@@ -150,12 +151,23 @@ public final class ModPayloads {
         }
     }
 
+    /** Server -> client: open the Gene Splicer screen. */
+    public record OpenSplicer() implements CustomPacketPayload {
+        public static final Type<OpenSplicer> TYPE = new Type<>(id("open_splicer"));
+        public static final StreamCodec<RegistryFriendlyByteBuf, OpenSplicer> CODEC = StreamCodec.unit(new OpenSplicer());
+
+        @Override
+        public Type<? extends CustomPacketPayload> type() {
+            return TYPE;
+        }
+    }
+
     /** Client-side: blocks the local player is holding. entity id -> slot, plus last update time. */
     public static final Map<Integer, Integer> LOCAL_HELD = new ConcurrentHashMap<>();
     public static final Map<Integer, Long> LOCAL_HELD_SEEN = new ConcurrentHashMap<>();
 
     public static void register(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar("2");
+        PayloadRegistrar registrar = event.registrar("3");
 
         registrar.playToServer(UseAbility.TYPE, UseAbility.CODEC, (payload, ctx) -> {
             if (ctx.player() instanceof ServerPlayer sp) AbilityHandler.useSlot(sp, payload.slot());
@@ -179,9 +191,14 @@ public final class ModPayloads {
                 case ScreenAction.CHOOSE_ROLL -> Mastery.chooseRoll(sp, payload.arg());
                 case ScreenAction.OPEN_POCKET -> Blinker.openPocket(sp);
                 case ScreenAction.PHASE -> com.mutationsmod.mutations.ability.power.Phaser.tryPhase(sp);
+                case ScreenAction.SPLICE_RESPEC -> com.mutationsmod.mutations.mastery.GeneSplicer.respec(sp);
+                case ScreenAction.SPLICE_REROLL -> com.mutationsmod.mutations.mastery.GeneSplicer.reroll(sp, payload.arg());
                 default -> {}
             }
         });
+
+        registrar.playToClient(OpenSplicer.TYPE, OpenSplicer.CODEC, (payload, ctx) ->
+                com.mutationsmod.mutations.client.GeneSplicerScreen.open());
 
         registrar.playToClient(Impulse.TYPE, Impulse.CODEC, (payload, ctx) -> {
             var player = ctx.player();

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "mutations:block/gene_splicer"
+    },
+    "facing=east": {
+      "model": "mutations:block/gene_splicer",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "mutations:block/gene_splicer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "mutations:block/gene_splicer",
+      "y": 270
+    }
+  }
+}

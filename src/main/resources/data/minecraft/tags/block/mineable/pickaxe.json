@@ -1,0 +1,9 @@
+{
+  "values": [
+    "mutations:mutagen_ore",
+    "mutations:deepslate_mutagen_ore",
+    "mutations:mutagen_crystal_block",
+    "mutations:mutagen_cluster",
+    "mutations:gene_splicer"
+  ]
+}

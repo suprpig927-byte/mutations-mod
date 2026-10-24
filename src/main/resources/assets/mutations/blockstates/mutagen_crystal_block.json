@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "mutations:block/mutagen_crystal_block"
+    }
+  }
+}

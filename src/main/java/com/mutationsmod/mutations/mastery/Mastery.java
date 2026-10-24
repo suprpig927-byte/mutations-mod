@@ -138,12 +138,23 @@ public final class Mastery {
         return out;
     }
 
+    /** What a Gene Splicer reroll can offer: anything you don't have, except the one being replaced. */
+    public static List<Secondary> rerollPool(MutationData d, String excluded) {
+        List<Secondary> pool = available(d);
+        pool.removeIf(s -> s.id().equals(excluded));
+        return pool;
+    }
+
     /** Offers 3 random secondaries. If an offer is already open, it's kept (no re-rolling the offer). */
     public static void startRoll(ServerPlayer player, boolean ignoreLevel) {
+        startRoll(player, ignoreLevel, null);
+    }
+
+    public static void startRoll(ServerPlayer player, boolean ignoreLevel, String excluded) {
         MutationData d = ModAttachments.get(player);
         if (!d.rollOptions().isEmpty()) return;
         if (!ignoreLevel && !canRoll(d)) return;
-        List<Secondary> pool = available(d);
+        List<Secondary> pool = rerollPool(d, excluded);
         if (pool.isEmpty()) return;
         Collections.shuffle(pool, new java.util.Random(player.getRandom().nextLong()));
         List<String> options = new ArrayList<>();

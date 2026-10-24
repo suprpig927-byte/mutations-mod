@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "mutations:block/gene_splicer_top",
+    "front": "mutations:block/gene_splicer_front",
+    "side": "mutations:block/gene_splicer_side"
+  }
+}

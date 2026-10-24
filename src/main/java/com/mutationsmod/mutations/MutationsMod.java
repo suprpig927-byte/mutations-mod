@@ -16,6 +16,7 @@ public class MutationsMod {
 
     public MutationsMod(IEventBus modEventBus) {
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
+        com.mutationsmod.mutations.registry.ModContent.register(modEventBus);
         modEventBus.addListener(ModPayloads::register);
 
         IEventBus game = NeoForge.EVENT_BUS;
