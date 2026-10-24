@@ -54,6 +54,33 @@ public final class Stormcaller {
         boolean canFly = d.has(Secondary.RAINWALKER) && rain && !p.isCreative() && !p.isSpectator();
         boolean flameFlight = d.has(Mutation.PYRO) && Powers.timerActive(d, p.level(), "flame_flight");
         if (!flameFlight) setFlight(p, canFly);
+
+        // Tell clients when we're flying in the rain (for the wind rings).
+        boolean storming = canFly && p.getAbilities().flying;
+        if (storming != (d.timer("storm_fly") > 0)) {
+            com.mutationsmod.mutations.ModAttachments.set(p,
+                    com.mutationsmod.mutations.ModAttachments.get(p).withTimer("storm_fly", storming ? 1 : 0));
+        }
+        net.minecraft.server.level.ServerLevel level = (net.minecraft.server.level.ServerLevel) p.level();
+        if (storming && now % 2 == 0) {
+            // Swirling wind and sparks around your legs.
+            double a = now * 0.5;
+            for (int k = 0; k < 2; k++) {
+                double ang = a + k * Math.PI;
+                level.sendParticles(net.minecraft.core.particles.ParticleTypes.CLOUD,
+                        p.getX() + Math.cos(ang) * 0.6, p.getY() + 0.3, p.getZ() + Math.sin(ang) * 0.6, 0, 0, -0.2, 0, 0.1);
+            }
+            level.sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,
+                    p.getX(), p.getY() + 0.4, p.getZ(), 2, 0.3, 0.3, 0.3, 0.05);
+        } else if (rain && now % 5 == 0) {
+            // Sparks crackle off your hands in the rain.
+            double yaw = Math.toRadians(p.yBodyRot);
+            double sx = Math.cos(yaw) * 0.38, sz = Math.sin(yaw) * 0.38;
+            for (int s = -1; s <= 1; s += 2) {
+                level.sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,
+                        p.getX() + sx * s, p.getY() + 0.7, p.getZ() + sz * s, 2, 0.08, 0.1, 0.08, 0.05);
+            }
+        }
     }
 
     /** Grants or removes mod flight via NeoForge's creative-flight attribute. */
