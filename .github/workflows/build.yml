@@ -29,7 +29,8 @@ jobs:
         if: failure()
         shell: bash
         run: |
-          msg=$(grep -E "error:|warning: \[removal\]|What went wrong|> " -A2 build.log | head -80 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
+          ls -la
+          msg=$( (grep -iE "error|wrong|exception" -A3 build.log || tail -40 build.log || echo "no build.log") | head -80 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
           echo "::error title=Build errors::${msg}"
 
       - uses: actions/upload-artifact@v4
