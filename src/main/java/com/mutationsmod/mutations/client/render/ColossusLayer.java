@@ -17,9 +17,14 @@ import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 public class ColossusLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
     private static final Identifier STEEL = tex("steel");
     private static final Identifier CRACKS = tex("cracks");
+    private static final Identifier EYES = tex("eyes");
+    private static final Identifier PLATES = tex("plates");
 
-    public ColossusLayer(RenderLayerParent<AvatarRenderState, PlayerModel> parent) {
+    private final ColossusPlatesModel plates;
+
+    public ColossusLayer(RenderLayerParent<AvatarRenderState, PlayerModel> parent, ColossusPlatesModel plates) {
         super(parent);
+        this.plates = plates;
     }
 
     private static Identifier tex(String name) {
@@ -32,6 +37,12 @@ public class ColossusLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
         if (data == null || state.isInvisible) return;
         collector.submitModel(this.getParentModel(), state, poseStack, RenderTypes.armorCutoutNoCull(STEEL),
                 light, OverlayTexture.NO_OVERLAY, state.outlineColor);
+        // 3D plates (hidden under worn armor pieces, see ColossusPlatesModel.setupAnim).
+        collector.submitModel(plates, state, poseStack, RenderTypes.armorCutoutNoCull(PLATES),
+                light, OverlayTexture.NO_OVERLAY, state.outlineColor);
+        // Eyes always glow.
+        collector.submitModel(this.getParentModel(), state, poseStack, RenderTypes.armorCutoutNoCull(EYES),
+                LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, state.outlineColor);
         if (data.cracks()) {
             // Cracks glow: drawn at full brightness even in the dark.
             collector.submitModel(this.getParentModel(), state, poseStack, RenderTypes.armorCutoutNoCull(CRACKS),

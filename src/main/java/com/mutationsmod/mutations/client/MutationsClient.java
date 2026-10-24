@@ -43,6 +43,7 @@ import net.neoforged.neoforge.client.renderstate.AvatarRenderStateModifier;
 import com.mutationsmod.mutations.client.render.HostLayer;
 import com.mutationsmod.mutations.client.render.CryoLayer;
 import com.mutationsmod.mutations.client.render.ColossusLayer;
+import com.mutationsmod.mutations.client.render.ColossusPlatesModel;
 import com.mutationsmod.mutations.client.render.ColossusRenderData;
 import com.mutationsmod.mutations.client.render.CryoRenderData;
 import com.mutationsmod.mutations.client.render.CrystalModel;
@@ -161,6 +162,8 @@ public class MutationsClient {
     public static final ModelLayerLocation TENDRILS =
             new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "host_tendrils"), "main");
 
+    public static final ModelLayerLocation COLOSSUS_PLATES =
+            new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "colossus_plates"), "main");
     public static final ModelLayerLocation CRYSTALS =
             new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "cryo_crystals"), "main");
     /** Frost shells slightly bigger than armor: helmet, chestplate, leggings, boots. */
@@ -173,6 +176,7 @@ public class MutationsClient {
     private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(TENDRILS, TendrilModel::createLayer);
         event.registerLayerDefinition(CRYSTALS, CrystalModel::createLayer);
+        event.registerLayerDefinition(COLOSSUS_PLATES, ColossusPlatesModel::createLayer);
         var frost = HumanoidModel.createArmorMeshSet(new CubeDeformation(0.6f), new CubeDeformation(1.1f));
         event.registerLayerDefinition(FROST_ARMOR[0], () -> LayerDefinition.create(frost.head(), 64, 32));
         event.registerLayerDefinition(FROST_ARMOR[1], () -> LayerDefinition.create(frost.chest(), 64, 32));
@@ -187,7 +191,7 @@ public class MutationsClient {
             if (renderer != null) {
                 var models = event.getEntityModels();
                 renderer.addLayer(new HostLayer(renderer, new TendrilModel(models.bakeLayer(TENDRILS))));
-                renderer.addLayer(new ColossusLayer(renderer));
+                renderer.addLayer(new ColossusLayer(renderer, new ColossusPlatesModel(models.bakeLayer(COLOSSUS_PLATES))));
                 renderer.addLayer(new CryoLayer(renderer, new CrystalModel(models.bakeLayer(CRYSTALS)),
                         new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[0])), new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[1])),
                         new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[2])), new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[3]))));

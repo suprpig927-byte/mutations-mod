@@ -54,15 +54,13 @@ public final class Colossus {
 
     public static void tick(ServerPlayer p, MutationData d) {
         boolean on = steel(d);
-        // Heavy steps: a deep thud and a puff of dust as you walk.
+        // Heavy steps: a puff of dust as you walk.
         ServerLevel level = (ServerLevel) p.level();
         Vec3 last = LAST_POS.put(p.getUUID(), p.position());
         double moved = last == null ? 0 : last.subtract(p.position()).horizontalDistance();
         if (on && p.onGround() && moved > 0.08 && level.getGameTime() % (p.isSprinting() ? 6 : 9) == 0) {
             BlockState under = level.getBlockState(p.blockPosition().below());
             if (!under.isAir()) {
-                level.playSound(null, p.getX(), p.getY(), p.getZ(), under.getSoundType(level, p.blockPosition().below(), p).getStepSound(),
-                        net.minecraft.sounds.SoundSource.PLAYERS, 0.9f, 0.5f);
                 level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, under, p.blockPosition().below()),
                         p.getX(), p.getY() + 0.05, p.getZ(), 6, 0.25, 0.02, 0.25, 0.05);
             }
