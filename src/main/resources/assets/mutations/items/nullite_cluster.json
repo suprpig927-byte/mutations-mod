@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "mutations:item/nullite_cluster"
+    "model": "mutations:block/nullite_cluster"
   }
 }

@@ -50,7 +50,7 @@ public final class ModContent {
                     .strength(1.5f).lightLevel(s -> 6).pushReaction(PushReaction.POPPED));
     public static final DeferredBlock<GeneSplicerBlock> GENE_SPLICER = BLOCKS.registerBlock("gene_splicer",
             GeneSplicerBlock::new,
-            p -> p.mapColor(MapColor.METAL).strength(3.5f, 6f).requiresCorrectToolForDrops().sound(SoundType.METAL).lightLevel(s -> 7));
+            p -> p.mapColor(MapColor.METAL).strength(3.5f, 6f).requiresCorrectToolForDrops().sound(SoundType.METAL).lightLevel(s -> 7).noOcclusion());
 
     public static final DeferredBlock<AmethystClusterBlock> NULLITE_CLUSTER = BLOCKS.registerBlock("nullite_cluster",
             p -> new AmethystClusterBlock(7f, 3f, p),
