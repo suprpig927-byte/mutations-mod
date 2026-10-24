@@ -199,8 +199,8 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 - **Upside:** A living organism with tendrils: extra reach, wall climbing, stronger after a kill. Bond with it for full power.
 - **Downside:** It's always hungry: go 10 minutes without a kill and it feeds on you. Takes 75% less fall damage.
 - **[A] Tendril** (4s): Yank a mob to you, or pull yourself to a block.
-- **[A] Bond** (0.5s): Toggle: let the organism fully bond with you. Full power, but it hungers twice as fast.
-- **Dormant vs bonded:** dormant = faint look, small tendrils, weaker Tendril (8 blocks) and Lash (3 blocks, half damage), +0.75 reach, slow climbing. Bonded = full Warden-like look, big tendrils, full-power abilities, +1.5 reach, Strength I + Resistance I, hunger clock runs 2x.
+- **[A] Bond** (0.5s): Toggle: let the organism fully bond with you. Full power, but no armor and it hungers twice as fast.
+- **Dormant vs bonded:** dormant = faint look, small tendrils, weaker Tendril (8 blocks) and Lash (3 blocks, half damage), +0.75 reach, slow climbing. Bonded = full Warden-like look, big tendrils that grip walls, full-power abilities, +1.5 reach, Strength I + Resistance I, Jump Boost V, Speed II; no armor and the hunger clock runs 2x.
 
 | Secondary | Effect |
 |---|---|

@@ -41,6 +41,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
 import net.neoforged.neoforge.client.renderstate.AvatarRenderStateModifier;
 import com.mutationsmod.mutations.client.render.HostLayer;
+import com.mutationsmod.mutations.client.render.FirstPersonTendrils;
 import com.mutationsmod.mutations.client.render.HostRenderData;
 import com.mutationsmod.mutations.client.render.HostRenderLogic;
 import com.mutationsmod.mutations.client.render.TendrilModel;
@@ -85,6 +86,7 @@ public class MutationsClient {
         modEventBus.addListener(MutationsClient::addLayers);
         NeoForge.EVENT_BUS.addListener(MutationsClient::onClientTick);
         NeoForge.EVENT_BUS.addListener(MutationsClient::onRenderFrame);
+        NeoForge.EVENT_BUS.addListener(FirstPersonTendrils::onSubmit);
     }
 
     private static void registerKeys(RegisterKeyMappingsEvent event) {
@@ -145,6 +147,7 @@ public class MutationsClient {
                 renderer.addLayer(new HostLayer(renderer, new TendrilModel(event.getEntityModels().bakeLayer(TENDRILS))));
             }
         }
+        FirstPersonTendrils.model = new TendrilModel(event.getEntityModels().bakeLayer(TENDRILS));
     }
 
     private static void onClientTick(ClientTickEvent.Post event) {

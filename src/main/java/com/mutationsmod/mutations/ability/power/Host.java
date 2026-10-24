@@ -58,6 +58,7 @@ public final class Host {
             p.sendOverlayMessage(Component.literal("The organism is starving... it feeds on you.").withStyle(ChatFormatting.DARK_RED));
         }
 
+        if (bonded) rejectArmor(p);
         if (d.has(Secondary.SHAPELESS)) updateCrawl(p);
     }
 
@@ -113,6 +114,21 @@ public final class Host {
         }
         Powers.sound(p, SoundEvents.PLAYER_ATTACK_SWEEP, 0.8f, 0.6f);
         return true;
+    }
+
+    /** Bonded, the organism covers your whole body: armor is pushed off into your inventory. */
+    private static void rejectArmor(ServerPlayer p) {
+        boolean removed = false;
+        for (net.minecraft.world.entity.EquipmentSlot slot : new net.minecraft.world.entity.EquipmentSlot[]{
+                net.minecraft.world.entity.EquipmentSlot.HEAD, net.minecraft.world.entity.EquipmentSlot.CHEST,
+                net.minecraft.world.entity.EquipmentSlot.LEGS, net.minecraft.world.entity.EquipmentSlot.FEET}) {
+            net.minecraft.world.item.ItemStack stack = p.getItemBySlot(slot);
+            if (stack.isEmpty()) continue;
+            p.setItemSlot(slot, net.minecraft.world.item.ItemStack.EMPTY);
+            if (!p.getInventory().add(stack)) p.drop(stack, false, net.minecraft.util.Prediction.SERVER_ONLY);
+            removed = true;
+        }
+        if (removed) p.sendOverlayMessage(Component.literal("The organism pushes your armor off.").withStyle(ChatFormatting.DARK_AQUA));
     }
 
     public static boolean bonded(MutationData d) {
