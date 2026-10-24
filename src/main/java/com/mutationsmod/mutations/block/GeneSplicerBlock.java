@@ -1,6 +1,5 @@
 package com.mutationsmod.mutations.block;
 
-import com.mojang.serialization.MapCodec;
 import com.mutationsmod.mutations.network.ModPayloads;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,16 +16,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 /** Gene Splicer: right-click to open the splicing screen (respec stats, reroll a secondary). */
 public class GeneSplicerBlock extends HorizontalDirectionalBlock {
-    public static final MapCodec<GeneSplicerBlock> CODEC = simpleCodec(GeneSplicerBlock::new);
-
     public GeneSplicerBlock(Properties props) {
         super(props);
         registerDefaultState(this.stateDefinition.any().setValue(FACING, net.minecraft.core.Direction.NORTH));
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

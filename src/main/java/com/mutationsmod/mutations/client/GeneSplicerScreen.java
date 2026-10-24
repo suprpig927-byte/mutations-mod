@@ -23,7 +23,7 @@ public class GeneSplicerScreen extends Screen {
     }
 
     public static void open() {
-        Minecraft.getInstance().setScreen(new GeneSplicerScreen());
+        Minecraft.getInstance().gui.setScreen(new GeneSplicerScreen());
     }
 
     private MutationData data() {

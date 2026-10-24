@@ -40,7 +40,7 @@ public final class ModContent {
     public static final DeferredBlock<AmethystClusterBlock> MUTAGEN_CLUSTER = BLOCKS.registerBlock("mutagen_cluster",
             p -> new AmethystClusterBlock(7f, 3f, p),
             p -> p.mapColor(MapColor.COLOR_LIGHT_GREEN).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST_CLUSTER)
-                    .strength(1.5f).lightLevel(s -> 6).pushReaction(PushReaction.DESTROY));
+                    .strength(1.5f).lightLevel(s -> 6).pushReaction(PushReaction.POPPED));
     public static final DeferredBlock<GeneSplicerBlock> GENE_SPLICER = BLOCKS.registerBlock("gene_splicer",
             GeneSplicerBlock::new,
             p -> p.mapColor(MapColor.METAL).strength(3.5f, 6f).requiresCorrectToolForDrops().sound(SoundType.METAL).lightLevel(s -> 7));
