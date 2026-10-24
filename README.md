@@ -64,3 +64,18 @@ Testing tip: `/mutation set @s cryo`, `/mutation mastery set @s 50`, then open t
 
 Push to GitHub and download the jar from the **Actions** tab (see `.github/workflows/build.yml`),
 or build locally with JDK 25: `gradlew.bat build` → `build/libs/mutations-0.3.0.jar`.
+
+## Mutagen, the Gene Splicer and Mastery Tomes
+
+- **Mutagen Ore** (stone and deepslate) generates about as often as gold, from the bottom of the world up to Y 32. It glows faintly. Mine it with an iron pickaxe or better; the ore drops itself. Smelt or blast it into **Mutagen Ingots**.
+- **Mutagen Geodes** are rare, small geodes deep underground (Y -56 to 0): a smooth basalt and calcite shell lined with **Blocks of Mutagen Crystal**, with **Mutagen Clusters** growing inside. Breaking a cluster drops 2-4 **Mutagen Crystals**. Four crystals craft a Block of Mutagen Crystal.
+- **Gene Splicer**: crafted from ingots, crystals, a diamond and a brewing stand:
+  ```
+  I C I
+  C D C     I = Mutagen Ingot, C = Mutagen Crystal
+  I B I     D = Diamond, B = Brewing Stand
+  ```
+  Right-click it to:
+  - **Respec stats**: 2 Mutagen Crystals + 10 XP levels (instead of 30 levels from the mutation screen).
+  - **Splice out a secondary**: 4 Mutagen Crystals + 20 XP levels. Removes that secondary and offers 3 new ones from your base mutation's list (never the one you removed). Pick one in the Splicer or the mutation screen.
+- **Mastery Tome**: right-click to read it for enough mastery XP to gain about two levels. Found (with Mutagen Crystals) in dungeon, mineshaft, desert and jungle temple, stronghold library, ancient city and woodland mansion chests.
