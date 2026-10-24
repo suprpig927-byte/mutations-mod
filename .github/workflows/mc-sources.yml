@@ -23,17 +23,14 @@ jobs:
         run: |
           set -x
           echo "::notice title=Build jars::$(find "$GITHUB_WORKSPACE/build" "$GITHUB_WORKSPACE/.gradle" -name '*.jar' 2>/dev/null | head -30 | awk '{printf "%s%%0A", $0}')"
-          SRC=""
-          for j in $(find "$GITHUB_WORKSPACE" -name "*.jar" 2>/dev/null); do
-            if unzip -l "$j" 2>/dev/null | grep -q " net/minecraft/world/level/block/Block.java$"; then SRC="$j"; break; fi
-          done
-          if [ -z "$SRC" ]; then
-            echo "::error title=No sources jar::$(find "$GITHUB_WORKSPACE/build" -name '*.jar' 2>/dev/null | head -30 | awk '{printf "%s%%0A", $0}')"
-            exit 1
-          fi
-          echo "::notice title=Sources jar::$SRC"
+          JAR=$(find "$GITHUB_WORKSPACE/build/moddev/artifacts" -name "minecraft-patched-*.jar" | head -1)
+          curl -sSL -o /tmp/vineflower.jar https://repo1.maven.org/maven2/org/vineflower/vineflower/1.11.1/vineflower-1.11.1.jar
+          mkdir -p /tmp/dec
+          java -Xmx6g -jar /tmp/vineflower.jar -dgs=1 -asc=1 -log=WARN "$JAR" /tmp/dec/ > /tmp/vf.log 2>&1 || true
+          SRC=$(find /tmp/dec -name "*.jar" | head -1)
+          echo "::notice title=Decompiled::$SRC $(ls -la /tmp/dec | head -5 | awk '{printf "%s%%0A", $0}')"
           mkdir -p /tmp/out && cd /tmp/out
-          unzip -q "$SRC" || true
+          if [ -n "$SRC" ]; then unzip -q "$SRC" || true; else cp -r /tmp/dec/. . ; fi
           find . -name "*.class" -delete
           echo "::notice title=Files::$(find . -type f | wc -l)"
           git init -q -b mc-sources
