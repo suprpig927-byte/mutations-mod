@@ -1,0 +1,21 @@
+{
+  "key.category.mutations.mutations": "Mutations",
+  "key.mutations.open_screen": "Open Mutation Screen",
+  "key.mutations.ability_1": "Ability 1",
+  "key.mutations.ability_2": "Ability 2",
+  "key.mutations.ability_3": "Ability 3",
+  "key.mutations.ability_4": "Ability 4",
+  "key.mutations.ability_5": "Ability 5",
+  "key.mutations.ability_6": "Ability 6",
+  "key.mutations.speed_up": "Speed Tier Up (Phaser)",
+  "key.mutations.speed_down": "Speed Tier Down (Phaser)",
+  "itemGroup.mutations": "Mutations",
+  "block.mutations.mutagen_ore": "Mutagen Ore",
+  "block.mutations.deepslate_mutagen_ore": "Deepslate Mutagen Ore",
+  "block.mutations.mutagen_crystal_block": "Block of Mutagen Crystal",
+  "block.mutations.mutagen_cluster": "Mutagen Cluster",
+  "block.mutations.gene_splicer": "Gene Splicer",
+  "item.mutations.mutagen_ingot": "Mutagen Ingot",
+  "item.mutations.mutagen_crystal": "Mutagen Crystal",
+  "item.mutations.mastery_tome": "Mastery Tome"
+}

@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=up": {
+      "model": "mutations:block/mutagen_cluster"
+    },
+    "facing=down": {
+      "model": "mutations:block/mutagen_cluster",
+      "x": 180
+    },
+    "facing=north": {
+      "model": "mutations:block/mutagen_cluster",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "mutations:block/mutagen_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=east": {
+      "model": "mutations:block/mutagen_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "facing=west": {
+      "model": "mutations:block/mutagen_cluster",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

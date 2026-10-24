@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "mutations:mutagen_ingot",
+    "C": "mutations:mutagen_crystal",
+    "D": "minecraft:diamond",
+    "B": "minecraft:brewing_stand"
+  },
+  "pattern": [
+    "ICI",
+    "CDC",
+    "IBI"
+  ],
+  "result": {
+    "id": "mutations:gene_splicer"
+  }
+}
