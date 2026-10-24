@@ -34,14 +34,77 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 public final class Pyro {
     private Pyro() {}
 
+    /** Flame On toggle: every Pyro power and drawback (except Phoenix) only works while it's on. */
+    public static boolean lit(MutationData d) {
+        return d.timer("flame_on") > 0;
+    }
+
+    public static boolean toggleFlame(ServerPlayer p, MutationData d) {
+        boolean on = !lit(d);
+        ModAttachments.set(p, ModAttachments.get(p).withTimer("flame_on", on ? 1 : 0));
+        if (on) {
+            Powers.particles(p, ParticleTypes.FLAME, 40, 0.5, 0.08);
+            Powers.sound(p, SoundEvents.BLAZE_SHOOT, 1.0f, 0.7f);
+            p.sendOverlayMessage(Component.literal("FLAME ON").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
+        } else {
+            Powers.clearTimer(p, "flamethrower");
+            endFlight(p);
+            Powers.particles(p, ParticleTypes.SMOKE, 25, 0.4, 0.03);
+            Powers.sound(p, SoundEvents.FIRE_EXTINGUISH, 0.8f, 1.0f);
+            p.sendOverlayMessage(Component.literal("Your flames die down.").withStyle(ChatFormatting.GRAY));
+        }
+        return true;
+    }
+
+    private static void endFlight(ServerPlayer p) {
+        MutationData d = ModAttachments.get(p);
+        if (d.timer("flame_flight") == 0) return;
+        Powers.clearTimer(p, "flame_flight");
+        if (!(d.has(Mutation.STORMCALLER) && d.has(Secondary.RAINWALKER) && Stormcaller.inRain(p))) Stormcaller.setFlight(p, false);
+    }
+
+    /** Flamethrower, Flame Flight and Flare need Flame On. */
+    private static boolean needFlame(ServerPlayer p, MutationData d) {
+        if (lit(d)) return true;
+        p.sendOverlayMessage(Component.literal("You need Flame On.").withStyle(ChatFormatting.GRAY));
+        return false;
+    }
+
+    private static final java.util.Map<java.util.UUID, BlockPos> LAST_STEP = new java.util.HashMap<>();
+
     public static void tick(ServerPlayer p, MutationData d) {
         ServerLevel level = (ServerLevel) p.level();
         long now = level.getGameTime();
+        if (!lit(d)) {
+            endFlight(p);
+            return;
+        }
         if (p.isOnFire()) p.clearFire();
 
-        if (now % 20 == 0 && p.isInWaterOrRain()) {
-            Powers.hurtSelf(p, 1f);
-            level.sendParticles(ParticleTypes.CLOUD, p.getX(), p.getY() + 1, p.getZ(), 6, 0.3, 0.5, 0.3, 0.02);
+        boolean wet = p.isInWaterOrRain();
+        if (wet) {
+            // Steam hisses off you.
+            if (now % 4 == 0) level.sendParticles(ParticleTypes.CLOUD, p.getX(), p.getY() + 1.2, p.getZ(), 2, 0.3, 0.5, 0.3, 0.01);
+            if (now % 20 == 0) {
+                Powers.hurtSelf(p, 1f);
+                level.sendParticles(ParticleTypes.CLOUD, p.getX(), p.getY() + 1, p.getZ(), 8, 0.3, 0.5, 0.3, 0.03);
+                level.playSound(null, p.getX(), p.getY(), p.getZ(), SoundEvents.FIRE_EXTINGUISH,
+                        net.minecraft.sounds.SoundSource.PLAYERS, 0.5f, 1.2f + p.getRandom().nextFloat() * 0.4f);
+            }
+        } else {
+            // Embers drift off you, and you scorch the grass where you step.
+            if (now % 3 == 0) {
+                level.sendParticles(ParticleTypes.SMALL_FLAME, p.getX(), p.getY() + 1.0, p.getZ(), 1, 0.3, 0.6, 0.3, 0.01);
+            }
+            if (now % 25 == 0) level.sendParticles(ParticleTypes.LAVA, p.getX(), p.getY() + 1.2, p.getZ(), 1, 0.2, 0.3, 0.2, 0);
+            BlockPos step = p.blockPosition();
+            if (p.onGround() && !step.equals(LAST_STEP.put(p.getUUID(), step))) {
+                BlockPos below = step.below();
+                if (level.getBlockState(below).is(Blocks.GRASS_BLOCK)) {
+                    Powers.freezeTemporary(level, below, Blocks.COARSE_DIRT.defaultBlockState(), 8 * 20);
+                }
+                level.sendParticles(ParticleTypes.SMOKE, p.getX(), p.getY() + 0.05, p.getZ(), 3, 0.2, 0.02, 0.2, 0.01);
+            }
         }
 
         // Flamethrower stream.
@@ -65,11 +128,18 @@ public final class Pyro {
         boolean flying = Powers.timerActive(d, level, "flame_flight");
         if (flying) {
             Powers.add(p, net.neoforged.neoforge.common.NeoForgeMod.CREATIVE_FLIGHT, "mutation_flight", 1);
-            if (now % 2 == 0) level.sendParticles(ParticleTypes.FLAME, p.getX(), p.getY(), p.getZ(), 3, 0.15, 0.05, 0.15, 0.01);
-        } else if (d.timer("flame_flight") != 0) {
-            // Just ended.
-            Powers.clearTimer(p, "flame_flight");
-            if (!(d.has(Mutation.STORMCALLER) && d.has(Secondary.RAINWALKER) && Stormcaller.inRain(p))) Stormcaller.setFlight(p, false);
+            // Jets of fire blasting down from your fists and feet.
+            double yaw = Math.toRadians(p.yBodyRot);
+            double sideX = Math.cos(yaw), sideZ = Math.sin(yaw);
+            for (int s = -1; s <= 1; s += 2) {
+                double hx = p.getX() + sideX * 0.38 * s, hz = p.getZ() + sideZ * 0.38 * s;
+                double fx = p.getX() + sideX * 0.12 * s, fz = p.getZ() + sideZ * 0.12 * s;
+                level.sendParticles(ParticleTypes.FLAME, hx, p.getY() + 0.6, hz, 0, 0, -1, 0, 0.18);
+                level.sendParticles(ParticleTypes.FLAME, fx, p.getY() - 0.05, fz, 0, 0, -1, 0, 0.22);
+            }
+            if (now % 4 == 0) level.sendParticles(ParticleTypes.SMOKE, p.getX(), p.getY() - 0.4, p.getZ(), 2, 0.2, 0.1, 0.2, 0.01);
+        } else {
+            endFlight(p); // just ended
         }
 
         if (d.has(Secondary.KINDLING) && now % 40 == 0 && nearFire(level, p.blockPosition())) {
@@ -140,6 +210,7 @@ public final class Pyro {
     /** Lava drinking and Hearthbound coal eating. */
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event, ServerPlayer p, MutationData d) {
         ItemStack stack = event.getItemStack();
+        if (!lit(d)) return;
         if (stack.is(Items.LAVA_BUCKET) && p.isShiftKeyDown()) {
             event.setCanceled(true);
             event.setCancellationResult(InteractionResult.SUCCESS);
@@ -177,6 +248,7 @@ public final class Pyro {
             Powers.knockAway(e, p.position(), 1.2, 0.5);
         }
         Powers.setTimer(p, "phoenix", 20 * 60 * 20);
+        ModAttachments.set(p, ModAttachments.get(p).withTimer("flame_on", 1)); // reborn in flames
         Powers.particles(p, ParticleTypes.FLAME, 120, 1.5, 0.3);
         Powers.sound(p, SoundEvents.BLAZE_SHOOT, 1.0f, 0.6f);
         p.sendSystemMessage(Component.literal("You rise from the ashes!").withStyle(ChatFormatting.GOLD));
@@ -186,12 +258,14 @@ public final class Pyro {
     // ------------------------------------------------------------------ actives
 
     public static boolean flamethrower(ServerPlayer p, MutationData d) {
+        if (!needFlame(p, d)) return false;
         Powers.setTimer(p, "flamethrower", 80);
         Powers.sound(p, SoundEvents.BLAZE_SHOOT, 1.0f, 0.8f);
         return true;
     }
 
     public static boolean flameFlight(ServerPlayer p, MutationData d) {
+        if (!needFlame(p, d)) return false;
         if (p.isInWaterOrRain()) {
             p.sendOverlayMessage(Component.literal("Your flames sputter in the water.").withStyle(ChatFormatting.GRAY));
             return false;
@@ -208,6 +282,7 @@ public final class Pyro {
     }
 
     public static boolean flare(ServerPlayer p, MutationData d) {
+        if (!needFlame(p, d)) return false;
         for (LivingEntity e : Powers.around(p, 10)) {
             e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, (int) (100 * Powers.power(d)), 0));
             e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 0));

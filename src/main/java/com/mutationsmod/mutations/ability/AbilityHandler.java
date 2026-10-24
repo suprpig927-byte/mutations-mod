@@ -135,7 +135,7 @@ public final class AbilityHandler {
             if (a.has(Mutation.CRYO)) Cryo.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.COLOSSUS) && Colossus.steel(a)) Colossus.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.CHAMELEON)) Chameleon.onMelee(event, attacker, a, victim);
-            if (a.has(Mutation.PYRO)) Pyro.onMelee(event, attacker, a, victim);
+            if (a.has(Mutation.PYRO) && Pyro.lit(a)) Pyro.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.ABSORBER)) Absorber.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.HOST)) Host.onMelee(event, attacker, a, victim);
         }
@@ -150,7 +150,7 @@ public final class AbilityHandler {
         }
         if (d.has(Mutation.STORMCALLER)) Stormcaller.onHurt(event, p, d);
         if (event.isCanceled()) return;
-        if (d.has(Mutation.PYRO)) Pyro.onHurt(event, p, d);
+        if (d.has(Mutation.PYRO) && Pyro.lit(d)) Pyro.onHurt(event, p, d);
         if (event.isCanceled()) return;
         if (d.has(Mutation.CRYO)) Cryo.onHurt(event, p, d);
         if (event.isCanceled()) return;
@@ -288,6 +288,7 @@ public final class AbilityHandler {
             case SMOKE_BURST -> Chameleon.smokeBurst(p, d);
             case FLAMETHROWER -> Pyro.flamethrower(p, d);
             case FLAME_FLIGHT -> Pyro.flameFlight(p, d);
+            case FLAME_ON -> Pyro.toggleFlame(p, d);
             case FLARE -> Pyro.flare(p, d);
             case TENDRIL -> Host.tendril(p, d);
             case BOND -> Host.toggleBond(p, d);
@@ -302,7 +303,7 @@ public final class AbilityHandler {
             if (ability == ActiveAbility.BLINK && d.has(Secondary.ECHO_BLINK)) Powers.setTimer(p, "echo_blink", 40);
         }
         if (ability == ActiveAbility.TELEKINESIS || ability == ActiveAbility.ITEM_MAGNET || ability == ActiveAbility.BOND
-                || ability == ActiveAbility.STEEL_FORM
+                || ability == ActiveAbility.STEEL_FORM || ability == ActiveAbility.FLAME_ON
                 || ability == ActiveAbility.TITAN_LEAP || ability == ActiveAbility.CHARGED_LEAP) {
             Mastery.addXp(p, 1); // cheap, spammable abilities give less XP
         } else {

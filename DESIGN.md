@@ -180,10 +180,11 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 | Mirror Skin | Your armor turns invisible with you, and no longer gives you away. |
 
 ## Pyro
-- **Upside:** Immune to fire and lava. Sneak + right-click a lava bucket to drink it (heals like a golden apple).
-- **Downside:** Water and rain hurt you.
+- **Upside:** In Flame On: immune to fire and lava. Sneak + right-click a lava bucket to drink it (heals like a golden apple).
+- **Downside:** In Flame On: water and rain hurt you.
 - **[A] Flamethrower** (10s): Spray fire in front of you for 4 seconds. Lights and fuels furnaces.
 - **[A] Flame Flight** (45s): Fly on jets of fire for 10 seconds.
+- **[A] Flame On** (0.5s): Toggle: become living flame. All your Pyro powers and drawbacks (except Phoenix) only work while it's on.
 
 | Secondary | Effect |
 |---|---|

@@ -30,6 +30,7 @@ public enum ActiveAbility {
     COPYCAT("Copycat", "Borrow a trait from the last mob type you killed.", 90),
     FLAMETHROWER("Flamethrower", "Spray fire in front of you for 4 seconds. Lights and fuels furnaces.", 10),
     FLAME_FLIGHT("Flame Flight", "Fly on jets of fire for 10 seconds.", 45),
+    FLAME_ON("Flame On", "Toggle: become living flame. All your Pyro powers and drawbacks (except Phoenix) only work while it's on.", 0.5),
     TENDRIL("Tendril", "Yank a mob to you, or pull yourself to a block.", 4),
     BOND("Bond", "Toggle: let the organism fully bond with you. Full power, but no armor and it hungers twice as fast.", 0.5),
 
