@@ -41,6 +41,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
 import net.neoforged.neoforge.client.renderstate.AvatarRenderStateModifier;
 import com.mutationsmod.mutations.client.render.HostLayer;
+import com.mutationsmod.mutations.client.render.CryoLayer;
+import com.mutationsmod.mutations.client.render.CryoRenderData;
+import com.mutationsmod.mutations.client.render.CrystalModel;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import com.mutationsmod.mutations.client.render.FirstPersonTendrils;
 import com.mutationsmod.mutations.client.render.HostRenderData;
 import com.mutationsmod.mutations.client.render.HostRenderLogic;
@@ -120,6 +126,15 @@ public class MutationsClient {
                     } else {
                         state.setRenderData(HostRenderData.KEY, null);
                     }
+                    // Cryo: crystals shrink in the heat and pulse on Ice Blast.
+                    if (hd.has(Mutation.CRYO)) {
+                        float scale = CryoVisuals.hot(hostPlayer) ? 0.5f : 1f;
+                        long t = hostPlayer.level().getGameTime();
+                        float pulse = Math.max(0, hd.timer("iceblast_anim") - t) / 8f;
+                        state.setRenderData(CryoRenderData.KEY, new CryoRenderData(scale * (1f + 0.35f * pulse)));
+                    } else {
+                        state.setRenderData(CryoRenderData.KEY, null);
+                    }
                 }
                 if (avatar instanceof Player player && player.isInvisible()
                         && player.getData(ModAttachments.DATA).has(Secondary.MIRROR_SKIN)) {
@@ -135,8 +150,23 @@ public class MutationsClient {
     public static final ModelLayerLocation TENDRILS =
             new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "host_tendrils"), "main");
 
+    public static final ModelLayerLocation CRYSTALS =
+            new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "cryo_crystals"), "main");
+    /** Frost shells slightly bigger than armor: helmet, chestplate, leggings, boots. */
+    public static final ModelLayerLocation[] FROST_ARMOR = {
+            new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "frost_armor"), "head"),
+            new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "frost_armor"), "chest"),
+            new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "frost_armor"), "legs"),
+            new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "frost_armor"), "feet")};
+
     private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(TENDRILS, TendrilModel::createLayer);
+        event.registerLayerDefinition(CRYSTALS, CrystalModel::createLayer);
+        var frost = HumanoidModel.createArmorMeshSet(new CubeDeformation(0.6f), new CubeDeformation(1.1f));
+        event.registerLayerDefinition(FROST_ARMOR[0], () -> LayerDefinition.create(frost.head(), 64, 32));
+        event.registerLayerDefinition(FROST_ARMOR[1], () -> LayerDefinition.create(frost.chest(), 64, 32));
+        event.registerLayerDefinition(FROST_ARMOR[2], () -> LayerDefinition.create(frost.legs(), 64, 32));
+        event.registerLayerDefinition(FROST_ARMOR[3], () -> LayerDefinition.create(frost.feet(), 64, 32));
     }
 
     /** Adds the Host organism layer to both player models (wide and slim arms). */
@@ -144,7 +174,11 @@ public class MutationsClient {
         for (PlayerModelType type : event.getSkins()) {
             AvatarRenderer<AbstractClientPlayer> renderer = event.getPlayerRenderer(type);
             if (renderer != null) {
-                renderer.addLayer(new HostLayer(renderer, new TendrilModel(event.getEntityModels().bakeLayer(TENDRILS))));
+                var models = event.getEntityModels();
+                renderer.addLayer(new HostLayer(renderer, new TendrilModel(models.bakeLayer(TENDRILS))));
+                renderer.addLayer(new CryoLayer(renderer, new CrystalModel(models.bakeLayer(CRYSTALS)),
+                        new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[0])), new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[1])),
+                        new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[2])), new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[3]))));
             }
         }
         FirstPersonTendrils.model = new TendrilModel(event.getEntityModels().bakeLayer(TENDRILS));
@@ -165,6 +199,7 @@ public class MutationsClient {
         while (SPEED_UP.consumeClick()) ClientPacketDistributor.sendToServer(new ModPayloads.ChangeSpeed(1));
         while (SPEED_DOWN.consumeClick()) ClientPacketDistributor.sendToServer(new ModPayloads.ChangeSpeed(-1));
         if (mc.level != null) ClientPowers.tick(mc, mc.player, mc.player.getData(ModAttachments.DATA));
+        CryoVisuals.tick(mc);
     }
 
     /**

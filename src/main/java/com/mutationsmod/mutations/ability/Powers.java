@@ -222,7 +222,7 @@ public final class Powers {
 
     // ------------------------------------------------------------------ temporary blocks
 
-    private record TempBlock(ServerLevel level, BlockPos pos, BlockState placed, long expires) {}
+    private record TempBlock(ServerLevel level, BlockPos pos, BlockState placed, BlockState original, long expires) {}
 
     private static final List<TempBlock> TEMP_BLOCKS = new ArrayList<>();
 
@@ -231,7 +231,24 @@ public final class Powers {
         BlockState current = level.getBlockState(pos);
         if (!current.canBeReplaced()) return false;
         level.setBlock(pos, state, 3);
-        TEMP_BLOCKS.add(new TempBlock(level, pos.immutable(), state, level.getGameTime() + ticks));
+        TEMP_BLOCKS.add(new TempBlock(level, pos.immutable(), state, current, level.getGameTime() + ticks));
+        return true;
+    }
+
+    /**
+     * Like placeTemporary, but also turns ordinary solid blocks (stone, dirt, logs...) into
+     * {@code state}. Whatever was there comes back afterwards. Never touches unbreakable blocks,
+     * very hard blocks, or anything with contents (chests, furnaces...).
+     */
+    public static boolean freezeTemporary(ServerLevel level, BlockPos pos, BlockState state, int ticks) {
+        BlockState current = level.getBlockState(pos);
+        if (current == state || current.is(state.getBlock())) return false;
+        if (!current.canBeReplaced()) {
+            float hardness = current.getDestroySpeed(level, pos);
+            if (hardness < 0 || hardness >= 30 || level.getBlockEntity(pos) != null) return false;
+        }
+        level.setBlock(pos, state, 3);
+        TEMP_BLOCKS.add(new TempBlock(level, pos.immutable(), state, current, level.getGameTime() + ticks));
         return true;
     }
 
@@ -288,7 +305,7 @@ public final class Powers {
             TempBlock t = it.next();
             if (t.level() != level || now < t.expires()) continue;
             if (level.isLoaded(t.pos()) && level.getBlockState(t.pos()) == t.placed()) {
-                level.setBlock(t.pos(), Blocks.AIR.defaultBlockState(), 3);
+                level.setBlock(t.pos(), t.original(), 3);
             }
             it.remove();
         }

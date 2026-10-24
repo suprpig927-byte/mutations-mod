@@ -42,10 +42,28 @@ public final class Cryo {
         return d.has(Secondary.COLD_BLOODED) ? 0.8f : 0.6f;
     }
 
+    private static final java.util.Map<java.util.UUID, BlockPos> LAST_STEP = new java.util.HashMap<>();
+
     public static void tick(ServerPlayer p, MutationData d) {
         ServerLevel level = (ServerLevel) p.level();
         long now = level.getGameTime();
         p.setTicksFrozen(0);
+
+        // Icy breath: a frosty puff every few seconds.
+        if (now % 60 == 0) {
+            Vec3 mouth = p.getEyePosition().add(p.getLookAngle().scale(0.35)).subtract(0, 0.15, 0);
+            Vec3 look = p.getLookAngle();
+            level.sendParticles(ParticleTypes.CLOUD, mouth.x, mouth.y, mouth.z, 0, look.x, look.y + 0.05, look.z, 0.04);
+            level.sendParticles(ParticleTypes.SNOWFLAKE, mouth.x, mouth.y, mouth.z, 3, 0.05, 0.05, 0.05, 0.01);
+        }
+
+        // Frost trail: a thin layer of snow where you step, which melts after a few seconds.
+        BlockPos step = p.blockPosition();
+        if (p.onGround() && !isHot(p) && !step.equals(LAST_STEP.put(p.getUUID(), step))
+                && level.getBlockState(step).isAir()
+                && Blocks.SNOW.defaultBlockState().canSurvive(level, step)) {
+            Powers.placeTemporary(level, step, Blocks.SNOW.defaultBlockState(), 5 * 20);
+        }
 
         // Freeze water underfoot (like Frost Walker).
         BlockPos feet = p.blockPosition();
@@ -113,22 +131,31 @@ public final class Cryo {
             for (Direction dir : Direction.Plane.HORIZONTAL) {
                 Powers.placeTemporary(level, base.relative(dir), Blocks.PACKED_ICE.defaultBlockState(), life);
             }
+            freezeArea(level, base.below(), 1.6, ICE_LIFETIME, p);
         } else {
             BlockHitResult hit = Raycast.block(p, 24);
             end = hit.getLocation();
             if (hit.getType() == HitResult.Type.BLOCK) {
-                BlockPos at = hit.getBlockPos().relative(hit.getDirection());
-                Powers.placeTemporary(level, at, Blocks.PACKED_ICE.defaultBlockState(), ICE_LIFETIME);
-                for (Direction dir : Direction.values()) {
-                    if (p.getRandom().nextFloat() < 0.45f) {
-                        Powers.placeTemporary(level, at.relative(dir), Blocks.PACKED_ICE.defaultBlockState(), ICE_LIFETIME);
-                    }
-                }
+                freezeArea(level, hit.getBlockPos(), perma ? 2.8 : 2.3, ICE_LIFETIME, p);
             }
         }
         Powers.line(level, p.getEyePosition().add(p.getLookAngle()), end, ParticleTypes.SNOWFLAKE, 0.5);
         Powers.sound(p, SoundEvents.GLASS_PLACE, 1.0f, 0.6f);
+        Powers.setTimer(p, "iceblast_anim", 8);
         return true;
+    }
+
+    /** Turns everything in a rough ball around {@code center} into packed ice (restored later). */
+    private static void freezeArea(ServerLevel level, BlockPos center, double radius, int ticks, ServerPlayer p) {
+        int r = (int) Math.ceil(radius);
+        for (BlockPos pos : BlockPos.betweenClosed(center.offset(-r, -r, -r), center.offset(r, r, r))) {
+            double dist = Math.sqrt(pos.distSqr(center)) + p.getRandom().nextDouble() * 0.6;
+            if (dist > radius) continue;
+            // Don't freeze the space a player or mob is standing in (that would trap them inside ice).
+            if (!level.getEntitiesOfClass(LivingEntity.class, new net.minecraft.world.phys.AABB(pos), LivingEntity::isAlive).isEmpty()) continue;
+            Powers.freezeTemporary(level, pos.immutable(), Blocks.PACKED_ICE.defaultBlockState(), ticks);
+        }
+        level.sendParticles(ParticleTypes.SNOWFLAKE, center.getX() + 0.5, center.getY() + 0.5, center.getZ() + 0.5, 40, radius * 0.5, radius * 0.5, radius * 0.5, 0.05);
     }
 
     public static boolean iceWall(ServerPlayer p, MutationData d) {
@@ -140,6 +167,15 @@ public final class Cryo {
         for (int w = -1; w <= 1; w++) {
             for (int h = 0; h < 3; h++) {
                 if (Powers.placeTemporary(level, center.relative(side, w).above(h), Blocks.PACKED_ICE.defaultBlockState(), 20 * 20)) placed++;
+            }
+        }
+        // Ice spikes burst out of the ground in a ring around you.
+        for (int i = 0; i < 8; i++) {
+            double a = i * Math.PI / 4;
+            BlockPos spike = BlockPos.containing(p.getX() + Math.cos(a) * 2.5, p.getY(), p.getZ() + Math.sin(a) * 2.5);
+            int height = 1 + p.getRandom().nextInt(2);
+            for (int h = 0; h < height; h++) {
+                Powers.placeTemporary(level, spike.above(h), Blocks.PACKED_ICE.defaultBlockState(), 6 * 20);
             }
         }
         if (placed == 0) return false;
