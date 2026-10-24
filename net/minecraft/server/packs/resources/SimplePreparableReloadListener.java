@@ -1,0 +1,26 @@
+package net.minecraft.server.packs.resources;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import net.minecraft.util.profiling.Profiler;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.neoforged.neoforge.resource.ContextAwareReloadListener;
+
+public abstract class SimplePreparableReloadListener<T> extends ContextAwareReloadListener implements PreparableReloadListener {
+   @Override
+   public final CompletableFuture<Void> reload(
+      PreparableReloadListener.SharedState currentReload,
+      Executor taskExecutor,
+      PreparableReloadListener.PreparationBarrier preparationBarrier,
+      Executor reloadExecutor
+   ) {
+      ResourceManager manager = currentReload.resourceManager();
+      return CompletableFuture.<T>supplyAsync(() -> this.prepare(manager, Profiler.get()), taskExecutor)
+         .thenCompose(preparationBarrier::wait)
+         .thenAcceptAsync(preparations -> this.apply((T)preparations, manager, Profiler.get()), reloadExecutor);
+   }
+
+   protected abstract T prepare(ResourceManager var1, ProfilerFiller var2);
+
+   protected abstract void apply(T var1, ResourceManager var2, ProfilerFiller var3);
+}

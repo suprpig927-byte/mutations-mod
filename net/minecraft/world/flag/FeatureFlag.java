@@ -1,0 +1,24 @@
+package net.minecraft.world.flag;
+
+public class FeatureFlag {
+   final FeatureFlagUniverse universe;
+   final long mask;
+   final int extMaskIndex;
+   final boolean modded;
+
+   @Deprecated
+   FeatureFlag(FeatureFlagUniverse universe, int bit) {
+      this(universe, bit, 0, false);
+   }
+
+   FeatureFlag(FeatureFlagUniverse universe, int bit, int offset, boolean modded) {
+      this.universe = universe;
+      this.mask = 1L << bit;
+      this.extMaskIndex = offset - 1;
+      this.modded = modded;
+   }
+
+   public boolean isModded() {
+      return this.modded;
+   }
+}

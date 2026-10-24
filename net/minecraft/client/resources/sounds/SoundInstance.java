@@ -1,0 +1,68 @@
+package net.minecraft.client.resources.sounds;
+
+import java.util.concurrent.CompletableFuture;
+import net.minecraft.client.sounds.AudioStream;
+import net.minecraft.client.sounds.SoundBufferLibrary;
+import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.client.sounds.WeighedSoundEvents;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import org.jspecify.annotations.Nullable;
+
+@OnlyIn(Dist.CLIENT)
+public interface SoundInstance {
+   Identifier getIdentifier();
+
+   @Nullable
+   WeighedSoundEvents getOrResolve(SoundManager var1);
+
+   @Nullable
+   Sound getSound();
+
+   @Nullable
+   WeighedSoundEvents getSoundEvent();
+
+   SoundSource getSource();
+
+   boolean isLooping();
+
+   boolean isRelative();
+
+   int getDelay();
+
+   float getVolume();
+
+   float getPitch();
+
+   double getX();
+
+   double getY();
+
+   double getZ();
+
+   SoundInstance.Attenuation getAttenuation();
+
+   default boolean canStartSilent() {
+      return false;
+   }
+
+   default boolean canPlaySound() {
+      return true;
+   }
+
+   static RandomSource createUnseededRandom() {
+      return RandomSource.create();
+   }
+
+   default CompletableFuture<AudioStream> getStream(SoundBufferLibrary soundBuffers, Sound sound, boolean looping) {
+      return soundBuffers.getStream(sound.getPath(), looping);
+   }
+
+   public static enum Attenuation {
+      NONE,
+      LINEAR;
+   }
+}
