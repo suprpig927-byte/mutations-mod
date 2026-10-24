@@ -3,8 +3,6 @@ package com.mutationsmod.mutations.registry;
 import com.mutationsmod.mutations.MutationsMod;
 import com.mutationsmod.mutations.block.GeneSplicerBlock;
 import com.mutationsmod.mutations.item.MasteryTomeItem;
-import com.mutationsmod.mutations.world.MutagenGeodeFeature;
-import com.mutationsmod.mutations.world.MutagenOreFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -15,8 +13,6 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.bus.api.IEventBus;
@@ -25,14 +21,13 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-/** Blocks, items, the creative tab and world-gen features. */
+/** Blocks, items and the creative tab. (World gen is pure data: data/mutations/worldgen.) */
 public final class ModContent {
     private ModContent() {}
 
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MutationsMod.MODID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MutationsMod.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MutationsMod.MODID);
-    public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Registries.FEATURE, MutationsMod.MODID);
 
     // ---------------------------------------------------------------- blocks
 
@@ -63,13 +58,6 @@ public final class ModContent {
     public static final DeferredItem<BlockItem> MUTAGEN_CLUSTER_ITEM = ITEMS.registerSimpleBlockItem("mutagen_cluster", MUTAGEN_CLUSTER);
     public static final DeferredItem<BlockItem> GENE_SPLICER_ITEM = ITEMS.registerSimpleBlockItem("gene_splicer", GENE_SPLICER);
 
-    // ---------------------------------------------------------------- world gen
-
-    public static final DeferredHolder<Feature<?>, MutagenGeodeFeature> MUTAGEN_GEODE =
-            FEATURES.register("mutagen_geode", () -> new MutagenGeodeFeature(NoneFeatureConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, MutagenOreFeature> MUTAGEN_ORE_VEIN =
-            FEATURES.register("mutagen_ore", () -> new MutagenOreFeature(NoneFeatureConfiguration.CODEC));
-
     // ---------------------------------------------------------------- creative tab
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = TABS.register("mutations", () -> CreativeModeTab.builder()
@@ -91,6 +79,5 @@ public final class ModContent {
         BLOCKS.register(modBus);
         ITEMS.register(modBus);
         TABS.register(modBus);
-        FEATURES.register(modBus);
     }
 }

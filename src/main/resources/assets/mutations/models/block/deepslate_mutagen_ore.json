@@ -1,6 +1,5 @@
 {
   "parent": "minecraft:block/block",
-  "render_type": "cutout",
   "textures": {
     "particle": "mutations:block/deepslate_mutagen_ore_base",
     "base": "mutations:block/deepslate_mutagen_ore_base",
@@ -60,32 +59,44 @@
         "down": {
           "texture": "#glow",
           "cullface": "down",
-          "emissivity": 15
+          "neoforge_data": {
+            "light_emission": 15
+          }
         },
         "up": {
           "texture": "#glow",
           "cullface": "up",
-          "emissivity": 15
+          "neoforge_data": {
+            "light_emission": 15
+          }
         },
         "north": {
           "texture": "#glow",
           "cullface": "north",
-          "emissivity": 15
+          "neoforge_data": {
+            "light_emission": 15
+          }
         },
         "south": {
           "texture": "#glow",
           "cullface": "south",
-          "emissivity": 15
+          "neoforge_data": {
+            "light_emission": 15
+          }
         },
         "west": {
           "texture": "#glow",
           "cullface": "west",
-          "emissivity": 15
+          "neoforge_data": {
+            "light_emission": 15
+          }
         },
         "east": {
           "texture": "#glow",
           "cullface": "east",
-          "emissivity": 15
+          "neoforge_data": {
+            "light_emission": 15
+          }
         }
       }
     }
