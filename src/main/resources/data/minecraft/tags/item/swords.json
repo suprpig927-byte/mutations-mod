@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "mutations:bloodthorn_blade",
+    "mutations:orbit_chakram",
+    "mutations:thunderhead_maul",
+    "mutations:blur_daggers",
+    "mutations:glacier_halberd",
+    "mutations:rift_knife",
+    "mutations:earthbreaker",
+    "mutations:capacitor_blade",
+    "mutations:shade_fang",
+    "mutations:ember_scythe",
+    "mutations:symbiote_whip"
+  ]
+}

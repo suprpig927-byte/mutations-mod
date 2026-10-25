@@ -62,5 +62,19 @@
   "block.mutations.containment_gate": "Containment Gate",
   "item.mutations.shock_baton": "Shock Baton",
   "key.mutations.ultimate": "Omega Ultimate",
-  "entity.mutations.decoy": "Decoy"
+  "entity.mutations.decoy": "Decoy",
+  "item.mutations.bloodthorn_blade": "Bloodthorn Blade",
+  "item.mutations.orbit_chakram": "Orbit Chakram",
+  "item.mutations.thunderhead_maul": "Thunderhead Maul",
+  "item.mutations.blur_daggers": "Blur Daggers",
+  "item.mutations.glacier_halberd": "Glacier Halberd",
+  "item.mutations.rift_knife": "Rift Knife",
+  "item.mutations.earthbreaker": "Earthbreaker",
+  "item.mutations.echo_bow": "Echo Bow",
+  "item.mutations.capacitor_blade": "Capacitor Blade",
+  "item.mutations.shade_fang": "Shade Fang",
+  "item.mutations.ember_scythe": "Ember Scythe",
+  "item.mutations.symbiote_whip": "Symbiote Whip",
+  "entity.mutations.orbit_chakram": "Orbit Chakram",
+  "entity.mutations.rift_knife": "Rift Knife"
 }

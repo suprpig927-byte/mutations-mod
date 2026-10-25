@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "mutations:mutagen_crystal",
+    "M": "mutations:mutagen_ingot",
+    "X": "minecraft:ender_pearl"
+  },
+  "pattern": [
+    "MCM",
+    "CXC",
+    "MCM"
+  ],
+  "result": {
+    "id": "mutations:orbit_chakram"
+  }
+}

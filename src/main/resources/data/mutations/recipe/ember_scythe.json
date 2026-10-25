@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "mutations:mutagen_crystal",
+    "M": "mutations:mutagen_ingot",
+    "S": "minecraft:stick",
+    "X": "minecraft:blaze_rod"
+  },
+  "pattern": [
+    "MMC",
+    "XS ",
+    "S  "
+  ],
+  "result": {
+    "id": "mutations:ember_scythe"
+  }
+}

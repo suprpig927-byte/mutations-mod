@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "mutations:mutagen_crystal",
+    "M": "mutations:mutagen_ingot",
+    "W": "minecraft:string",
+    "X": "minecraft:amethyst_shard"
+  },
+  "pattern": [
+    " MW",
+    "CXW",
+    " MW"
+  ],
+  "result": {
+    "id": "mutations:echo_bow"
+  }
+}

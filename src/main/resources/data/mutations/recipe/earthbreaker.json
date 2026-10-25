@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "mutations:mutagen_crystal",
+    "M": "mutations:mutagen_ingot",
+    "S": "minecraft:stick",
+    "X": "minecraft:iron_block"
+  },
+  "pattern": [
+    "MXM",
+    "MCM",
+    " S "
+  ],
+  "result": {
+    "id": "mutations:earthbreaker"
+  }
+}

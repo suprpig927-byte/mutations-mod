@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/bow",
+  "textures": {
+    "layer0": "mutations:item/echo_bow_pulling_0"
+  }
+}
