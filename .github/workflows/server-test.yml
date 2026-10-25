@@ -2,6 +2,11 @@ name: Server smoke test
 
 on:
   workflow_dispatch:
+    inputs:
+      commands:
+        description: "Console commands to run once the server is up (separated by ;)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -21,14 +26,28 @@ jobs:
         run: |
           chmod +x gradlew
           mkdir -p run && echo "eula=true" > run/eula.txt
-          printf "level-seed=mutations\nspawn-protection=0\n" > run/server.properties
+          printf "level-seed=mutations\nspawn-protection=0\nenable-rcon=true\nrcon.password=test\nrcon.port=25575\n" > run/server.properties
+          pip install --quiet mcrcon
           ./gradlew runServer > server.log 2>&1 &
           for i in $(seq 1 120); do
             if grep -q "Done (" server.log; then echo "server up"; break; fi
             if ! pgrep -f "runServer|net.neoforged" > /dev/null; then echo "server exited"; break; fi
             sleep 5
           done
-          sleep 20
+          sleep 5
+          CMDS="${{ github.event.inputs.commands }}"
+          if [ -n "$CMDS" ]; then
+            python3 - "$CMDS" <<'PY' >> server.log 2>&1
+          import sys, time
+          from mcrcon import MCRcon
+          with MCRcon("127.0.0.1", "test", port=25575) as m:
+              for c in sys.argv[1].split(";"):
+                  c = c.strip()
+                  if c:
+                      print("RCON>", c, "=>", m.command(c)); time.sleep(2)
+          PY
+          fi
+          sleep 15
           pkill -f "net.neoforged" || true
           pkill -f gradle || true
           sleep 5
