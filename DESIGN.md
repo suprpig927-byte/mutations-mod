@@ -3,6 +3,8 @@
 Generated from the code: every base mutation, its abilities, and its secondary mutation list.
 
 ## How it works
+
+- **Omega Awakening:** at mastery level 75 each base mutation unlocks an ultimate on its own key (Z) with a 10-minute cooldown. See the table in README.md.
 - On first join you roll one random **base mutation** (permanent).
 - Mastery XP comes from kills and from using **active** abilities (passives give none). No level cap; +3 stat points per level.
 - At mastery **10, 25 and 50** you're offered **3 random secondaries** from your base's list and pick one (max 3).

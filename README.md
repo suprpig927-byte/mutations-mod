@@ -1,4 +1,4 @@
-# Mutations — v0.3.0 (NeoForge, Minecraft 26.3)
+# Mutations — v0.16.0 (NeoForge, Minecraft 26.3)
 
 Every player is born with a random, permanent mutation. Use your powers to earn mastery XP,
 level up, spend stat points, and evolve secondary mutations.
@@ -23,6 +23,7 @@ See **DESIGN.md** for every mutation, ability and secondary.
 | M | Open mutation screen |
 | R, V, G, B, N, K | Ability 1–6 (base abilities first, then secondary ones, in order) |
 | U / J | Phaser speed tier up / down |
+| Z | Omega ultimate (mastery level 75+) |
 
 Other controls:
 - **Rainwalker / Flame Flight:** double-tap jump to take off (Flame Flight launches you automatically), hold forward to fly where you look.
@@ -49,7 +50,8 @@ Other controls:
 | `/mutation secondary remove <players> <secondary>` | Remove a secondary mutation |
 | `/mutation secondary clear <players>` | Remove all secondaries |
 | `/mutation roll <players>` | Offer a secondary roll right now (ignores level) |
-| `/mutation cooldowns reset <players>` | Make every ability ready now |
+| `/mutation cooldowns reset <players>` | Make every ability (and the Omega ultimate) ready now |
+| `/mutation ultimate <players>` | Fire their Omega ultimate now (ignores level and cooldown) |
 | `/mutation mastery set <players> <level>` | Set mastery level |
 | `/mutation mastery add <players> <levels>` | Add (or with a negative number, remove) levels |
 | `/mutation mastery xp <players> <amount>` | Give mastery XP |
@@ -171,3 +173,24 @@ A rare prison built to hold mutants, with two separate boss fights.
    - **Drops:** the **Heart of Zero** (use it to permanently gain **one extra secondary mutation slot**; works once per player), 3 Mastery Tomes, Nullite and Mutagen.
 
 Chests in the office and the deep cell hold plenty of Nullite, Mastery Tomes, Inhibitor Collars and Containment Suit pieces. Ops can build a prison with `/mutation prison`. Containment Gates can't be broken.
+
+## Omega Awakening
+
+At **mastery level 75** your base mutation reaches its full potential and unlocks an **ultimate** on its own key (**Z**, rebindable). Each ultimate has a **10-minute cooldown**, which the Mutation stat shortens like any other. While one is running, your eyes blaze and an aura swirls around you in your mutation's color.
+
+| Mutation | Ultimate | What it does |
+|---|---|---|
+| Regenerator | **Undying** | For 30s you can't drop below half a heart. When it ends you heal to full. |
+| Kinetic Mind | **Gravity Well** | Rips up to 24 blocks out of the ground around you, spins them in orbit for 3s while dragging nearby mobs in, then hurls them all where you look. |
+| Stormcaller | **Eye of the Storm** | For 20s you fly with full storm power in any weather, and lightning strikes up to 2 enemies near you every second. |
+| Phaser | **Time Blur** | For 15s you move and attack far faster than your top speed; mobs within 24 blocks crawl and incoming projectiles slow down. |
+| Cryo | **Absolute Zero** | Hits and freezes everything within 20 blocks and cages mobs in ice. Water turns to ice and lava to obsidian. A blizzard keeps them frozen for 10s. |
+| Blinker | **Fracture** | Chain-blinks to up to 8 enemies in sight, striking each one, in about a second. |
+| Colossus | **Titan** | For 30s you grow to double size in Steel Form, with more damage and reach; your footsteps shake the ground and hurt mobs. |
+| Siren | **Banshee Wail** | A scream in every direction: heavy damage within 14 blocks, mobs are stunned for 5s, and glass shatters. |
+| Absorber | **Overload** | Releases all your stored charge in one blast (bigger and stronger the more charge), then for 10s you absorb 100% of damage as charge. |
+| Chameleon | **Doppelganger** | Three decoys wearing your skin wander off and draw the mobs, while you go fully invisible (armor too) for 20s. |
+| Pyro | **Supernova** | You shoot up and explode in a ring of fire, then fly as living flame for 15s. |
+| Host | **Consume** | Tendrils seize up to 5 nearby mobs, drag them in and devour them; you heal 2 hearts and get food for each, and the organism is fed. |
+
+Bosses can't be stunned by Banshee Wail or seized by Consume.
