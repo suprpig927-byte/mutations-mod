@@ -7,6 +7,8 @@
     "mutations:gene_splicer",
     "mutations:nullite_cluster",
     "mutations:meteorite",
-    "mutations:specimen_chamber"
+    "mutations:specimen_chamber",
+    "mutations:inhibitor_field",
+    "mutations:psi_beacon"
   ]
 }

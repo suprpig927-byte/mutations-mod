@@ -38,5 +38,12 @@
   "item.mutations.symbiote_jar": "Symbiote Jar",
   "entity.mutations.failed_experiment": "Failed Experiment",
   "item.mutations.failed_experiment_spawn_egg": "Failed Experiment Spawn Egg",
-  "block.mutations.specimen_chamber": "Specimen Chamber"
+  "block.mutations.specimen_chamber": "Specimen Chamber",
+  "block.mutations.inhibitor_field": "Inhibitor Field",
+  "block.mutations.psi_beacon": "Psi Beacon",
+  "item.mutations.inhibitor_collar": "Inhibitor Collar",
+  "item.mutations.containment_helmet": "Containment Helmet",
+  "item.mutations.containment_chestplate": "Containment Suit",
+  "item.mutations.containment_leggings": "Containment Leggings",
+  "item.mutations.containment_boots": "Containment Boots"
 }

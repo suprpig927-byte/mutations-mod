@@ -128,6 +128,12 @@ public final class AbilityHandler {
         Siren.onMobHurt(victim);
         var source = event.getSource();
 
+        // Containment Suit: each piece blocks 15% of damage from mutant abilities.
+        if (Powers.ABILITY_DAMAGE.get()) {
+            int pieces = com.mutationsmod.mutations.registry.ModContent.containmentPieces(victim);
+            if (pieces > 0) event.setAmount(event.getAmount() * (1f - 0.15f * pieces));
+        }
+
         // Nullite Spear: a jab suppresses a mutant's powers for 5s, a charged hit for 15s.
         if (victim instanceof ServerPlayer hit && source.getEntity() instanceof LivingEntity spearman) {
             var weapon = source.getWeaponItem();

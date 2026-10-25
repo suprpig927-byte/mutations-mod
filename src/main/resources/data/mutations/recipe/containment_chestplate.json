@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "M": "mutations:mutagen_ingot",
+    "N": "mutations:nullite_shard"
+  },
+  "pattern": [
+    "M M",
+    "MNM",
+    "MMM"
+  ],
+  "result": {
+    "id": "mutations:containment_chestplate"
+  }
+}

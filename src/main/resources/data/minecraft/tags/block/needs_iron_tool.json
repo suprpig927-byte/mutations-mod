@@ -3,6 +3,7 @@
     "mutations:mutagen_ore",
     "mutations:deepslate_mutagen_ore",
     "mutations:nullite_cluster",
-    "mutations:meteorite"
+    "mutations:meteorite",
+    "mutations:inhibitor_field"
   ]
 }

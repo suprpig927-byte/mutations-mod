@@ -90,7 +90,7 @@ public class FailedExperiment extends Zombie {
     @Override
     public boolean doHurtTarget(ServerLevel level, Entity target) {
         boolean hit = super.doHurtTarget(level, target);
-        if (hit && target instanceof LivingEntity living) {
+        if (hit && !suppressed() && target instanceof LivingEntity living) {
             switch (power()) {
                 case BURNING -> living.igniteForSeconds(4f);
                 case FROZEN -> {
@@ -108,14 +108,14 @@ public class FailedExperiment extends Zombie {
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         boolean hurt = super.hurtServer(level, source, amount);
         // Unstable: sometimes blinks away when hurt.
-        if (hurt && power() == Power.UNSTABLE && getRandom().nextFloat() < 0.35f) teleportNear(getX(), getY(), getZ(), 6);
+        if (hurt && !suppressed() && power() == Power.UNSTABLE && getRandom().nextFloat() < 0.35f) teleportNear(getX(), getY(), getZ(), 6);
         return hurt;
     }
 
     @Override
     public void aiStep() {
         super.aiStep();
-        if (level() instanceof ServerLevel sl) {
+        if (level() instanceof ServerLevel sl && !suppressed()) {
             Power p = power();
             if (tickCount % 6 == 0) {
                 switch (p) {
@@ -134,6 +134,11 @@ public class FailedExperiment extends Zombie {
                 if (distanceToSqr(target) > 9) teleportNear(target.getX(), target.getY(), target.getZ(), 3);
             }
         }
+    }
+
+    /** Nullite (Inhibitor Field, Collar) shuts this subject's power off. */
+    public boolean suppressed() {
+        return hasEffect(com.mutationsmod.mutations.registry.ModContent.SUPPRESSED);
     }
 
     private void teleportNear(double x, double y, double z, double spread) {

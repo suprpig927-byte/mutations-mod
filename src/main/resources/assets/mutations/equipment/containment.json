@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "mutations:containment"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "mutations:containment"
+      }
+    ]
+  }
+}

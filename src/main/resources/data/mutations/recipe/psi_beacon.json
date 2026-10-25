@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "E": "minecraft:ender_eye",
+    "C": "mutations:mutagen_crystal",
+    "G": "minecraft:glass",
+    "I": "mutations:mutagen_ingot"
+  },
+  "pattern": [
+    " E ",
+    "CGC",
+    "III"
+  ],
+  "result": {
+    "id": "mutations:psi_beacon"
+  }
+}

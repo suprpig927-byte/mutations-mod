@@ -45,6 +45,8 @@ public final class ModContent {
     public static final DeferredHolder<net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<com.mutationsmod.mutations.entity.FailedExperiment>>
             FAILED_EXPERIMENT = ENTITIES.registerEntityType("failed_experiment", com.mutationsmod.mutations.entity.FailedExperiment::new,
             net.minecraft.world.entity.MobCategory.MONSTER, b -> b.sized(0.6f, 1.95f).eyeHeight(1.74f).clientTrackingRange(8));
+    public static final DeferredRegister<net.minecraft.world.level.block.entity.BlockEntityType<?>> BLOCK_ENTITIES =
+            DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MutationsMod.MODID);
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MutationsMod.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MutationsMod.MODID);
 
@@ -67,6 +69,16 @@ public final class ModContent {
     public static final DeferredBlock<com.mutationsmod.mutations.block.SpecimenChamberBlock> SPECIMEN_CHAMBER = BLOCKS.registerBlock("specimen_chamber",
             com.mutationsmod.mutations.block.SpecimenChamberBlock::new,
             p -> p.mapColor(MapColor.METAL).strength(3f, 6f).requiresCorrectToolForDrops().sound(SoundType.METAL).lightLevel(s -> 9).noOcclusion());
+    public static final DeferredBlock<com.mutationsmod.mutations.block.InhibitorFieldBlock> INHIBITOR_FIELD = BLOCKS.registerBlock("inhibitor_field",
+            com.mutationsmod.mutations.block.InhibitorFieldBlock::new,
+            p -> p.mapColor(MapColor.COLOR_GREEN).strength(5f, 9f).requiresCorrectToolForDrops().sound(SoundType.METAL).lightLevel(s -> 10));
+    public static final DeferredBlock<com.mutationsmod.mutations.block.PsiBeaconBlock> PSI_BEACON = BLOCKS.registerBlock("psi_beacon",
+            com.mutationsmod.mutations.block.PsiBeaconBlock::new,
+            p -> p.mapColor(MapColor.COLOR_PURPLE).strength(3.5f, 6f).requiresCorrectToolForDrops().sound(SoundType.METAL).lightLevel(s -> 8).noOcclusion());
+    public static final DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>,
+            net.minecraft.world.level.block.entity.BlockEntityType<com.mutationsmod.mutations.block.InhibitorFieldBlock.Field>> INHIBITOR_FIELD_ENTITY =
+            BLOCK_ENTITIES.register("inhibitor_field", () -> new net.minecraft.world.level.block.entity.BlockEntityType<>(
+                    com.mutationsmod.mutations.block.InhibitorFieldBlock.Field::new, INHIBITOR_FIELD.get()));
     public static final DeferredBlock<Block> METEORITE = BLOCKS.registerSimpleBlock("meteorite",
             p -> p.mapColor(MapColor.COLOR_BLACK).strength(5f, 9f).requiresCorrectToolForDrops().sound(SoundType.ANCIENT_DEBRIS));
     public static final DeferredBlock<AmethystClusterBlock> NULLITE_CLUSTER = BLOCKS.registerBlock("nullite_cluster",
@@ -118,6 +130,41 @@ public final class ModContent {
     public static final DeferredItem<BlockItem> MUTAGEN_CRYSTAL_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("mutagen_crystal_block", MUTAGEN_CRYSTAL_BLOCK);
     public static final DeferredItem<BlockItem> MUTAGEN_CLUSTER_ITEM = ITEMS.registerSimpleBlockItem("mutagen_cluster", MUTAGEN_CLUSTER);
     public static final DeferredItem<BlockItem> SPECIMEN_CHAMBER_ITEM = ITEMS.registerSimpleBlockItem("specimen_chamber", SPECIMEN_CHAMBER);
+    public static final DeferredItem<BlockItem> INHIBITOR_FIELD_ITEM = ITEMS.registerSimpleBlockItem("inhibitor_field", INHIBITOR_FIELD);
+    public static final DeferredItem<BlockItem> PSI_BEACON_ITEM = ITEMS.registerSimpleBlockItem("psi_beacon", PSI_BEACON);
+    public static final DeferredItem<com.mutationsmod.mutations.item.InhibitorCollarItem> INHIBITOR_COLLAR = ITEMS.registerItem("inhibitor_collar",
+            com.mutationsmod.mutations.item.InhibitorCollarItem::new, p -> p.stacksTo(16).rarity(Rarity.UNCOMMON));
+
+    // ---- Containment Suit: anti-mutant armor; each piece blocks 15% of ability damage ----
+    public static final net.minecraft.resources.ResourceKey<net.minecraft.world.item.equipment.EquipmentAsset> CONTAINMENT_ASSET =
+            net.minecraft.resources.ResourceKey.create(net.minecraft.world.item.equipment.EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(MutationsMod.MODID, "containment"));
+    public static final net.minecraft.world.item.equipment.ArmorMaterial CONTAINMENT_MATERIAL = new net.minecraft.world.item.equipment.ArmorMaterial(
+            25, java.util.Map.of(net.minecraft.world.item.equipment.ArmorType.BOOTS, 2, net.minecraft.world.item.equipment.ArmorType.LEGGINGS, 5,
+                    net.minecraft.world.item.equipment.ArmorType.CHESTPLATE, 6, net.minecraft.world.item.equipment.ArmorType.HELMET, 2,
+                    net.minecraft.world.item.equipment.ArmorType.BODY, 5),
+            12, net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_IRON, 1.0f, 0.0f,
+            TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MutationsMod.MODID, "repairs_containment_armor")), CONTAINMENT_ASSET);
+    public static final DeferredItem<Item> CONTAINMENT_HELMET = ITEMS.registerSimpleItem("containment_helmet",
+            p -> p.humanoidArmor(CONTAINMENT_MATERIAL, net.minecraft.world.item.equipment.ArmorType.HELMET));
+    public static final DeferredItem<Item> CONTAINMENT_CHESTPLATE = ITEMS.registerSimpleItem("containment_chestplate",
+            p -> p.humanoidArmor(CONTAINMENT_MATERIAL, net.minecraft.world.item.equipment.ArmorType.CHESTPLATE));
+    public static final DeferredItem<Item> CONTAINMENT_LEGGINGS = ITEMS.registerSimpleItem("containment_leggings",
+            p -> p.humanoidArmor(CONTAINMENT_MATERIAL, net.minecraft.world.item.equipment.ArmorType.LEGGINGS));
+    public static final DeferredItem<Item> CONTAINMENT_BOOTS = ITEMS.registerSimpleItem("containment_boots",
+            p -> p.humanoidArmor(CONTAINMENT_MATERIAL, net.minecraft.world.item.equipment.ArmorType.BOOTS));
+
+    /** How many Containment Suit pieces this entity is wearing (each blocks 15% of ability damage). */
+    public static int containmentPieces(net.minecraft.world.entity.LivingEntity e) {
+        int n = 0;
+        for (var slot : new net.minecraft.world.entity.EquipmentSlot[]{net.minecraft.world.entity.EquipmentSlot.HEAD,
+                net.minecraft.world.entity.EquipmentSlot.CHEST, net.minecraft.world.entity.EquipmentSlot.LEGS, net.minecraft.world.entity.EquipmentSlot.FEET}) {
+            var s = e.getItemBySlot(slot);
+            if (s.is(CONTAINMENT_HELMET.get()) || s.is(CONTAINMENT_CHESTPLATE.get()) || s.is(CONTAINMENT_LEGGINGS.get()) || s.is(CONTAINMENT_BOOTS.get())) n++;
+        }
+        return n;
+    }
+
     public static final DeferredItem<BlockItem> METEORITE_ITEM = ITEMS.registerSimpleBlockItem("meteorite", METEORITE);
     public static final DeferredItem<BlockItem> NULLITE_CLUSTER_ITEM = ITEMS.registerSimpleBlockItem("nullite_cluster", NULLITE_CLUSTER);
     public static final DeferredItem<BlockItem> GENE_SPLICER_ITEM = ITEMS.registerSimpleBlockItem("gene_splicer", GENE_SPLICER);
@@ -137,6 +184,13 @@ public final class ModContent {
                 out.accept(MUTAGEN_CRYSTAL_BLOCK_ITEM.get());
                 out.accept(GENE_SPLICER_ITEM.get());
                 out.accept(SPECIMEN_CHAMBER_ITEM.get());
+                out.accept(INHIBITOR_FIELD_ITEM.get());
+                out.accept(PSI_BEACON_ITEM.get());
+                out.accept(INHIBITOR_COLLAR.get());
+                out.accept(CONTAINMENT_HELMET.get());
+                out.accept(CONTAINMENT_CHESTPLATE.get());
+                out.accept(CONTAINMENT_LEGGINGS.get());
+                out.accept(CONTAINMENT_BOOTS.get());
                 out.accept(MASTERY_TOME.get());
                 out.accept(METEORITE_ITEM.get());
                 out.accept(NULLITE_CLUSTER_ITEM.get());
@@ -174,6 +228,7 @@ public final class ModContent {
         ITEMS.register(modBus);
         TABS.register(modBus);
         EFFECTS.register(modBus);
+        BLOCK_ENTITIES.register(modBus);
         FEATURE_TYPES.register(modBus);
     }
 }
