@@ -86,7 +86,7 @@ Nullite is a green crystal that shuts mutant powers off, like kryptonite.
 
 - **Meteor Craters** are very rare (about one per 1,200 chunks), ~30-block-wide bowls blasted into the overworld surface with a raised rim. A half-buried **Meteorite** core sits in the middle, covered in **Nullite Clusters**; Mutagen Crystal is scattered across the bowl. Ops can call one down with `/mutation crater`.
 - **Nullite Clusters**: mine with an iron pickaxe for 1-2 **Nullite Shards**. Like kryptonite, standing within 8 blocks of Nullite suppresses a mutant's powers.
-- **Containment Rods** will be found in Gene Lab chests (structure coming soon; creative tab for now).
+- **Containment Rods** are found in Gene Lab chests.
 - **Nullite Spear**: Nullite Shard, Nullite Shard, Containment Rod stacked vertically (shards on top). A real spear (jab and charge attacks), between iron and diamond. Repaired with Nullite Shards.
   - A **jab** suppresses the mutant you hit for **5 seconds**; a **charged hit** for **15 seconds**.
   - **Suppressed**: no active abilities, no passives, no toggled forms, no mutation looks. The HUD shows a countdown.
@@ -94,7 +94,7 @@ Nullite is a green crystal that shuts mutant powers off, like kryptonite.
 
 ## Catalysts
 
-Each base mutation has a Catalyst, found in the vault of that mutation's Gene Lab. Hold it in either hand for its boost:
+Each base mutation has a Catalyst, found in the vault of that mutation's Gene Lab (see below). Hold it in either hand for its boost:
 
 | Mutation | Catalyst | Boost |
 |---|---|---|
@@ -110,3 +110,18 @@ Each base mutation has a Catalyst, found in the vault of that mutation's Gene La
 | Chameleon | Prism Cloak | Mimic lasts twice as long |
 | Pyro | Ember Heart | Rain no longer hurts you (water still does) |
 | Host | Symbiote Jar | The organism starves half as fast |
+
+## Abandoned Gene Labs
+
+Rare ruined research labs on the overworld surface (about one per 400 chunks), each built to study one mutation and decorated for it.
+
+- **Surface:** a crumbling white lab building with broken windows and debris. A stairwell leads down.
+- **Specimen hall:** cracked specimen tanks (some smashed) and two **Failed Experiment** spawners.
+- **Research room:** bookshelves, desks, two lecterns with **Research Notes**, a loot chest (Mastery Tomes, Containment Rods, Mutagen, sometimes a Nullite Shard) and sometimes an abandoned Gene Splicer.
+- **Vault:** behind an iron door (press the button beside it): the lab's **Catalyst**, a Mastery Tome, Mutagen Crystals, the lab's research note and sometimes a Containment Rod.
+- Ops can build one with `/mutation lab <mutation>`.
+
+## Failed Experiments
+
+Mutated test subjects that guard the labs. Zombie-like, but they never burn in daylight. Each carries one power:
+**Burning** (sets you on fire, fire-proof), **Frozen** (slows and chills you), **Unstable** (teleports to you and blinks away when hurt), **Hulking** (40% bigger, much tougher and stronger, slower), **Leeching** (heals when it hits you). They drop rotten flesh and sometimes a Mutagen Crystal.
