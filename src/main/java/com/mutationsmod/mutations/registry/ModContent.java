@@ -193,6 +193,9 @@ public final class ModContent {
             TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MutationsMod.MODID, "nullite_tool_materials")));
     public static final DeferredItem<Item> OVERSEERS_SPEAR = ITEMS.registerItem("overseers_spear", Item::new,
             p -> p.spear(OVERSEER_MATERIAL, 1.1f, 1.15f, 0.45f, 2.75f, 9.5f, 6.0f, 5.1f, 9.5f, 4.6f).rarity(Rarity.EPIC).fireResistant());
+    /** The Warden-Director's weapon: an iron-tier club whose hits shock (slow) the target for a moment. */
+    public static final DeferredItem<Item> SHOCK_BATON = ITEMS.registerItem("shock_baton", Item::new,
+            p -> p.sword(ToolMaterial.IRON, 3.0f, -2.2f).rarity(Rarity.RARE));
     public static final DeferredItem<Item> WARDEN_DIRECTOR_SPAWN_EGG = ITEMS.registerItem("warden_director_spawn_egg",
             net.minecraft.world.item.SpawnEggItem::new, p -> p.spawnEgg(WARDEN_DIRECTOR.get()));
     public static final DeferredItem<Item> SUBJECT_ZERO_SPAWN_EGG = ITEMS.registerItem("subject_zero_spawn_egg",
@@ -236,6 +239,7 @@ public final class ModContent {
                 out.accept(CONTAINMENT_GATE_ITEM.get());
                 out.accept(DIRECTORS_KEYCARD.get());
                 out.accept(OVERSEERS_SPEAR.get());
+                out.accept(SHOCK_BATON.get());
                 out.accept(HEART_OF_ZERO.get());
                 out.accept(GLOWCAP_STEW.get());
                 out.accept(CAVE_LOAF.get());

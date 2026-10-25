@@ -40,7 +40,7 @@ public class SubjectZero extends PrisonBoss {
     private static final EntityDataAccessor<Integer> FORM = SynchedEntityData.defineId(SubjectZero.class, EntityDataSerializers.INT);
     private static final Identifier COLOSSUS_ID = Identifier.fromNamespaceAndPath("mutations", "zero_colossus");
     private int formTimer = 160;
-    private int powerTimer = 40;
+    private int powerTimer = 80;
 
     public SubjectZero(EntityType<? extends Monster> type, Level level) {
         super(type, level, BossEvent.BossBarColor.PURPLE);
@@ -48,8 +48,8 @@ public class SubjectZero extends PrisonBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 350.0).add(Attributes.ATTACK_DAMAGE, 10.0)
-                .add(Attributes.ARMOR, 6.0).add(Attributes.MOVEMENT_SPEED, 0.32).add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 300.0).add(Attributes.ATTACK_DAMAGE, 6.0)
+                .add(Attributes.ARMOR, 6.0).add(Attributes.MOVEMENT_SPEED, 0.28).add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
                 .add(Attributes.FOLLOW_RANGE, 40.0).add(Attributes.SCALE, 1.15);
     }
 
@@ -103,8 +103,8 @@ public class SubjectZero extends PrisonBoss {
         if (t == null || --powerTimer > 0) return;
         switch (form()) {
             case PYRO -> {
-                powerTimer = 30;
-                for (int i = 0; i < 3; i++) {
+                powerTimer = 70;
+                for (int i = 0; i < 2; i++) {
                     Vec3 dir = t.getEyePosition().subtract(getEyePosition()).normalize().add(getRandom().nextGaussian() * 0.05, 0, getRandom().nextGaussian() * 0.05);
                     SmallFireball fb = new SmallFireball(level, this, dir);
                     fb.setPos(getX() + dir.x, getEyeY() - 0.2, getZ() + dir.z);
@@ -113,17 +113,17 @@ public class SubjectZero extends PrisonBoss {
                 level.playSound(null, getX(), getY(), getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 1f, 1f);
             }
             case CRYO -> {
-                powerTimer = 40;
+                powerTimer = 80;
                 if (hasLineOfSight(t)) {
                     Powers.line(level, getEyePosition(), t.getBoundingBox().getCenter(), ParticleTypes.SNOWFLAKE, 0.4);
-                    t.hurtServer(level, damageSources().freeze(), 6f);
-                    t.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 2));
-                    t.setTicksFrozen(Math.max(t.getTicksFrozen(), 200));
+                    t.hurtServer(level, damageSources().freeze(), 4f);
+                    t.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 50, 1));
+                    t.setTicksFrozen(Math.max(t.getTicksFrozen(), 120));
                     level.playSound(null, t.getX(), t.getY(), t.getZ(), SoundEvents.GLASS_BREAK, SoundSource.HOSTILE, 1f, 0.6f);
                 }
             }
             case STORMCALLER -> {
-                powerTimer = 50;
+                powerTimer = 100;
                 LightningBolt bolt = net.minecraft.world.entity.EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
                 if (bolt != null) {
                     bolt.snapTo(t.getX(), t.getY(), t.getZ());
@@ -131,7 +131,7 @@ public class SubjectZero extends PrisonBoss {
                 }
             }
             case BLINKER -> {
-                powerTimer = 60;
+                powerTimer = 110;
                 Vec3 behind = t.position().subtract(t.getLookAngle().multiply(1, 0, 1).normalize().scale(2));
                 if (randomTeleport(behind.x, t.getY(), behind.z, true, net.minecraft.tags.BlockTags.FIRE)) {
                     level.playSound(null, getX(), getY(), getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 1f, 0.8f);
@@ -139,9 +139,9 @@ public class SubjectZero extends PrisonBoss {
                 }
             }
             case COLOSSUS -> {
-                powerTimer = 80;
-                for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(6), e -> e != this && e.isAlive())) {
-                    e.hurtServer(level, damageSources().mobAttack(this), 8f);
+                powerTimer = 120;
+                for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(5), e -> e != this && e.isAlive())) {
+                    e.hurtServer(level, damageSources().mobAttack(this), 5f);
                     Vec3 push = e.position().subtract(position()).normalize().scale(1.4).add(0, 0.6, 0);
                     e.push(push.x, push.y, push.z);
                     e.needsSync = true;

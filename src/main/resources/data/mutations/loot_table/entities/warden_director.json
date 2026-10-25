@@ -15,6 +15,15 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "mutations:shock_baton"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "mutations:overseers_spear"
         }
       ]

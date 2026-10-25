@@ -6,7 +6,9 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -33,12 +35,35 @@ public abstract class PrisonBoss extends Monster {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.1, true));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, true) {
+            private int swingCooldown;
+
+            @Override
+            public void tick() {
+                super.tick();
+                if (swingCooldown > 0) swingCooldown--;
+            }
+
+            @Override
+            protected void checkAndPerformAttack(LivingEntity target) {
+                if (swingCooldown <= 0 && canPerformAttack(target)) {
+                    swingCooldown = attackInterval();
+                    resetAttackCooldown();
+                    PrisonBoss.this.swingForAttack(InteractionHand.MAIN_HAND);
+                    PrisonBoss.this.doHurtTarget((ServerLevel) PrisonBoss.this.level(), target);
+                }
+            }
+        });
         this.goalSelector.addGoal(5, new MoveTowardsRestrictionGoal(this, 1.0));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 12.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    /** Ticks between melee swings (vanilla mobs use 20). */
+    protected int attackInterval() {
+        return 40;
     }
 
     /** Nullite (spear hits, Inhibitor Collar, Inhibitor Field) shuts the boss's powers off. */

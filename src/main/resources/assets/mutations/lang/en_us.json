@@ -59,5 +59,6 @@
   "item.mutations.directors_keycard": "Director's Keycard",
   "item.mutations.heart_of_zero": "Heart of Zero",
   "item.mutations.overseers_spear": "Overseer's Spear",
-  "block.mutations.containment_gate": "Containment Gate"
+  "block.mutations.containment_gate": "Containment Gate",
+  "item.mutations.shock_baton": "Shock Baton"
 }

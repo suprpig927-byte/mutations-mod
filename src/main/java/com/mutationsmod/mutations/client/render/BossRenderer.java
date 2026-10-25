@@ -9,11 +9,13 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.context.ContextKey;
 
 /** Prison bosses: humanoid. Subject Zero's texture changes with its current form (and when suppressed). */
-public class BossRenderer<T extends PrisonBoss> extends HumanoidMobRenderer<T, HumanoidRenderState, HumanoidModel<HumanoidRenderState>> {
-    private static final ContextKey<String> SKIN = new ContextKey<>(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "boss_skin"));
+public class BossRenderer<T extends PrisonBoss> extends HumanoidMobRenderer<T, BossRenderer.State, HumanoidModel<BossRenderer.State>> {
+    /** Render state that carries which skin to draw (Subject Zero's changes with its form). */
+    public static class State extends HumanoidRenderState {
+        public String skin;
+    }
     private final String base;
 
     public BossRenderer(EntityRendererProvider.Context context, String base, float scale) {
@@ -25,21 +27,21 @@ public class BossRenderer<T extends PrisonBoss> extends HumanoidMobRenderer<T, H
     }
 
     @Override
-    public HumanoidRenderState createRenderState() {
-        return new HumanoidRenderState();
+    public State createRenderState() {
+        return new State();
     }
 
     @Override
-    public void extractRenderState(T entity, HumanoidRenderState state, float partialTicks) {
+    public void extractRenderState(T entity, State state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
         String skin = base;
         if (entity instanceof SubjectZero z) skin = z.suppressed() ? "subject_zero" : "subject_zero_" + z.form().id();
-        state.setRenderData(SKIN, skin);
+        state.skin = skin;
     }
 
     @Override
-    public Identifier getTextureLocation(HumanoidRenderState state) {
-        String s = state.getRenderData(SKIN);
+    public Identifier getTextureLocation(State state) {
+        String s = state.skin;
         return Identifier.fromNamespaceAndPath(MutationsMod.MODID, "textures/entity/boss/" + (s == null ? base : s) + ".png");
     }
 }

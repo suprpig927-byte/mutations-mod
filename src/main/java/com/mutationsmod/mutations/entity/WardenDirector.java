@@ -25,11 +25,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * The Warden-Director: ran the Containment Prison. Fights with a Nullite Spear (every hit suppresses your
- * powers), wears a full Containment Suit, lunges at distant targets and releases Failed Experiments as he weakens.
+ * The Warden-Director: ran the Containment Prison. Fights with a Shock Baton (hits slow you briefly), wears a full Containment Suit, lunges at distant targets and releases Failed Experiments as he weakens.
  */
 public class WardenDirector extends PrisonBoss {
-    private int lungeCooldown = 100;
+    private int lungeCooldown = 160;
     private int releases = 0;
 
     public WardenDirector(EntityType<? extends Monster> type, Level level) {
@@ -38,25 +37,18 @@ public class WardenDirector extends PrisonBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 220.0).add(Attributes.ATTACK_DAMAGE, 8.0)
-                .add(Attributes.ARMOR, 8.0).add(Attributes.MOVEMENT_SPEED, 0.3).add(Attributes.KNOCKBACK_RESISTANCE, 0.6)
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 220.0).add(Attributes.ATTACK_DAMAGE, 5.0)
+                .add(Attributes.ARMOR, 8.0).add(Attributes.MOVEMENT_SPEED, 0.27).add(Attributes.KNOCKBACK_RESISTANCE, 0.6)
                 .add(Attributes.FOLLOW_RANGE, 40.0);
     }
 
     private void equip() {
-        setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModContent.NULLITE_SPEAR.get()));
+        setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModContent.SHOCK_BATON.get()));
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(ModContent.CONTAINMENT_HELMET.get()));
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(ModContent.CONTAINMENT_CHESTPLATE.get()));
         setItemSlot(EquipmentSlot.LEGS, new ItemStack(ModContent.CONTAINMENT_LEGGINGS.get()));
         setItemSlot(EquipmentSlot.FEET, new ItemStack(ModContent.CONTAINMENT_BOOTS.get()));
         for (EquipmentSlot s : EquipmentSlot.values()) setDropChance(s, 0f);
-    }
-
-    @Override
-    public boolean doHurtTarget(ServerLevel level, Entity target) {
-        boolean hit = super.doHurtTarget(level, target);
-        if (hit && target instanceof ServerPlayer p) Suppression.apply(p, 5 * 20, true);   // Nullite Spear
-        return hit;
     }
 
     @Override
@@ -69,16 +61,16 @@ public class WardenDirector extends PrisonBoss {
         }
         LivingEntity target = getTarget();
         if (target != null && --lungeCooldown <= 0 && distanceToSqr(target) > 36) {
-            lungeCooldown = 120;
+            lungeCooldown = 240;
             Vec3 dir = target.position().subtract(position()).normalize();
-            setDeltaMovement(dir.scale(1.6).add(0, 0.35, 0));
+            setDeltaMovement(dir.scale(1.3).add(0, 0.3, 0));
             needsSync = true;
             level.playSound(null, getX(), getY(), getZ(), SoundEvents.SPEAR_USE, SoundSource.HOSTILE, 1.0f, 0.7f);
             level.sendParticles(ParticleTypes.HAPPY_VILLAGER, getX(), getY() + 1, getZ(), 12, 0.4, 0.6, 0.4, 0.05);
         }
     }
 
-    /** "Containment breach!" Three Failed Experiments burst out around him. */
+    /** "Containment breach!" Two Failed Experiments burst out around him. */
     private void release(ServerLevel level) {
         for (Player p : level.players()) {
             if (p.distanceToSqr(this) < 48 * 48) {
@@ -86,10 +78,10 @@ public class WardenDirector extends PrisonBoss {
             }
         }
         level.playSound(null, getX(), getY(), getZ(), SoundEvents.IRON_DOOR_OPEN, SoundSource.HOSTILE, 1.5f, 0.6f);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             FailedExperiment fe = ModContent.FAILED_EXPERIMENT.get().create(level, EntitySpawnReason.MOB_SUMMONED);
             if (fe == null) continue;
-            double a = i * Math.PI * 2 / 3;
+            double a = i * Math.PI;
             fe.snapTo(getX() + Math.cos(a) * 3, getY(), getZ() + Math.sin(a) * 3, 0, 0);
             fe.finalizeSpawn(level, level.getCurrentDifficultyAt(fe.blockPosition()), EntitySpawnReason.MOB_SUMMONED, null);
             if (getTarget() != null) fe.setTarget(getTarget());

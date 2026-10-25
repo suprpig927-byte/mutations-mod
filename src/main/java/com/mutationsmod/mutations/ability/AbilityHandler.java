@@ -146,6 +146,15 @@ public final class AbilityHandler {
             }
         }
 
+        // Shock Baton: a jolt that slows the target for a moment (no effect on powers).
+        if (source.getEntity() instanceof LivingEntity && source.getWeaponItem() != null
+                && source.getWeaponItem().is(com.mutationsmod.mutations.registry.ModContent.SHOCK_BATON.get())
+                && victim.level() instanceof net.minecraft.server.level.ServerLevel sl) {
+            victim.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.SLOWNESS, 30, 1));
+            sl.sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK, victim.getX(), victim.getY() + victim.getBbHeight() * 0.6, victim.getZ(), 12, 0.3, 0.4, 0.3, 0.1);
+            sl.playSound(null, victim.getX(), victim.getY(), victim.getZ(), net.minecraft.sounds.SoundEvents.COPPER_BULB_TURN_ON, net.minecraft.sounds.SoundSource.HOSTILE, 1.0f, 1.6f);
+        }
+
         // Offense: a mutant hitting something in melee.
         if (source.getEntity() instanceof ServerPlayer attacker && source.getDirectEntity() == attacker
                 && !Powers.ABILITY_DAMAGE.get() && attacker != victim
