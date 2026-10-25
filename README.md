@@ -140,7 +140,7 @@ A two-block-tall glass tube of glowing Mutagen fluid with a subject floating ins
 
 ## Mutant Haven
 
-A hidden cave village. Look for a small mossy rock outcrop on the surface. A spiral stair leads down into a big glowing cavern with a campfire plaza, a Gene Splicer, a pond, a mushroom patch and five huts. Each hut belongs to a Haven Mutant trader:
+A hidden cave village. Look for a small mossy rock outcrop on the surface. A spiral stair leads down into a big glowing cavern with a campfire plaza, a Gene Splicer, a pond, a mushroom patch and five huts. Each hut belongs to a Haven Mutant trader. Every trader has their own look (skin tone and hair), dressed for their job:
 
 | Trader | Sells |
 |---|---|
@@ -158,10 +158,10 @@ A rare prison built to hold mutants, with two separate boss fights.
 
 1. **Guard tower** on the surface. A spiral stair leads down.
 2. **Cell block.** Two rows of barred cells, some broken open, with Failed Experiment spawners and loot. Two **Inhibitor Fields** in the ceiling switch your powers off here.
-3. **Director's office.** This is where you fight the **Warden-Director** (220 HP). He wears a full Containment Suit and fights with a Nullite Spear: every hit suppresses you for 5 seconds. He lunges at you from range and releases Failed Experiments at 66% and 33% health.
-   - **Drops:** the **Director's Keycard**, the **Overseer's Spear** (a stronger spear whose suppression lasts twice as long), Nullite and a Mastery Tome.
-4. **The deep cell.** A stair leads down to a sealed **Containment Gate**. Right-click it with the Keycard to open it. Inside is **Subject Zero** (350 HP), who switches power every 8 seconds:
-   - **Pyro:** shoots fireballs.
+3. **Director's office.** This is where you fight the **Warden-Director** (220 HP). He wears a full Containment Suit and swings a **Shock Baton** about every 2 seconds; each hit jolts you with a moment of Slowness. Every 12 seconds or so he lunges at you from range, and he releases 2 Failed Experiments at 66% and again at 33% health.
+   - **Drops:** the **Director's Keycard**, his **Shock Baton** (an iron-tier club that slows what it hits), the **Overseer's Spear** (a stronger spear whose suppression lasts twice as long), Nullite and a Mastery Tome.
+4. **The deep cell.** A stair leads down to a sealed **Containment Gate**. Right-click it with the Keycard to open it. Inside is **Subject Zero** (300 HP), who switches power every 8 seconds and uses it every 3–6 seconds:
+   - **Pyro:** shoots two fireballs.
    - **Cryo:** fires a freezing line that slows you.
    - **Stormcaller:** calls lightning.
    - **Blinker:** teleports behind you.
