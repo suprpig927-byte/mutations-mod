@@ -61,6 +61,7 @@ public class HavenMutant extends AbstractVillager {
     private static final EntityDataAccessor<Integer> ROLE = SynchedEntityData.defineId(HavenMutant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> MUTATION = SynchedEntityData.defineId(HavenMutant.class, EntityDataSerializers.INT);
     private static final TagKey<Structure> LAB_MAPS = TagKey.create(Registries.STRUCTURE, Identifier.fromNamespaceAndPath("mutations", "on_lab_maps"));
+    private static final TagKey<Structure> PRISON_MAPS = TagKey.create(Registries.STRUCTURE, Identifier.fromNamespaceAndPath("mutations", "on_prison_maps"));
     private static final TagKey<Structure> CRATER_MAPS = TagKey.create(Registries.STRUCTURE, Identifier.fromNamespaceAndPath("mutations", "on_crater_maps"));
 
     public HavenMutant(EntityType<? extends AbstractVillager> type, Level level) {
@@ -146,6 +147,7 @@ public class HavenMutant extends AbstractVillager {
             case CARTOGRAPHER -> {
                 map(level, o, LAB_MAPS, "Gene Lab Map", 20);
                 map(level, o, CRATER_MAPS, "Meteor Crater Map", 28);
+                map(level, o, PRISON_MAPS, "Containment Prison Map", 36);
                 o.add(sell(new ItemStack(Items.EMERALD), new ItemCost(Items.PAPER, 20), null, 16));
             }
             case COOK -> {

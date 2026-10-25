@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "mutations:item/subject_zero_spawn_egg"
+  }
+}

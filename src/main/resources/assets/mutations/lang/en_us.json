@@ -51,5 +51,13 @@
   "item.mutations.glowcap_stew": "Glowcap Stew",
   "item.mutations.cave_loaf": "Cave Loaf",
   "item.mutations.crystal_candy": "Crystal Candy",
-  "item.mutations.smoked_blindfish": "Smoked Blindfish"
+  "item.mutations.smoked_blindfish": "Smoked Blindfish",
+  "entity.mutations.warden_director": "Warden-Director",
+  "entity.mutations.subject_zero": "Subject Zero",
+  "item.mutations.warden_director_spawn_egg": "Warden-Director Spawn Egg",
+  "item.mutations.subject_zero_spawn_egg": "Subject Zero Spawn Egg",
+  "item.mutations.directors_keycard": "Director's Keycard",
+  "item.mutations.heart_of_zero": "Heart of Zero",
+  "item.mutations.overseers_spear": "Overseer's Spear",
+  "block.mutations.containment_gate": "Containment Gate"
 }

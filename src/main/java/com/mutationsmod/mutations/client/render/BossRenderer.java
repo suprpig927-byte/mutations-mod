@@ -19,6 +19,9 @@ public class BossRenderer<T extends PrisonBoss> extends HumanoidMobRenderer<T, H
     public BossRenderer(EntityRendererProvider.Context context, String base, float scale) {
         super(context, new HumanoidModel<>(context.bakeLayer(ModelLayers.ZOMBIE)), 0.6f * scale);
         this.base = base;
+        this.addLayer(new net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer<>(this,
+                net.minecraft.client.renderer.entity.ArmorModelSet.bake(ModelLayers.ZOMBIE_ARMOR, context.getModelSet(), HumanoidModel::new),
+                context.getEquipmentRenderer()));
     }
 
     @Override
