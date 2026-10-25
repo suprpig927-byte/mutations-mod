@@ -38,6 +38,10 @@ public final class ModContent {
     public static final DeferredHolder<com.mojang.serialization.MapCodec<? extends net.minecraft.world.level.levelgen.feature.Feature>,
             com.mojang.serialization.MapCodec<com.mutationsmod.mutations.world.MeteorCraterFeature>> METEOR_CRATER =
             FEATURE_TYPES.register("meteor_crater", () -> com.mutationsmod.mutations.world.MeteorCraterFeature.CODEC);
+    public static final DeferredRegister.Entities ENTITIES = DeferredRegister.createEntities(MutationsMod.MODID);
+    public static final DeferredHolder<net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<com.mutationsmod.mutations.entity.FailedExperiment>>
+            FAILED_EXPERIMENT = ENTITIES.registerEntityType("failed_experiment", com.mutationsmod.mutations.entity.FailedExperiment::new,
+            net.minecraft.world.entity.MobCategory.MONSTER, b -> b.sized(0.6f, 1.95f).eyeHeight(1.74f).clientTrackingRange(8));
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MutationsMod.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MutationsMod.MODID);
 
@@ -100,6 +104,9 @@ public final class ModContent {
     public static final DeferredItem<Item> EMBER_HEART = ITEMS.registerSimpleItem("ember_heart", p -> catalyst(p, "Pyro", "Rain no longer hurts you (water still does)"));
     public static final DeferredItem<Item> SYMBIOTE_JAR = ITEMS.registerSimpleItem("symbiote_jar", p -> catalyst(p, "Host", "The organism starves half as fast"));
 
+    public static final DeferredItem<Item> FAILED_EXPERIMENT_SPAWN_EGG = ITEMS.registerItem("failed_experiment_spawn_egg",
+            net.minecraft.world.item.SpawnEggItem::new, p -> p.spawnEgg(FAILED_EXPERIMENT.get()));
+
     public static final DeferredItem<BlockItem> MUTAGEN_ORE_ITEM = ITEMS.registerSimpleBlockItem("mutagen_ore", MUTAGEN_ORE);
     public static final DeferredItem<BlockItem> DEEPSLATE_MUTAGEN_ORE_ITEM = ITEMS.registerSimpleBlockItem("deepslate_mutagen_ore", DEEPSLATE_MUTAGEN_ORE);
     public static final DeferredItem<BlockItem> MUTAGEN_CRYSTAL_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("mutagen_crystal_block", MUTAGEN_CRYSTAL_BLOCK);
@@ -128,6 +135,7 @@ public final class ModContent {
                 out.accept(NULLITE_SHARD.get());
                 out.accept(CONTAINMENT_ROD.get());
                 out.accept(NULLITE_SPEAR.get());
+                out.accept(FAILED_EXPERIMENT_SPAWN_EGG.get());
                 out.accept(TROLL_HEART.get());
                 out.accept(FOCUS_PRISM.get());
                 out.accept(STORM_ROD.get());
@@ -151,7 +159,10 @@ public final class ModContent {
     }
 
     public static void register(IEventBus modBus) {
+        ENTITIES.register(modBus);
         BLOCKS.register(modBus);
+        modBus.addListener((net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent e) ->
+                e.put(FAILED_EXPERIMENT.get(), com.mutationsmod.mutations.entity.FailedExperiment.createAttributes().build()));
         ITEMS.register(modBus);
         TABS.register(modBus);
         EFFECTS.register(modBus);

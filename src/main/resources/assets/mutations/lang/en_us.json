@@ -35,5 +35,7 @@
   "item.mutations.capacitor_cell": "Capacitor Cell",
   "item.mutations.prism_cloak": "Prism Cloak",
   "item.mutations.ember_heart": "Ember Heart",
-  "item.mutations.symbiote_jar": "Symbiote Jar"
+  "item.mutations.symbiote_jar": "Symbiote Jar",
+  "entity.mutations.failed_experiment": "Failed Experiment",
+  "item.mutations.failed_experiment_spawn_egg": "Failed Experiment Spawn Egg"
 }

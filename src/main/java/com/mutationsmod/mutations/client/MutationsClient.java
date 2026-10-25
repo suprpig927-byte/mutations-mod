@@ -98,6 +98,9 @@ public class MutationsClient {
         modEventBus.addListener(MutationsClient::registerHud);
         modEventBus.addListener(MutationsClient::registerRenderState);
         modEventBus.addListener(MutationsClient::registerLayerDefinitions);
+        modEventBus.addListener((EntityRenderersEvent.RegisterRenderers e) -> e.registerEntityRenderer(
+                com.mutationsmod.mutations.registry.ModContent.FAILED_EXPERIMENT.get(),
+                com.mutationsmod.mutations.client.render.FailedExperimentRenderer::new));
         modEventBus.addListener(MutationsClient::addLayers);
         NeoForge.EVENT_BUS.addListener(MutationsClient::onClientTick);
         NeoForge.EVENT_BUS.addListener(MutationsClient::onRenderFrame);
