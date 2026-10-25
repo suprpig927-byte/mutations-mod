@@ -243,6 +243,24 @@ public final class Omega {
                 level.setBlock(pos, (fluid.isSource() ? Blocks.OBSIDIAN : Blocks.COBBLESTONE).defaultBlockState(), 3);
             }
         }
+        // The ground itself freezes: the surface turns to snow and ice for a minute, then thaws back.
+        net.minecraft.util.RandomSource rnd = p.getRandom();
+        for (int dx = -20; dx <= 20; dx++) {
+            for (int dz = -20; dz <= 20; dz++) {
+                if (dx * dx + dz * dz > 400) continue;
+                int x = c.getX() + dx, z = c.getZ() + dz;
+                int top = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, x, z) - 1;
+                if (Math.abs(top - c.getY()) > 10) continue;
+                BlockPos surface = new BlockPos(x, top, z);
+                if (!level.getBlockState(surface).getFluidState().isEmpty()) continue;   // water/lava handled above
+                float f = rnd.nextFloat();
+                BlockState frozen = (f < 0.55f ? Blocks.SNOW_BLOCK : f < 0.85f ? Blocks.PACKED_ICE : Blocks.ICE).defaultBlockState();
+                if (Powers.freezeTemporary(level, surface, frozen, FROST_TICKS)) {
+                    Powers.freezeTemporary(level, surface.below(), (rnd.nextBoolean() ? Blocks.PACKED_ICE : Blocks.SNOW_BLOCK).defaultBlockState(), FROST_TICKS);
+                    if (rnd.nextFloat() < 0.5f) Powers.placeTemporary(level, surface.above(), Blocks.SNOW.defaultBlockState(), FROST_TICKS);
+                }
+            }
+        }
         Powers.setTimer(p, "absolute_zero", 200);
         level.sendParticles(ParticleTypes.SNOWFLAKE, p.getX(), p.getY() + 1, p.getZ(), 300, 8, 2, 8, 0.15);
         Powers.sound(p, SoundEvents.GLASS_BREAK, 1.5f, 0.5f);
@@ -416,17 +434,23 @@ public final class Omega {
 
     // ------------------------------------------------------------------ Pyro: Supernova
 
+    /** How long Absolute Zero's frozen ground lasts before it thaws (ticks). */
+    private static final int FROST_TICKS = 60 * 20;
+
     private static boolean supernova(ServerPlayer p) {
         MutationData d = ModAttachments.get(p);
         if (!Pyro.lit(d)) ModAttachments.set(p, d.withTimer("flame_on", 1));
-        Powers.impulse(p, new Vec3(0, 1.3, 0), true);
-        Powers.setTimer(p, "supernova", 12);
         Powers.sound(p, SoundEvents.BLAZE_SHOOT, 1.5f, 0.5f);
+        detonate(p, ModAttachments.get(p), (ServerLevel) p.level());   // explodes right where you stand
         return true;
     }
 
     private static void detonate(ServerPlayer p, MutationData d, ServerLevel level) {
         ModAttachments.set(p, ModAttachments.get(p).withTimer("supernova", 0));
+        // The blast goes off on the ground under you (even if you're in the air).
+        BlockPos ground = p.blockPosition();
+        for (int i = 0; i < 12 && level.getBlockState(ground.below()).getCollisionShape(level, ground.below()).isEmpty(); i++) ground = ground.below();
+        double gy = ground.getY() + 0.1;
         for (LivingEntity e : Powers.around(p, 9)) {
             Powers.hurt(p, e, 16f * Powers.power(d));
             e.igniteForSeconds(8);
@@ -435,11 +459,13 @@ public final class Omega {
         for (int ring = 2; ring <= 9; ring += 1) {
             for (int i = 0; i < ring * 6; i++) {
                 double a = i * Math.PI * 2 / (ring * 6);
-                level.sendParticles(ParticleTypes.FLAME, p.getX() + Math.cos(a) * ring, p.getY() + 0.5, p.getZ() + Math.sin(a) * ring, 1, 0, 0.1, 0, 0.02);
+                level.sendParticles(ParticleTypes.FLAME, p.getX() + Math.cos(a) * ring, gy + 0.2, p.getZ() + Math.sin(a) * ring, 1, 0, 0.1, 0, 0.02);
+                if (i % 3 == 0) level.sendParticles(ParticleTypes.LAVA, p.getX() + Math.cos(a) * ring, gy, p.getZ() + Math.sin(a) * ring, 1, 0, 0, 0, 0);
             }
         }
-        level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, p.getX(), p.getY() + 1, p.getZ(), 1, 0, 0, 0, 0);
-        level.sendParticles(ParticleTypes.LAVA, p.getX(), p.getY() + 1, p.getZ(), 40, 2, 1, 2, 0.5);
+        level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, p.getX(), gy + 0.5, p.getZ(), 1, 0, 0, 0, 0);
+        level.sendParticles(ParticleTypes.LAVA, p.getX(), gy + 0.5, p.getZ(), 40, 2, 0.5, 2, 0.5);
+        level.sendParticles(ParticleTypes.FLAME, p.getX(), gy + 0.5, p.getZ(), 120, 1.5, 0.3, 1.5, 0.35);
         Powers.sound(p, SoundEvents.GENERIC_EXPLODE.value(), 2.0f, 0.8f);
         // Then fly as living flame.
         Powers.setTimer(p, "flame_flight", 300);
@@ -448,6 +474,7 @@ public final class Omega {
             p.getAbilities().flying = true;
             p.onUpdateAbilities();
         }
+        Powers.impulse(p, new Vec3(0, 0.9, 0), false);                  // launched up out of the blast
     }
 
     // ------------------------------------------------------------------ Host: Consume
