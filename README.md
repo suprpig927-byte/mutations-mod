@@ -1,4 +1,4 @@
-# Mutations — v0.16.1 (NeoForge, Minecraft 26.3)
+# Mutations — v0.17.0 (NeoForge, Minecraft 26.3)
 
 Every player is born with a random, permanent mutation. Use your powers to earn mastery XP,
 level up, spend stat points, and evolve secondary mutations.
@@ -194,3 +194,24 @@ At **mastery level 75** your base mutation reaches its full potential and unlock
 | Host | **Consume** | Tendrils seize up to 5 nearby mobs, drag them in and devour them; you heal 2 hearts and get food for each, and the organism is fed. |
 
 Bosses can't be stunned by Banshee Wail or seized by Consume.
+
+## Mutation Weapons
+
+Every mutation has its own weapon, a bit stronger than iron and weaker than diamond. **Only that mutation can hold it.** If anyone else tries, it's pushed out of their hand into their inventory (or dropped if it's full). The special powers switch off while you're suppressed. Repair them with Mutagen Ingots.
+
+Every recipe uses Mutagen Ingots (M), Mutagen Crystals (C), sticks (S) and one themed ingredient (X):
+
+| Mutation | Weapon | Power | Themed ingredient |
+|---|---|---|---|
+| Regenerator | **Bloodthorn Blade** | Hits heal you (15% of the damage, 35% when you're below 40% health). | Golden Apple |
+| Kinetic Mind | **Orbit Chakram** | Right-click to throw it. It steers toward where you're looking, cuts through up to 3 mobs, then flies back to your hand. | Ender Pearl |
+| Stormcaller | **Thunderhead Maul** | Hits call lightning on the target (once every 2s) and do 25% more damage in the rain. | Lightning Rod |
+| Phaser | **Blur Daggers** | Attack 12% faster for every speed tier. | Sugar |
+| Cryo | **Glacier Halberd** | +1.5 reach. Hits slow and frost mobs. Right-click raises a line of ice spikes that hurts, freezes and pops up mobs (4s cooldown). | Blue Ice |
+| Blinker | **Rift Knife** | Right-click to throw it. You teleport to wherever it lands and it returns to your hand (2s cooldown). | Eye of Ender |
+| Colossus | **Earthbreaker** | In Steel Form, each hit sends out a shockwave that hits mobs around the target for half damage. | Block of Iron |
+| Siren | **Echo Bow** | Arrows burst in a sonic boom where they land, hurting and dazing everything within 3.5 blocks. | Amethyst Shard |
+| Absorber | **Capacitor Blade** | Hits store 1 charge. Right-click spends 10 charge on a 24-block energy slash. | Block of Redstone |
+| Chameleon | **Shade Fang** | Deals 2.5x damage from behind, or while you're hidden or invisible. | Ink Sac |
+| Pyro | **Ember Scythe** | Hits set mobs on fire. Right-click sweeps an arc of flame in front of you (3s cooldown). | Blaze Rod |
+| Host | **Symbiote Whip** | +2.5 reach. Hits yank mobs toward you and push the organism's hunger back by 30s. | Fermented Spider Eye |
