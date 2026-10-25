@@ -44,7 +44,7 @@ public final class ClientPowers {
 
         // Superman-style flight: hold forward to soar wherever you look.
         boolean flameFlight = d.has(Mutation.PYRO) && d.timer("flame_flight") > now;
-        boolean rainFlight = d.has(Secondary.RAINWALKER) && level.isRainingAt(p.blockPosition().above());
+        boolean rainFlight = d.has(Secondary.RAINWALKER) && (level.isRainingAt(p.blockPosition().above()) || com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.STORMCALLER));
         if (flying && !p.isCreative() && (flameFlight || rainFlight) && mc.options.keyUp.isDown()) {
             p.setDeltaMovement(p.getLookAngle().scale(flameFlight ? 1.0 : 0.9));
             dm = p.getDeltaMovement();

@@ -25,6 +25,11 @@ public final class Host {
     private Host() {}
 
     /** Ticks the organism can go between kills before it starts feeding on you. */
+    /** Symbiote Jar: the organism takes twice as long to start starving. */
+    public static int graceTicks(MutationData d, net.minecraft.world.entity.player.Player p) {
+        return graceTicks(d) * (com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.HOST) ? 2 : 1);
+    }
+
     public static int graceTicks(MutationData d) {
         return (d.has(Secondary.WELL_FED) ? 15 : 10) * 60 * 20;
     }
@@ -53,7 +58,7 @@ public final class Host {
         // Stronger right after a kill.
         Powers.add(p, Attributes.ATTACK_DAMAGE, "host_fed", sinceFed < 60 * 20 ? 3.0 : 0);
 
-        if (sinceFed > graceTicks(d) && now % 100 == 0) {
+        if (sinceFed > graceTicks(d, p) && now % 100 == 0) {
             Powers.hurtSelf(p, 1f);
             p.sendOverlayMessage(Component.literal("The organism is starving... it feeds on you.").withStyle(ChatFormatting.DARK_RED));
         }

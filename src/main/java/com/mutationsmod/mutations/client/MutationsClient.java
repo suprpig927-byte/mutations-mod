@@ -161,7 +161,7 @@ public class MutationsClient {
                     if (hd.has(Mutation.STORMCALLER)) {
                         float st = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
                         float time = (hostPlayer.level().getGameTime() % 100000L) + st + hostPlayer.getId() * 5;
-                        boolean rain = hostPlayer.level().isRainingAt(hostPlayer.blockPosition().above());
+                        boolean rain = hostPlayer.level().isRainingAt(hostPlayer.blockPosition().above()) || com.mutationsmod.mutations.item.Catalysts.holding(hostPlayer, com.mutationsmod.mutations.mutation.Mutation.STORMCALLER);
                         state.setRenderData(StormRenderData.KEY, new StormRenderData(time, rain, hd.timer("storm_fly") > 0));
                     } else {
                         state.setRenderData(StormRenderData.KEY, null);
@@ -346,7 +346,7 @@ public class MutationsClient {
             out.add(String.format("Charge %.0f / %.0f", d.charge(), cap) + (d.charge() > cap ? "  OVERCHARGED!" : ""));
         }
         if (d.has(Mutation.HOST) && d.timer("host_fed") > 0) {
-            long left = d.timer("host_fed") + Host.graceTicks(d) - now;
+            long left = d.timer("host_fed") + Host.graceTicks(d, mc.player) - now;
             out.add(left > 0 ? "Organism fed: " + formatTime(left) : "Organism STARVING");
         }
         if (d.has(Mutation.PYRO) && d.timer("flame_flight") > now) out.add("Flame Flight: " + formatTime(d.timer("flame_flight") - now));

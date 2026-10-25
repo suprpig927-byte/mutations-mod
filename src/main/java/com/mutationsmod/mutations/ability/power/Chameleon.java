@@ -202,7 +202,7 @@ public final class Chameleon {
     // ------------------------------------------------------------------ actives
 
     public static boolean mimic(ServerPlayer p, MutationData d) {
-        Powers.setTimer(p, "mimic", (long) (8 * 20 * Powers.power(d)));
+        Powers.setTimer(p, "mimic", (long) (8 * 20 * Powers.power(d) * (com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.CHAMELEON) ? 2 : 1))); // Prism Cloak
         for (Mob mob : p.level().getEntitiesOfClass(Mob.class, p.getBoundingBox().inflate(32), m -> m.getTarget() == p)) {
             mob.setTarget(null);
         }

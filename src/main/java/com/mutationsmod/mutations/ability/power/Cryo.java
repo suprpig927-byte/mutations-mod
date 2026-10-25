@@ -28,6 +28,7 @@ public final class Cryo {
     private static final int ICE_LIFETIME = 30 * 20;
 
     public static boolean isHot(ServerPlayer p) {
+        if (com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.CRYO)) return false; // Frost Core
         if (Powers.isNether(p.level())) return true;
         return Powers.temperature(p) > 1.0f && !Powers.isNight(p.level());
     }

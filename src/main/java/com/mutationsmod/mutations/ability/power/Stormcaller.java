@@ -37,7 +37,13 @@ public final class Stormcaller {
     }
 
     public static boolean inRain(ServerPlayer p) {
-        return p.level().isRainingAt(p.blockPosition().above());
+        return p.level().isRainingAt(p.blockPosition().above()) || com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.STORMCALLER); // Storm Rod
+    }
+
+    /** Weather multiplier for this player: the Storm Rod counts as rain. */
+    public static float weather(ServerPlayer p) {
+        float w = weather(p.level());
+        return com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.STORMCALLER) ? Math.max(1.0f, w) : w;
     }
 
     public static void tick(ServerPlayer p, MutationData d) {
@@ -113,7 +119,7 @@ public final class Stormcaller {
 
     public static void onMelee(LivingIncomingDamageEvent event, ServerPlayer p, MutationData d, LivingEntity target) {
         if (d.has(Secondary.STATIC_CHARGE) && p.getRandom().nextFloat() < 0.25f) {
-            float zap = 3f * weather(p.level()) * Powers.power(d);
+            float zap = 3f * weather(p) * Powers.power(d);
             event.setAmount(event.getAmount() + zap);
             Powers.particles(target, ParticleTypes.ELECTRIC_SPARK, 15, 0.4, 0.2);
             List<LivingEntity> near = target.level().getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(5),
@@ -130,7 +136,7 @@ public final class Stormcaller {
     public static boolean lightningStrike(ServerPlayer p, MutationData d) {
         ServerLevel level = (ServerLevel) p.level();
         Vec3 target = Raycast.target(p, 48);
-        float damage = (7f + d.level() * 0.1f) * weather(level) * Powers.power(d);
+        float damage = (7f + d.level() * 0.1f) * weather(p) * Powers.power(d);
         bolt(level, p, target, damage);
         if (d.has(Secondary.CONDUCTOR)) {
             level.getEntitiesOfClass(LivingEntity.class, new net.minecraft.world.phys.AABB(target, target).inflate(6),
@@ -163,10 +169,10 @@ public final class Stormcaller {
     }
 
     public static boolean thunderclap(ServerPlayer p, MutationData d) {
-        float damage = 4f * weather(p.level()) * Powers.power(d);
+        float damage = 4f * weather(p) * Powers.power(d);
         for (LivingEntity e : Powers.around(p, 6)) {
             Powers.hurt(p, e, damage);
-            Powers.knockAway(e, p.position(), 1.5 * weather(p.level()), 0.5);
+            Powers.knockAway(e, p.position(), 1.5 * weather(p), 0.5);
         }
         Powers.particles(p, ParticleTypes.ELECTRIC_SPARK, 60, 2.5, 0.3);
         Powers.particles(p, ParticleTypes.CLOUD, 30, 2.0, 0.2);

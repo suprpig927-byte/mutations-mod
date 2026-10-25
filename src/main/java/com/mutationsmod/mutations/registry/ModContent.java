@@ -85,6 +85,21 @@ public final class ModContent {
     public static final DeferredItem<MasteryTomeItem> MASTERY_TOME = ITEMS.registerItem("mastery_tome", MasteryTomeItem::new,
             p -> p.stacksTo(16).rarity(Rarity.RARE));
 
+
+    // ---------------------------------------------------------------- catalysts (one per mutation, found in Gene Labs)
+    public static final DeferredItem<Item> TROLL_HEART = ITEMS.registerSimpleItem("troll_heart", p -> catalyst(p, "Regenerator", "Regenerate twice as fast"));
+    public static final DeferredItem<Item> FOCUS_PRISM = ITEMS.registerSimpleItem("focus_prism", p -> catalyst(p, "Kinetic Mind", "+50% telekinesis range, hold 1 extra block"));
+    public static final DeferredItem<Item> STORM_ROD = ITEMS.registerSimpleItem("storm_rod", p -> catalyst(p, "Stormcaller", "Counts as rain for you, even in clear weather"));
+    public static final DeferredItem<Item> KINETIC_SOLES = ITEMS.registerSimpleItem("kinetic_soles", p -> catalyst(p, "Phaser", "Unlocks one extra speed tier"));
+    public static final DeferredItem<Item> FROST_CORE = ITEMS.registerSimpleItem("frost_core", p -> catalyst(p, "Cryo", "Heat no longer weakens you"));
+    public static final DeferredItem<Item> ENDER_LENS = ITEMS.registerSimpleItem("ender_lens", p -> catalyst(p, "Blinker", "+50% Blink and Displace range"));
+    public static final DeferredItem<Item> TITAN_GAUNTLET = ITEMS.registerSimpleItem("titan_gauntlet", p -> catalyst(p, "Colossus", "Ground Pound hits 50% harder and farther"));
+    public static final DeferredItem<Item> RESONANCE_CRYSTAL = ITEMS.registerSimpleItem("resonance_crystal", p -> catalyst(p, "Siren", "Sonic Scream reaches 50% farther and stuns"));
+    public static final DeferredItem<Item> CAPACITOR_CELL = ITEMS.registerSimpleItem("capacitor_cell", p -> catalyst(p, "Absorber", "Absorb charge 50% faster"));
+    public static final DeferredItem<Item> PRISM_CLOAK = ITEMS.registerSimpleItem("prism_cloak", p -> catalyst(p, "Chameleon", "Mimic lasts twice as long"));
+    public static final DeferredItem<Item> EMBER_HEART = ITEMS.registerSimpleItem("ember_heart", p -> catalyst(p, "Pyro", "Rain no longer hurts you (water still does)"));
+    public static final DeferredItem<Item> SYMBIOTE_JAR = ITEMS.registerSimpleItem("symbiote_jar", p -> catalyst(p, "Host", "The organism starves half as fast"));
+
     public static final DeferredItem<BlockItem> MUTAGEN_ORE_ITEM = ITEMS.registerSimpleBlockItem("mutagen_ore", MUTAGEN_ORE);
     public static final DeferredItem<BlockItem> DEEPSLATE_MUTAGEN_ORE_ITEM = ITEMS.registerSimpleBlockItem("deepslate_mutagen_ore", DEEPSLATE_MUTAGEN_ORE);
     public static final DeferredItem<BlockItem> MUTAGEN_CRYSTAL_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("mutagen_crystal_block", MUTAGEN_CRYSTAL_BLOCK);
@@ -113,7 +128,27 @@ public final class ModContent {
                 out.accept(NULLITE_SHARD.get());
                 out.accept(CONTAINMENT_ROD.get());
                 out.accept(NULLITE_SPEAR.get());
+                out.accept(TROLL_HEART.get());
+                out.accept(FOCUS_PRISM.get());
+                out.accept(STORM_ROD.get());
+                out.accept(KINETIC_SOLES.get());
+                out.accept(FROST_CORE.get());
+                out.accept(ENDER_LENS.get());
+                out.accept(TITAN_GAUNTLET.get());
+                out.accept(RESONANCE_CRYSTAL.get());
+                out.accept(CAPACITOR_CELL.get());
+                out.accept(PRISM_CLOAK.get());
+                out.accept(EMBER_HEART.get());
+                out.accept(SYMBIOTE_JAR.get());
             }).build());
+
+    private static Item.Properties catalyst(Item.Properties p, String mutation, String effect) {
+        return p.stacksTo(1).rarity(Rarity.EPIC).component(net.minecraft.core.component.DataComponents.LORE,
+                new net.minecraft.world.item.component.ItemLore(java.util.List.of(
+                        Component.literal(mutation + " Catalyst").withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE),
+                        Component.literal(effect).withStyle(net.minecraft.ChatFormatting.GRAY),
+                        Component.literal("Hold in either hand").withStyle(net.minecraft.ChatFormatting.DARK_GRAY))));
+    }
 
     public static void register(IEventBus modBus) {
         BLOCKS.register(modBus);

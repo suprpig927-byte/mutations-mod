@@ -80,7 +80,7 @@ public final class Blinker {
     // ------------------------------------------------------------------ actives
 
     public static boolean blink(ServerPlayer p, MutationData d) {
-        double range = 16 * Math.min(1.5f, Powers.power(d));
+        double range = 16 * Math.min(1.5f, Powers.power(d)) * (com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.BLINKER) ? 1.5 : 1.0); // Ender Lens
         BlockHitResult hit = Raycast.block(p, range);
         Vec3 target;
         if (hit.getType() == HitResult.Type.BLOCK) {
@@ -103,7 +103,7 @@ public final class Blinker {
     }
 
     public static boolean displace(ServerPlayer p, MutationData d) {
-        LivingEntity target = Raycast.entity(p, 16);
+        LivingEntity target = Raycast.entity(p, com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.BLINKER) ? 24 : 16); // Ender Lens
         if (target == null) {
             p.sendOverlayMessage(Component.literal("No target.").withStyle(ChatFormatting.GRAY));
             return false;

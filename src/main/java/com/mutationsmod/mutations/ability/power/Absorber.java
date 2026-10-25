@@ -65,6 +65,7 @@ public final class Absorber {
 
     /** Charge has no upper limit: going over capacity just hurts (see tick). */
     public static void addCharge(ServerPlayer p, float amount) {
+        if (amount > 0 && com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.ABSORBER)) amount *= 1.5f; // Capacitor Cell
         MutationData d = ModAttachments.get(p);
         float cap = capacity(d);
         float charge = d.charge() + amount;

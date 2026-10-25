@@ -23,5 +23,17 @@
   "item.mutations.containment_rod": "Containment Rod",
   "item.mutations.nullite_spear": "Nullite Spear",
   "effect.mutations.suppressed": "Suppressed",
-  "block.mutations.meteorite": "Meteorite"
+  "block.mutations.meteorite": "Meteorite",
+  "item.mutations.troll_heart": "Troll Heart",
+  "item.mutations.focus_prism": "Focus Prism",
+  "item.mutations.storm_rod": "Storm Rod",
+  "item.mutations.kinetic_soles": "Kinetic Soles",
+  "item.mutations.frost_core": "Frost Core",
+  "item.mutations.ender_lens": "Ender Lens",
+  "item.mutations.titan_gauntlet": "Titan Gauntlet",
+  "item.mutations.resonance_crystal": "Resonance Crystal",
+  "item.mutations.capacitor_cell": "Capacitor Cell",
+  "item.mutations.prism_cloak": "Prism Cloak",
+  "item.mutations.ember_heart": "Ember Heart",
+  "item.mutations.symbiote_jar": "Symbiote Jar"
 }

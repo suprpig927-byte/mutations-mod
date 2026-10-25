@@ -81,7 +81,7 @@ public final class Pyro {
         }
         if (p.isOnFire()) p.clearFire();
 
-        boolean wet = p.isInWaterOrRain();
+        boolean wet = com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.PYRO) ? p.isInWater() : p.isInWaterOrRain(); // Ember Heart
         if (wet) {
             // Steam hisses off you.
             if (now % 4 == 0) level.sendParticles(ParticleTypes.CLOUD, p.getX(), p.getY() + 1.2, p.getZ(), 2, 0.3, 0.5, 0.3, 0.01);
@@ -266,7 +266,7 @@ public final class Pyro {
 
     public static boolean flameFlight(ServerPlayer p, MutationData d) {
         if (!needFlame(p, d)) return false;
-        if (p.isInWaterOrRain()) {
+        if (com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.PYRO) ? p.isInWater() : p.isInWaterOrRain()) {
             p.sendOverlayMessage(Component.literal("Your flames sputter in the water.").withStyle(ChatFormatting.GRAY));
             return false;
         }

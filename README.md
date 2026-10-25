@@ -91,3 +91,22 @@ Nullite is a green crystal that shuts mutant powers off, like kryptonite.
   - A **jab** suppresses the mutant you hit for **5 seconds**; a **charged hit** for **15 seconds**.
   - **Suppressed**: no active abilities, no passives, no toggled forms, no mutation looks. The HUD shows a countdown.
   - **Holding** the spear (either hand) suppresses your own powers while you hold it.
+
+## Catalysts
+
+Each base mutation has a Catalyst, found in the vault of that mutation's Gene Lab. Hold it in either hand for its boost:
+
+| Mutation | Catalyst | Boost |
+|---|---|---|
+| Regenerator | Troll Heart | Regenerate twice as fast |
+| Kinetic Mind | Focus Prism | +50% telekinesis range, hold 1 extra block |
+| Stormcaller | Storm Rod | Counts as rain for you, even in clear weather |
+| Phaser | Kinetic Soles | Unlocks one extra speed tier |
+| Cryo | Frost Core | Heat no longer weakens you |
+| Blinker | Ender Lens | +50% Blink and Displace range |
+| Colossus | Titan Gauntlet | Ground Pound hits 50% harder and farther |
+| Siren | Resonance Crystal | Sonic Scream reaches 50% farther and stuns |
+| Absorber | Capacitor Cell | Absorb charge 50% faster |
+| Chameleon | Prism Cloak | Mimic lasts twice as long |
+| Pyro | Ember Heart | Rain no longer hurts you (water still does) |
+| Host | Symbiote Jar | The organism starves half as fast |

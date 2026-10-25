@@ -37,6 +37,7 @@ public final class Regenerator {
     public static void tick(ServerPlayer p, MutationData d) {
         long now = p.level().getGameTime();
         int interval = Math.max(8, (int) ((40 - d.level() / 2) / Powers.power(d)));
+        if (com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.REGENERATOR)) interval = Math.max(4, interval / 2); // Troll Heart
         if (now % interval == 0 && p.getHealth() < p.getMaxHealth() && p.getFoodData().getFoodLevel() > 0) {
             p.heal(1.0f);
             p.causeFoodExhaustion(1.5f);

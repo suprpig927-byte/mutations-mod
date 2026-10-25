@@ -47,11 +47,20 @@ public final class Phaser {
         return Math.min(5, 1 + d.level() / 8);
     }
 
+    /** Kinetic Soles: one extra speed tier (up to 6). */
+    public static int maxSpeedTier(MutationData d, net.minecraft.world.entity.player.Player p) {
+        return maxSpeedTier(d) + (com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.PHASER) ? 1 : 0);
+    }
+
     public static int tier(MutationData d) {
-        return Math.min(d.speedTier(), maxSpeedTier(d));
+        return Math.min(d.speedTier(), Math.min(6, maxSpeedTier(d) + 1));
     }
 
     public static void tick(ServerPlayer p, MutationData d) {
+        if (d.speedTier() > maxSpeedTier(d, p)) {          // dropped the Kinetic Soles: come back down
+            d = d.withSpeedTier(maxSpeedTier(d, p));
+            ModAttachments.set(p, d);
+        }
         int tier = tier(d);
         long now = p.level().getGameTime();
         Powers.mult(p, Attributes.MOVEMENT_SPEED, "phaser_speed", 0.15 + 0.35 * tier);
@@ -224,7 +233,7 @@ public final class Phaser {
 
     public static void changeSpeedTier(ServerPlayer p, int delta) {
         MutationData d = ModAttachments.get(p);
-        int max = maxSpeedTier(d);
+        int max = maxSpeedTier(d, p);
         int tier = Mth.clamp(d.speedTier() + Integer.signum(delta), 0, max);
         if (tier == d.speedTier()) {
             if (delta > 0) p.sendOverlayMessage(Component.literal("Max speed tier (" + max + ") - level up mastery to go faster")

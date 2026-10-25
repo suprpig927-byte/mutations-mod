@@ -66,8 +66,13 @@ public final class Siren {
         ServerLevel level = (ServerLevel) p.level();
         long now = level.getGameTime();
         float base = 6f * Powers.power(d);
-        for (LivingEntity e : Powers.cone(p, 10, 0.6)) {
+        boolean crystal = com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.SIREN); // Resonance Crystal
+        for (LivingEntity e : Powers.cone(p, crystal ? 15 : 10, 0.6)) {
             float dmg = base;
+            if (crystal) {
+                e.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 40, 9));   // stunned
+                e.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 4));
+            }
             if (d.has(Secondary.RESONANCE)) {
                 String key = p.getUUID() + "|" + e.getUUID();
                 long[] r = RESONANCE.get(key);

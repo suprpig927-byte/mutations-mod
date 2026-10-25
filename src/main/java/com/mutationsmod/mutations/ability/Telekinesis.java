@@ -83,6 +83,16 @@ public final class Telekinesis {
     }
 
     /** How many blocks can be held at once (Heavy Lifter: 3). */
+    /** Focus Prism: +50% range. */
+    public static double range(MutationData d, net.minecraft.world.entity.player.Player p) {
+        return range(d) * (com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.KINETIC_MIND) ? 1.5 : 1.0);
+    }
+
+    /** Focus Prism: one extra block. */
+    public static int capacity(MutationData d, net.minecraft.world.entity.player.Player p) {
+        return capacity(d) + (com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.KINETIC_MIND) ? 1 : 0);
+    }
+
     public static int capacity(MutationData d) {
         return d.has(Secondary.HEAVY_LIFTER) ? 3 : 1;
     }
@@ -123,7 +133,7 @@ public final class Telekinesis {
     public static boolean toggle(ServerPlayer player, MutationData data) {
         List<Held> list = held(player);
         if (!list.isEmpty()) {
-            if (list.size() < capacity(data) && grabbable(player, data)) return grab(player, data);
+            if (list.size() < capacity(data, player) && grabbable(player, data)) return grab(player, data);
             release(player, false);
             return false;
         }
@@ -131,7 +141,7 @@ public final class Telekinesis {
     }
 
     private static boolean grabbable(ServerPlayer player, MutationData data) {
-        BlockHitResult hit = Raycast.block(player, range(data));
+        BlockHitResult hit = Raycast.block(player, range(data, player));
         if (hit.getType() != HitResult.Type.BLOCK) return false;
         ServerLevel level = (ServerLevel) player.level();
         BlockState state = level.getBlockState(hit.getBlockPos());
@@ -143,7 +153,7 @@ public final class Telekinesis {
 
     public static boolean grab(ServerPlayer player, MutationData data) {
         ServerLevel level = (ServerLevel) player.level();
-        BlockHitResult hit = Raycast.block(player, range(data));
+        BlockHitResult hit = Raycast.block(player, range(data, player));
         if (hit.getType() != HitResult.Type.BLOCK) {
             player.sendOverlayMessage(Component.literal("No block in reach.").withStyle(ChatFormatting.GRAY));
             return false;

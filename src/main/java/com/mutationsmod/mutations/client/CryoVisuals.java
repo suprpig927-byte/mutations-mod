@@ -13,6 +13,7 @@ public final class CryoVisuals {
 
     /** Same rule as the server's hot-biome weakness. */
     public static boolean hot(Player p) {
+        if (com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.CRYO)) return false;
         if (Powers.isNether(p.level())) return true;
         return Powers.temperature(p) > 1.0f && !Powers.isNight(p.level());
     }

@@ -94,6 +94,7 @@ public final class Colossus {
         ServerLevel level = (ServerLevel) p.level();
         double radius = d.has(Secondary.EARTHSHAKER) ? 7.5 : 5.0;
         float damage = 6f * Powers.power(d);
+        if (com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.COLOSSUS)) { radius *= 1.5; damage *= 1.5f; } // Titan Gauntlet
         for (LivingEntity e : Powers.around(p, radius)) {
             Powers.hurt(p, e, damage);
             Powers.knockAway(e, p.position(), 1.0, 0.6);
