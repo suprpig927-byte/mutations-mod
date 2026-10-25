@@ -120,6 +120,7 @@ public final class AbilityHandler {
         Telekinesis.onLevelTick(event);
         Powers.tickLevel(level);
         com.mutationsmod.mutations.debug.OmegaTest.tick(level);
+        com.mutationsmod.mutations.debug.WeaponTest.tick(level);
         Siren.tickLevel(level);
     }
 
