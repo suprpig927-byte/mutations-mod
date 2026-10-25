@@ -50,7 +50,7 @@ public final class MutationCommand {
                     var level = src.getLevel();
                     var pos = net.minecraft.core.BlockPos.containing(src.getPosition());
                     int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()) - 1;
-                    com.mutationsmod.mutations.world.MeteorCraterFeature.placeAt(level, level.getRandom(), new net.minecraft.core.BlockPos(pos.getX(), y, pos.getZ()));
+                    com.mutationsmod.mutations.world.MeteorCraterFeature.placeAt(level, level.getRandom(), new net.minecraft.core.BlockPos(pos.getX(), y, pos.getZ()), net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE);
                     src.sendSuccess(() -> Component.literal("A meteor strikes!"), true);
                     return 1;
                 }))

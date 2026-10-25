@@ -32,11 +32,11 @@ public record MeteorCraterFeature() implements Feature {
         int cx = (origin.getX() & ~15) + 8, cz = (origin.getZ() & ~15) + 8;
         int baseY = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, cx, cz) - 1;
         if (!level.getBlockState(new BlockPos(cx, baseY, cz)).getFluidState().isEmpty()) return false; // no craters in water
-        return placeAt(level, rnd, new BlockPos(cx, baseY, cz));
+        return placeAt(level, rnd, new BlockPos(cx, baseY, cz), Heightmap.Types.WORLD_SURFACE_WG);
     }
 
     /** Builds the crater around {@code center} (a surface block). Also used by /mutation crater. */
-    public static boolean placeAt(WorldGenLevel level, RandomSource rnd, BlockPos center) {
+    public static boolean placeAt(WorldGenLevel level, RandomSource rnd, BlockPos center, Heightmap.Types surface) {
         double radius = 13 + rnd.nextDouble() * 3;      // ~30 blocks across
         double depth = radius * 0.42;
         double rim = 1.3;                                  // rim reaches 30% beyond the bowl
@@ -48,7 +48,7 @@ public record MeteorCraterFeature() implements Feature {
                 double d = Math.sqrt(dx * dx + dz * dz) / radius + (rnd.nextDouble() - 0.5) * 0.04;
                 if (d > rim) continue;
                 int x = center.getX() + dx, z = center.getZ() + dz;
-                int top = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z) - 1;
+                int top = level.getHeight(surface, x, z) - 1;
                 if (d <= 1.0) {
                     int floor = baseY - (int) Math.round(depth * (1 - d * d));
                     for (int y = Math.max(floor + 1, level.getMinY()); y <= Math.max(top, baseY) + 2; y++) {
