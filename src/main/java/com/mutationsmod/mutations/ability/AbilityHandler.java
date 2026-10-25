@@ -94,6 +94,7 @@ public final class AbilityHandler {
         if (!(event.getEntity() instanceof ServerPlayer p)) return;
         MutationData d = ModAttachments.get(p);
         if (p.level().getGameTime() % 10 == 0) StatEffects.apply(p, d);
+        Weapons.tick(p, d);
         if (Suppression.tick(p)) return; // Nullite: powers are off
         if (d.mutations().isEmpty()) return;
         Powers.tickRush(p);
@@ -170,6 +171,7 @@ public final class AbilityHandler {
             if (a.has(Mutation.PYRO) && Pyro.lit(a)) Pyro.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.ABSORBER)) Absorber.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.HOST)) Host.onMelee(event, attacker, a, victim);
+            Weapons.onMelee(event, attacker, a, victim);
         }
 
         // Defense: a mutant getting hurt.

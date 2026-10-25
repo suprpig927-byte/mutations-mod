@@ -77,7 +77,7 @@ public final class Absorber {
     }
 
     /** Takes {@code cost} charge if the player has it. */
-    private static boolean spend(ServerPlayer p, float cost) {
+    public static boolean spend(ServerPlayer p, float cost) {
         MutationData d = ModAttachments.get(p);
         if (d.charge() < cost) {
             p.sendOverlayMessage(Component.literal(String.format("Needs %.0f charge (you have %.0f).", cost, d.charge()))

@@ -34,6 +34,7 @@ public class MutationsMod {
         game.addListener(AbilityHandler::onChangeTarget);
         game.addListener(AbilityHandler::onRightClickItem);
         game.addListener(MutationCommand::register);
+        game.addListener(com.mutationsmod.mutations.ability.Weapons::onProjectileImpact);
         // Omega decoys left behind in unloaded chunks reload as plain mannequins: remove them.
         game.addListener((net.neoforged.neoforge.event.entity.EntityJoinLevelEvent e) -> {
             if (!e.getLevel().isClientSide() && e.getEntity().entityTags().contains(com.mutationsmod.mutations.entity.Decoy.TAG)

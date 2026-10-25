@@ -96,6 +96,12 @@ public class MutationsClient {
     }
 
     public MutationsClient(IEventBus modEventBus) {
+        modEventBus.addListener((EntityRenderersEvent.RegisterRenderers e) -> {
+            e.registerEntityRenderer(com.mutationsmod.mutations.registry.ModWeapons.CHAKRAM.get(),
+                    ctx -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(ctx, 1.2f, true));
+            e.registerEntityRenderer(com.mutationsmod.mutations.registry.ModWeapons.RIFT_KNIFE_ENTITY.get(),
+                    net.minecraft.client.renderer.entity.ThrownItemRenderer::new);
+        });
         modEventBus.addListener(MutationsClient::registerKeys);
         modEventBus.addListener(MutationsClient::registerHud);
         modEventBus.addListener(MutationsClient::registerRenderState);

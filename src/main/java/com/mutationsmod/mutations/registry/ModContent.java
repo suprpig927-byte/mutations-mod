@@ -240,6 +240,7 @@ public final class ModContent {
                 out.accept(DIRECTORS_KEYCARD.get());
                 out.accept(OVERSEERS_SPEAR.get());
                 out.accept(SHOCK_BATON.get());
+                for (var w : ModWeapons.ALL) out.accept(w.get());
                 out.accept(HEART_OF_ZERO.get());
                 out.accept(GLOWCAP_STEW.get());
                 out.accept(CAVE_LOAF.get());
@@ -278,6 +279,7 @@ public final class ModContent {
             e.put(WARDEN_DIRECTOR.get(), com.mutationsmod.mutations.entity.WardenDirector.createAttributes().build());
             e.put(SUBJECT_ZERO.get(), com.mutationsmod.mutations.entity.SubjectZero.createAttributes().build());
         });
+        ModWeapons.init();
         ITEMS.register(modBus);
         TABS.register(modBus);
         EFFECTS.register(modBus);
