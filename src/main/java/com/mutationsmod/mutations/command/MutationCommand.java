@@ -62,7 +62,7 @@ public final class MutationCommand {
                     var pos = net.minecraft.core.BlockPos.containing(src.getPosition());
                     int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()) - 1;
                     com.mutationsmod.mutations.world.GeneLabFeature.build(level, level.getRandom(), new net.minecraft.core.BlockPos(pos.getX(), y, pos.getZ()), m);
-                    src.sendSuccess(() -> Component.literal("Built a " + m.displayName() + " Gene Lab."), true);
+                    src.sendSuccess(() -> Component.literal("Built a " + m.displayName() + " Gene Lab (surface y " + y + ")."), true);
                     return 1;
                 })))
 
