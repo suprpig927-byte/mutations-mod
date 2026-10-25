@@ -124,7 +124,7 @@ public class SubjectZero extends PrisonBoss {
             }
             case STORMCALLER -> {
                 powerTimer = 50;
-                LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
+                LightningBolt bolt = net.minecraft.world.entity.EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
                 if (bolt != null) {
                     bolt.snapTo(t.getX(), t.getY(), t.getZ());
                     level.addFreshEntity(bolt);
@@ -144,7 +144,7 @@ public class SubjectZero extends PrisonBoss {
                     e.hurtServer(level, damageSources().mobAttack(this), 8f);
                     Vec3 push = e.position().subtract(position()).normalize().scale(1.4).add(0, 0.6, 0);
                     e.push(push.x, push.y, push.z);
-                    e.hurtMarked = true;
+                    e.needsSync = true;
                 }
                 level.sendParticles(ParticleTypes.EXPLOSION, getX(), getY(), getZ(), 3, 1, 0, 1, 0);
                 level.playSound(null, getX(), getY(), getZ(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.HOSTILE, 1f, 0.7f);

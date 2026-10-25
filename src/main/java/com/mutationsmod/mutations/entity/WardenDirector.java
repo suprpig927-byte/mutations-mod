@@ -72,7 +72,7 @@ public class WardenDirector extends PrisonBoss {
             lungeCooldown = 120;
             Vec3 dir = target.position().subtract(position()).normalize();
             setDeltaMovement(dir.scale(1.6).add(0, 0.35, 0));
-            hurtMarked = true;
+            needsSync = true;
             level.playSound(null, getX(), getY(), getZ(), SoundEvents.SPEAR_USE, SoundSource.HOSTILE, 1.0f, 0.7f);
             level.sendParticles(ParticleTypes.HAPPY_VILLAGER, getX(), getY() + 1, getZ(), 12, 0.4, 0.6, 0.4, 0.05);
         }
