@@ -30,7 +30,7 @@ public final class OmegaTest {
         int n = 0;
         for (Ultimate u : Ultimate.values()) {
             if (only != null && u != only) continue;
-            int x = origin.getX() + n * 24, z = origin.getZ();
+            int x = origin.getX() + n * 16, z = origin.getZ();
             int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
             FakePlayer p = FakePlayerFactory.get(level, new GameProfile(UUID.nameUUIDFromBytes(("omega-" + u).getBytes()), "Omega" + u.ordinal()));
             p.snapTo(x + 0.5, y, z + 0.5, 0, 0);
