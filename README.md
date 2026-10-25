@@ -57,6 +57,7 @@ Other controls:
 | `/mutation statpoints set <players> <amount>` | Set unspent stat points |
 | `/mutation stats set <players> <stat> <amount>` | Set a stat directly |
 | `/mutation stats respec <players>` | Free respec (refund all points) |
+| `/mutation lab <mutation>` / `crater` / `haven` / `prison` | Build that structure where you stand |
 
 Testing tip: `/mutation set @s cryo`, `/mutation mastery set @s 50`, then open the screen (M) to roll secondaries.
 
@@ -129,3 +130,44 @@ Mutated test subjects that guard the labs. Zombie-like, but they never burn in d
 ## Specimen Chamber
 
 A two-block-tall glass tube of glowing Mutagen fluid with a subject floating inside, built in the Gene Splicer's style. Craft: Mutagen Ingot / Glass / Mutagen Ingot, Glass / Mutagen Crystal / Glass, Mutagen Ingot / Glass / Mutagen Ingot. Gene Labs have them in their mutation's color.
+
+## Containment gear
+
+- **Inhibitor Field** (block). Craft: Iron / Nullite / Iron, Nullite / Redstone Block / Nullite, Iron / Nullite / Iron. Every second it suppresses all mutant players within 16 blocks, and puts the Suppressed effect on mobs.
+- **Inhibitor Collar.** Craft: Leather, Nullite Shard, Leather. Right-click a player or mob to suppress them for 60 seconds. Single use.
+- **Containment Suit** (helmet, suit, leggings, boots). Mutagen Ingots plus a Nullite Shard. Each piece cuts damage from mutation abilities by 15%, so a full set blocks 60%.
+- **Psi Beacon.** Craft: Eye of Ender on top, Mutagen Crystal / Glass / Mutagen Crystal, then 3 Mutagen Ingots. Right-click it to list every mutant within 64 blocks and how far away they are.
+
+## Mutant Haven
+
+A hidden cave village. Look for a small mossy rock outcrop on the surface. A spiral stair leads down into a big glowing cavern with a campfire plaza, a Gene Splicer, a pond, a mushroom patch and five huts. Each hut belongs to a Haven Mutant trader:
+
+| Trader | Sells |
+|---|---|
+| Quartermaster | Mutagen Ore, Ingots and Crystals, Nullite Shards |
+| Archivist | Mastery Tomes |
+| Keeper | Its own mutation's Catalyst (64 emeralds + 32 crystals), Specimen Chambers |
+| Cartographer | Gene Lab, Meteor Crater and Containment Prison maps |
+| Cook | Haven food: Glowcap Stew, Cave Loaf, Crystal Candy, Smoked Blindfish |
+
+Haven food is just food. It has no powers. Ops can build a Haven with `/mutation haven`.
+
+## Containment Prison
+
+A rare prison built to hold mutants, with two separate boss fights.
+
+1. **Guard tower** on the surface. A spiral stair leads down.
+2. **Cell block.** Two rows of barred cells, some broken open, with Failed Experiment spawners and loot. Two **Inhibitor Fields** in the ceiling switch your powers off here.
+3. **Director's office.** This is where you fight the **Warden-Director** (220 HP). He wears a full Containment Suit and fights with a Nullite Spear: every hit suppresses you for 5 seconds. He lunges at you from range and releases Failed Experiments at 66% and 33% health.
+   - **Drops:** the **Director's Keycard**, the **Overseer's Spear** (a stronger spear whose suppression lasts twice as long), Nullite and a Mastery Tome.
+4. **The deep cell.** A stair leads down to a sealed **Containment Gate**. Right-click it with the Keycard to open it. Inside is **Subject Zero** (350 HP), who switches power every 8 seconds:
+   - **Pyro:** shoots fireballs.
+   - **Cryo:** fires a freezing line that slows you.
+   - **Stormcaller:** calls lightning.
+   - **Blinker:** teleports behind you.
+   - **Colossus:** gains armor and ground-pounds.
+   
+   Hit it with Nullite (a Nullite or Overseer's Spear, or an Inhibitor Collar) to lock it in place. While suppressed it can't switch forms and takes 25% more damage.
+   - **Drops:** the **Heart of Zero** (use it to permanently gain **one extra secondary mutation slot**; works once per player), 3 Mastery Tomes, Nullite and Mutagen.
+
+Chests in the office and the deep cell hold plenty of Nullite, Mastery Tomes, Inhibitor Collars and Containment Suit pieces. Ops can build a prison with `/mutation prison`. Containment Gates can't be broken.
