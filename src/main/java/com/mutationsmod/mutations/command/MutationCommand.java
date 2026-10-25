@@ -66,6 +66,23 @@ public final class MutationCommand {
                     return 1;
                 })))
 
+                // Debug: dump a box of blocks to the server log (used for automated previews).
+                .then(Commands.literal("dump").then(Commands.argument("from", net.minecraft.commands.arguments.coordinates.BlockPosArgument.blockPos())
+                        .then(Commands.argument("to", net.minecraft.commands.arguments.coordinates.BlockPosArgument.blockPos()).executes(ctx -> {
+                            var level = ctx.getSource().getLevel();
+                            var a = net.minecraft.commands.arguments.coordinates.BlockPosArgument.getBlockPos(ctx, "from");
+                            var b = net.minecraft.commands.arguments.coordinates.BlockPosArgument.getBlockPos(ctx, "to");
+                            StringBuilder out = new StringBuilder("BLOCKDUMP ");
+                            for (var pos : net.minecraft.core.BlockPos.betweenClosed(a, b)) {
+                                var st = level.getBlockState(pos);
+                                if (st.isAir()) continue;
+                                out.append(pos.getX()).append(',').append(pos.getY()).append(',').append(pos.getZ()).append('=')
+                                        .append(net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(st.getBlock()).getPath()).append(';');
+                            }
+                            com.mutationsmod.mutations.MutationsMod.LOGGER.info(out.toString());
+                            return 1;
+                        }))))
+
                 .then(Commands.literal("list")
                         .executes(ctx -> list(ctx.getSource()))
                         .then(mutationArg().executes(ctx -> listSecondaries(ctx.getSource(), mutation(ctx)))))
