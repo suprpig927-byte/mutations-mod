@@ -104,15 +104,15 @@ public final class HavenBuilder {
 
     private static void plaza(Ctx c, long seed, int fy) {
         int y = fy + 1;
-        for (int x = -3; x <= 3; x++) for (int z = -3; z <= 3; z++) if (x * x + z * z <= 10) c.set(x, fy, z, Blocks.STONE_BRICKS);
-        c.set(0, y, 3, Blocks.CAMPFIRE);
-        for (int[] b : new int[][]{{-2, 3, 1}, {2, 3, 3}, {0, 5, 0}}) {
-            Direction face = b[2] == 1 ? Direction.EAST : b[2] == 3 ? Direction.WEST : Direction.NORTH;
-            c.set(b[0], y, b[1], Blocks.SPRUCE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, face));
-        }
+        for (int x = -7; x <= 7; x++) for (int z = -7; z <= 7; z++) if (x * x + z * z <= 45) c.set(x, fy, z, Blocks.STONE_BRICKS);
+        // Campfire with benches, beside the stair column.
+        c.set(5, y, -5, Blocks.CAMPFIRE);
+        c.set(4, y, -5, Blocks.SPRUCE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.WEST));
+        c.set(6, y, -5, Blocks.SPRUCE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.EAST));
+        c.set(5, y, -6, Blocks.SPRUCE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.NORTH));
         c.set(-5, y, -1, ModContent.GENE_SPLICER.get());
         // Lantern posts.
-        for (int[] p : new int[][]{{-6, 0}, {6, 0}, {0, 6}, {0, -6}}) {
+        for (int[] p : new int[][]{{-7, 0}, {7, 0}, {0, 7}, {-5, -5}}) {
             c.set(p[0], y, p[1], Blocks.SPRUCE_FENCE); c.set(p[0], y + 1, p[1], Blocks.SPRUCE_FENCE);
             c.set(p[0], y + 2, p[1], Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, false));
         }
