@@ -45,6 +45,16 @@ public final class MutationCommand {
         dispatcher.register(Commands.literal("mutation")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 
+                .then(Commands.literal("crater").executes(ctx -> {
+                    var src = ctx.getSource();
+                    var level = src.getLevel();
+                    var pos = net.minecraft.core.BlockPos.containing(src.getPosition());
+                    int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()) - 1;
+                    com.mutationsmod.mutations.world.MeteorCraterFeature.placeAt(level, level.getRandom(), new net.minecraft.core.BlockPos(pos.getX(), y, pos.getZ()));
+                    src.sendSuccess(() -> Component.literal("A meteor strikes!"), true);
+                    return 1;
+                }))
+
                 .then(Commands.literal("list")
                         .executes(ctx -> list(ctx.getSource()))
                         .then(mutationArg().executes(ctx -> listSecondaries(ctx.getSource(), mutation(ctx)))))

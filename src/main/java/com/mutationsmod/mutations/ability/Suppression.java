@@ -54,6 +54,8 @@ public final class Suppression {
         if (p.getMainHandItem().is(ModContent.NULLITE_SPEAR.get()) || p.getOffhandItem().is(ModContent.NULLITE_SPEAR.get())) {
             if (p.level().getGameTime() % 10 == 0) apply(p, 40, false);
         }
+        // Kryptonite: standing within 8 blocks of Nullite suppresses your powers.
+        if (p.level().getGameTime() % 20 == 0 && nearNullite(p)) apply(p, 40, false);
         MutationData d = ModAttachments.get(p);
         boolean on = active(d, p.level());
         if (on && ACTIVE.add(p.getUUID())) {
@@ -67,6 +69,15 @@ public final class Suppression {
             }
         }
         return on;
+    }
+
+    private static boolean nearNullite(ServerPlayer p) {
+        if (ModAttachments.get(p).mutations().isEmpty()) return false;
+        net.minecraft.core.BlockPos at = p.blockPosition();
+        for (net.minecraft.core.BlockPos pos : net.minecraft.core.BlockPos.betweenClosed(at.offset(-8, -8, -8), at.offset(8, 8, 8))) {
+            if (pos.distSqr(at) <= 64 && p.level().getBlockState(pos).is(ModContent.NULLITE_CLUSTER.get())) return true;
+        }
+        return false;
     }
 
     public static void forget(UUID id) {

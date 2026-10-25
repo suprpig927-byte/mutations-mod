@@ -1,0 +1,12 @@
+{
+  "feature": "mutations:meteor_crater",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 1200
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

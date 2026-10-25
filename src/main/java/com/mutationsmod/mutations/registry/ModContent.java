@@ -33,6 +33,11 @@ public final class ModContent {
 
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MutationsMod.MODID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MutationsMod.MODID);
+    public static final DeferredRegister<com.mojang.serialization.MapCodec<? extends net.minecraft.world.level.levelgen.feature.Feature>> FEATURE_TYPES =
+            DeferredRegister.create(Registries.FEATURE_TYPE, MutationsMod.MODID);
+    public static final DeferredHolder<com.mojang.serialization.MapCodec<? extends net.minecraft.world.level.levelgen.feature.Feature>,
+            com.mojang.serialization.MapCodec<com.mutationsmod.mutations.world.MeteorCraterFeature>> METEOR_CRATER =
+            FEATURE_TYPES.register("meteor_crater", () -> com.mutationsmod.mutations.world.MeteorCraterFeature.CODEC);
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MutationsMod.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MutationsMod.MODID);
 
@@ -52,6 +57,8 @@ public final class ModContent {
             GeneSplicerBlock::new,
             p -> p.mapColor(MapColor.METAL).strength(3.5f, 6f).requiresCorrectToolForDrops().sound(SoundType.METAL).lightLevel(s -> 7).noOcclusion());
 
+    public static final DeferredBlock<Block> METEORITE = BLOCKS.registerSimpleBlock("meteorite",
+            p -> p.mapColor(MapColor.COLOR_BLACK).strength(5f, 9f).requiresCorrectToolForDrops().sound(SoundType.ANCIENT_DEBRIS));
     public static final DeferredBlock<AmethystClusterBlock> NULLITE_CLUSTER = BLOCKS.registerBlock("nullite_cluster",
             p -> new AmethystClusterBlock(7f, 3f, p),
             p -> p.mapColor(MapColor.COLOR_GREEN).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST_CLUSTER)
@@ -82,6 +89,7 @@ public final class ModContent {
     public static final DeferredItem<BlockItem> DEEPSLATE_MUTAGEN_ORE_ITEM = ITEMS.registerSimpleBlockItem("deepslate_mutagen_ore", DEEPSLATE_MUTAGEN_ORE);
     public static final DeferredItem<BlockItem> MUTAGEN_CRYSTAL_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("mutagen_crystal_block", MUTAGEN_CRYSTAL_BLOCK);
     public static final DeferredItem<BlockItem> MUTAGEN_CLUSTER_ITEM = ITEMS.registerSimpleBlockItem("mutagen_cluster", MUTAGEN_CLUSTER);
+    public static final DeferredItem<BlockItem> METEORITE_ITEM = ITEMS.registerSimpleBlockItem("meteorite", METEORITE);
     public static final DeferredItem<BlockItem> NULLITE_CLUSTER_ITEM = ITEMS.registerSimpleBlockItem("nullite_cluster", NULLITE_CLUSTER);
     public static final DeferredItem<BlockItem> GENE_SPLICER_ITEM = ITEMS.registerSimpleBlockItem("gene_splicer", GENE_SPLICER);
 
@@ -100,6 +108,7 @@ public final class ModContent {
                 out.accept(MUTAGEN_CRYSTAL_BLOCK_ITEM.get());
                 out.accept(GENE_SPLICER_ITEM.get());
                 out.accept(MASTERY_TOME.get());
+                out.accept(METEORITE_ITEM.get());
                 out.accept(NULLITE_CLUSTER_ITEM.get());
                 out.accept(NULLITE_SHARD.get());
                 out.accept(CONTAINMENT_ROD.get());
@@ -111,5 +120,6 @@ public final class ModContent {
         ITEMS.register(modBus);
         TABS.register(modBus);
         EFFECTS.register(modBus);
+        FEATURE_TYPES.register(modBus);
     }
 }

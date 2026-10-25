@@ -22,5 +22,6 @@
   "item.mutations.nullite_shard": "Nullite Shard",
   "item.mutations.containment_rod": "Containment Rod",
   "item.mutations.nullite_spear": "Nullite Spear",
-  "effect.mutations.suppressed": "Suppressed"
+  "effect.mutations.suppressed": "Suppressed",
+  "block.mutations.meteorite": "Meteorite"
 }

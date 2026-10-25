@@ -84,7 +84,8 @@ or build locally with JDK 25: `gradlew.bat build` → `build/libs/mutations-0.3.
 
 Nullite is a green crystal that shuts mutant powers off, like kryptonite.
 
-- **Nullite Clusters** will grow at the heart of Meteor Craters (structure coming soon; creative tab for now). Mine with an iron pickaxe: 1-2 **Nullite Shards**.
+- **Meteor Craters** are very rare (about one per 1,200 chunks), ~30-block-wide bowls blasted into the overworld surface with a raised rim. A half-buried **Meteorite** core sits in the middle, covered in **Nullite Clusters**; Mutagen Crystal is scattered across the bowl. Ops can call one down with `/mutation crater`.
+- **Nullite Clusters**: mine with an iron pickaxe for 1-2 **Nullite Shards**. Like kryptonite, standing within 8 blocks of Nullite suppresses a mutant's powers.
 - **Containment Rods** will be found in Gene Lab chests (structure coming soon; creative tab for now).
 - **Nullite Spear**: Nullite Shard, Nullite Shard, Containment Rod stacked vertically (shards on top). A real spear (jab and charge attacks), between iron and diamond. Repaired with Nullite Shards.
   - A **jab** suppresses the mutant you hit for **5 seconds**; a **charged hit** for **15 seconds**.
