@@ -60,5 +60,7 @@
   "item.mutations.heart_of_zero": "Heart of Zero",
   "item.mutations.overseers_spear": "Overseer's Spear",
   "block.mutations.containment_gate": "Containment Gate",
-  "item.mutations.shock_baton": "Shock Baton"
+  "item.mutations.shock_baton": "Shock Baton",
+  "key.mutations.ultimate": "Omega Ultimate",
+  "entity.mutations.decoy": "Decoy"
 }

@@ -49,7 +49,7 @@ public final class Absorber {
         DamageSource source = event.getSource();
         if (unabsorbable(source) || event.getAmount() <= 0) return;
         boolean elemental = source.is(DamageTypeTags.IS_FIRE) || source.is(DamageTypes.LIGHTNING_BOLT);
-        float ratio = d.has(Secondary.ELEMENTAL_SPONGE) && elemental ? 1.0f : 0.5f;
+        float ratio = (d.has(Secondary.ELEMENTAL_SPONGE) && elemental) || com.mutationsmod.mutations.ability.Omega.overloading(d, p) ? 1.0f : 0.5f;
         float absorbed = event.getAmount() * ratio;
         event.setAmount(event.getAmount() - absorbed);
         addCharge(p, absorbed);

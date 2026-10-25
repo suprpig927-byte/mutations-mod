@@ -43,6 +43,7 @@ public final class Stormcaller {
     /** Weather multiplier for this player: the Storm Rod counts as rain. */
     public static float weather(ServerPlayer p) {
         float w = weather(p.level());
+        if (com.mutationsmod.mutations.ability.Omega.eyeOfTheStorm(com.mutationsmod.mutations.ModAttachments.get(p), p)) return Math.max(1.25f, w);
         return com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.STORMCALLER) ? Math.max(1.0f, w) : w;
     }
 
@@ -57,7 +58,7 @@ public final class Stormcaller {
         }
 
         // Rainwalker: creative-style flight while it rains on you; float down gently when it stops.
-        boolean canFly = d.has(Secondary.RAINWALKER) && rain && !p.isCreative() && !p.isSpectator();
+        boolean canFly = ((d.has(Secondary.RAINWALKER) && rain) || com.mutationsmod.mutations.ability.Omega.eyeOfTheStorm(d, p)) && !p.isCreative() && !p.isSpectator();
         boolean flameFlight = d.has(Mutation.PYRO) && Powers.timerActive(d, p.level(), "flame_flight");
         if (!flameFlight) setFlight(p, canFly);
 

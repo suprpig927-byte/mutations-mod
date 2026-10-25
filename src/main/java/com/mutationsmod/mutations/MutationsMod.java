@@ -34,5 +34,10 @@ public class MutationsMod {
         game.addListener(AbilityHandler::onChangeTarget);
         game.addListener(AbilityHandler::onRightClickItem);
         game.addListener(MutationCommand::register);
+        // Omega decoys left behind in unloaded chunks reload as plain mannequins: remove them.
+        game.addListener((net.neoforged.neoforge.event.entity.EntityJoinLevelEvent e) -> {
+            if (!e.getLevel().isClientSide() && e.getEntity().getTags().contains(com.mutationsmod.mutations.entity.Decoy.TAG)
+                    && !(e.getEntity() instanceof com.mutationsmod.mutations.entity.Decoy)) e.setCanceled(true);
+        });
     }
 }

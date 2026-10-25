@@ -86,6 +86,8 @@ public class MutationsClient {
             key("ability_5", InputConstants.KEY_N),
             key("ability_6", InputConstants.KEY_K),
     };
+    /** Omega ultimate (unlocks at mastery level 75). */
+    public static final KeyMapping ULTIMATE = key("ultimate", InputConstants.KEY_Z);
     public static final KeyMapping SPEED_UP = key("speed_up", InputConstants.KEY_U);
     public static final KeyMapping SPEED_DOWN = key("speed_down", InputConstants.KEY_J);
 
@@ -122,6 +124,7 @@ public class MutationsClient {
         event.registerCategory(CATEGORY);
         event.register(OPEN_SCREEN);
         for (KeyMapping k : ABILITY_KEYS) event.register(k);
+        event.register(ULTIMATE);
         event.register(SPEED_UP);
         event.register(SPEED_DOWN);
     }
@@ -178,6 +181,14 @@ public class MutationsClient {
                     } else {
                         state.setRenderData(StormRenderData.KEY, null);
                     }
+                    // Omega: blazing eyes and an aura while an ultimate runs.
+                    if (hd.base() != null && hd.timer("omega_glow") > hostPlayer.level().getGameTime()) {
+                        float ot = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
+                        state.setRenderData(com.mutationsmod.mutations.client.render.OmegaRenderData.KEY,
+                                new com.mutationsmod.mutations.client.render.OmegaRenderData(hd.base().color() & 0xFFFFFF, (hostPlayer.level().getGameTime() % 100000L) + ot));
+                    } else {
+                        state.setRenderData(com.mutationsmod.mutations.client.render.OmegaRenderData.KEY, null);
+                    }
                     // Cryo: crystals shrink in the heat and pulse on Ice Blast.
                     if (hd.has(Mutation.CRYO)) {
                         float scale = CryoVisuals.hot(hostPlayer) ? 0.5f : 1f;
@@ -189,7 +200,8 @@ public class MutationsClient {
                     }
                 }
                 if (avatar instanceof Player player && player.isInvisible()
-                        && player.getData(ModAttachments.DATA).has(Secondary.MIRROR_SKIN)) {
+                        && (player.getData(ModAttachments.DATA).has(Secondary.MIRROR_SKIN)
+                            || player.getData(ModAttachments.DATA).timer("doppel") > player.level().getGameTime())) {
                     state.headEquipment = ItemStack.EMPTY;
                     state.chestEquipment = ItemStack.EMPTY;
                     state.legsEquipment = ItemStack.EMPTY;
@@ -208,6 +220,8 @@ public class MutationsClient {
             new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "pyro_flames"), "main");
     public static final ModelLayerLocation STORM_FX =
             new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "storm_fx"), "main");
+    public static final ModelLayerLocation OMEGA_AURA =
+            new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "omega_aura"), "main");
     public static final ModelLayerLocation CRYSTALS =
             new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "cryo_crystals"), "main");
     /** Frost shells slightly bigger than armor: helmet, chestplate, leggings, boots. */
@@ -223,6 +237,7 @@ public class MutationsClient {
         event.registerLayerDefinition(COLOSSUS_PLATES, ColossusPlatesModel::createLayer);
         event.registerLayerDefinition(PYRO_FLAMES, PyroFlamesModel::createLayer);
         event.registerLayerDefinition(STORM_FX, StormFxModel::createLayer);
+        event.registerLayerDefinition(OMEGA_AURA, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.45f), 0f), 64, 32));
         var frost = HumanoidModel.createArmorMeshSet(new CubeDeformation(0.6f), new CubeDeformation(1.1f));
         event.registerLayerDefinition(FROST_ARMOR[0], () -> LayerDefinition.create(frost.head(), 64, 32));
         event.registerLayerDefinition(FROST_ARMOR[1], () -> LayerDefinition.create(frost.chest(), 64, 32));
@@ -239,6 +254,7 @@ public class MutationsClient {
                 renderer.addLayer(new HostLayer(renderer, new TendrilModel(models.bakeLayer(TENDRILS))));
                 renderer.addLayer(new ColossusLayer(renderer, new ColossusPlatesModel(models.bakeLayer(COLOSSUS_PLATES))));
                 renderer.addLayer(new PyroLayer(renderer, new PyroFlamesModel(models.bakeLayer(PYRO_FLAMES))));
+                renderer.addLayer(new com.mutationsmod.mutations.client.render.OmegaLayer(renderer, new HumanoidModel<>(models.bakeLayer(OMEGA_AURA))));
                 renderer.addLayer(new StormLayer(renderer, new StormFxModel(models.bakeLayer(STORM_FX))));
                 renderer.addLayer(new CryoLayer(renderer, new CrystalModel(models.bakeLayer(CRYSTALS)),
                         new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[0])), new HumanoidModel<>(models.bakeLayer(FROST_ARMOR[1])),
@@ -260,6 +276,7 @@ public class MutationsClient {
                 ClientPacketDistributor.sendToServer(new ModPayloads.UseAbility(i));
             }
         }
+        while (ULTIMATE.consumeClick()) ClientPacketDistributor.sendToServer(new ModPayloads.UseAbility(com.mutationsmod.mutations.ability.Omega.SLOT));
         while (SPEED_UP.consumeClick()) ClientPacketDistributor.sendToServer(new ModPayloads.ChangeSpeed(1));
         while (SPEED_DOWN.consumeClick()) ClientPacketDistributor.sendToServer(new ModPayloads.ChangeSpeed(-1));
         if (mc.level != null) ClientPowers.tick(mc, mc.player, mc.player.getData(ModAttachments.DATA));
@@ -334,6 +351,14 @@ public class MutationsClient {
             String status = left > 0 ? formatTime(left) : "ready";
             int color = left > 0 ? 0xFF9A9A9A : 0xFFFFFFFF;
             graphics.text(font, "[" + keyName + "] " + a.displayName() + ": " + status, x, y, color, true);
+            y += font.lineHeight + 1;
+        }
+        com.mutationsmod.mutations.mutation.Ultimate ult = com.mutationsmod.mutations.mutation.Ultimate.of(base);
+        if (ult != null && data.level() >= com.mutationsmod.mutations.mutation.Ultimate.LEVEL) {
+            long left = data.omegaReady() - now;
+            String keyName = ULTIMATE.getTranslatedKeyMessage().getString();
+            graphics.text(font, "[" + keyName + "] \u03A9 " + ult.displayName() + ": " + (left > 0 ? formatTime(left) : "READY"), x, y,
+                    left > 0 ? 0xFF9A9A9A : base.color(), true);
             y += font.lineHeight + 1;
         }
         y += 2;

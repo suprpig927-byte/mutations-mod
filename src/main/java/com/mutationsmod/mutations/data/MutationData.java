@@ -169,6 +169,15 @@ public record MutationData(List<String> mutations, boolean rolled, int level, in
         return cooldowns.getOrDefault(a.id(), 0L);
     }
 
+    /** When the Omega ultimate is ready again (game time). Cleared by "cooldowns reset". */
+    public long omegaReady() {
+        return cooldowns.getOrDefault("omega", 0L);
+    }
+
+    public MutationData withOmegaReady(long time) {
+        return withCooldownKey("omega", time);
+    }
+
     /** Named timers share the cooldown map under a "t:" prefix. */
     public long timer(String name) {
         return cooldowns.getOrDefault("t:" + name, 0L);

@@ -77,6 +77,7 @@ public final class Mastery {
                 .append(Component.literal("  +" + (level - oldLevel) * STAT_POINTS_PER_LEVEL + " stat points").withStyle(ChatFormatting.YELLOW)));
         ServerLevel sl = (ServerLevel) player.level();
         sl.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7f, 1.3f);
+        com.mutationsmod.mutations.ability.Omega.onLevelUp(player, oldLevel, level);
         for (int roll : ROLL_LEVELS) {
             if (oldLevel < roll && level >= roll) {
                 player.sendSystemMessage(Component.literal("Your mutation is evolving... a secondary mutation roll is ready! Open your mutation screen (M).")

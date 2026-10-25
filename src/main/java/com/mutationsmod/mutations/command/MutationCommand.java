@@ -150,6 +150,16 @@ public final class MutationCommand {
                             src.sendSuccess(() -> Component.literal("Reset cooldowns for " + name(p)), true);
                         })))))
 
+                .then(Commands.literal("ultimate").then(players()
+                        .executes(ctx -> forEach(ctx, (p, src) -> {
+                            var d = ModAttachments.get(p);
+                            var u = com.mutationsmod.mutations.mutation.Ultimate.of(d.base());
+                            if (u == null) { src.sendFailure(Component.literal(name(p) + " has no mutation")); return; }
+                            boolean ok = com.mutationsmod.mutations.ability.Omega.fire(p, d, u);
+                            if (ok) com.mutationsmod.mutations.ability.Powers.setTimer(p, "omega_glow", u.glowTicks());
+                            src.sendSuccess(() -> Component.literal((ok ? "Fired " : "Couldn't fire ") + u.displayName() + " for " + name(p)), true);
+                        }))))
+
                 // ---- mastery ----
                 .then(Commands.literal("mastery")
                         .then(Commands.literal("set").then(players().then(Commands.argument("level", IntegerArgumentType.integer(1))

@@ -205,6 +205,18 @@ public class MutationScreen extends Screen {
             y = wrapped(g, a.description() + " (" + cd + ")", x + 6, y, 190, 0xFF8A8A8A);
             y += 1;
         }
+        com.mutationsmod.mutations.mutation.Ultimate ult = com.mutationsmod.mutations.mutation.Ultimate.of(base);
+        if (ult != null) {
+            boolean awake = d.level() >= com.mutationsmod.mutations.mutation.Ultimate.LEVEL;
+            long remaining = d.omegaReady() - now;
+            String status = !awake ? "Lv " + com.mutationsmod.mutations.mutation.Ultimate.LEVEL : remaining > 0 ? MutationsClient.formatTime(remaining) : "ready";
+            g.text(this.font, "[" + MutationsClient.ULTIMATE.getTranslatedKeyMessage().getString() + "] \u03A9 " + ult.displayName(), x, y,
+                    awake ? base.color() : 0xFF777777, false);
+            g.text(this.font, status, mid - 8 - this.font.width(status), y, !awake ? 0xFF777777 : remaining > 0 ? 0xFF999999 : 0xFF7CE38B, false);
+            y += 10;
+            y = wrapped(g, (awake ? "" : "Omega Awakening at mastery level 75: ") + ult.description() + " (10m)", x + 6, y, 190, 0xFF8A8A8A);
+            y += 1;
+        }
         if (d.has(Mutation.PHASER)) {
             String keys = MutationsClient.SPEED_UP.getTranslatedKeyMessage().getString() + "/"
                     + MutationsClient.SPEED_DOWN.getTranslatedKeyMessage().getString();

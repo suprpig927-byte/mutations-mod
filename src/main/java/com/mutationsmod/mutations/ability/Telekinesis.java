@@ -67,6 +67,9 @@ public final class Telekinesis {
     private record Held(Kinetic block, long since, int slot) {}
 
     private static final Map<UUID, List<Held>> HELD = new HashMap<>();
+    /** Omega Gravity Well: blocks circling a player before they're all hurled. */
+    private record Orbit(List<Kinetic> blocks, long start, int duration, float damageScale) {}
+    private static final Map<UUID, Orbit> ORBITS = new HashMap<>();
     private static final List<Kinetic> FLYING = new ArrayList<>();
     /** Recent heavy uses, for the headache downside. */
     private static final Map<UUID, Deque<Long>> STRAIN = new HashMap<>();
@@ -184,6 +187,58 @@ public final class Telekinesis {
         return true;
     }
 
+    // ------------------------------------------------------------------ Gravity Well (Omega)
+
+    /** Lifts every block at {@code positions} into orbit around the player; hurls them after {@code duration} ticks. */
+    public static int startOrbit(ServerPlayer player, List<BlockPos> positions, int duration, float damageScale) {
+        ServerLevel level = (ServerLevel) player.level();
+        List<Kinetic> blocks = new ArrayList<>();
+        for (BlockPos pos : positions) {
+            BlockState state = level.getBlockState(pos);
+            if (state.isAir() || level.getBlockEntity(pos) != null) continue;
+            FallingBlockEntity entity = FallingBlockEntity.fall(level, pos, state);
+            entity.setNoGravity(true);
+            entity.noPhysics = true;
+            entity.setDeltaMovement(Vec3.ZERO);
+            blocks.add(new Kinetic(entity, player.getUUID()));
+        }
+        if (!blocks.isEmpty()) ORBITS.put(player.getUUID(), new Orbit(blocks, level.getGameTime(), duration, damageScale));
+        return blocks.size();
+    }
+
+    private static void tickOrbit(ServerLevel level, ServerPlayer owner, Orbit orbit) {
+        long t = level.getGameTime() - orbit.start();
+        int n = orbit.blocks().size();
+        if (t >= orbit.duration()) {
+            ORBITS.remove(owner.getUUID());
+            Vec3 aim = Raycast.target(owner, 48);
+            for (Kinetic k : orbit.blocks()) {
+                if (!k.entity.isAlive()) continue;
+                Vec3 dir = aim.subtract(k.entity.position().add(0, 0.5, 0)).normalize();
+                k.velocity = dir.scale(2.4);
+                k.damageScale = orbit.damageScale();
+                k.flyingSince = level.getGameTime();
+                FLYING.add(k);
+                broadcast(k, -1, 0);
+            }
+            level.playSound(null, owner.getX(), owner.getY(), owner.getZ(), SoundEvents.ILLUSIONER_CAST_SPELL, SoundSource.PLAYERS, 1.2f, 0.4f);
+            return;
+        }
+        double spin = t * 0.18;
+        double radius = 2.6 + Math.min(1.4, t * 0.05);
+        for (int i = 0; i < n; i++) {
+            Kinetic k = orbit.blocks().get(i);
+            if (!k.entity.isAlive()) continue;
+            double a = spin + i * Math.PI * 2 / n;
+            double ring = (i % 2 == 0) ? radius : radius + 1.1;
+            double y = owner.getY() + 1.0 + (i % 3) * 0.9 + Math.sin(a * 2 + i) * 0.3;
+            k.entity.setPos(owner.getX() + Math.cos(a) * ring, y, owner.getZ() + Math.sin(a) * ring);
+            k.entity.setDeltaMovement(Vec3.ZERO);
+            broadcast(k, -1, 0);
+        }
+        if (t % 3 == 0) level.sendParticles(ParticleTypes.REVERSE_PORTAL, owner.getX(), owner.getY() + 1.5, owner.getZ(), 12, radius, 1.2, radius, 0.05);
+    }
+
     // ------------------------------------------------------------------ release
 
     private static boolean slotTaken(List<Held> list, int slot) {
@@ -252,6 +307,21 @@ public final class Telekinesis {
                 if (owner == null) continue;
                 moveHeld(level, owner, k, held.slot());
             }
+        }
+
+        for (Map.Entry<UUID, Orbit> e : List.copyOf(ORBITS.entrySet())) {
+            ServerPlayer owner = level.getServer().getPlayerList().getPlayer(e.getKey());
+            if (owner == null || !owner.isAlive()) {
+                ORBITS.remove(e.getKey());
+                for (Kinetic k : e.getValue().blocks()) {          // owner gone: everything just drops
+                    if (!k.entity.isAlive()) continue;
+                    k.velocity = Vec3.ZERO;
+                    k.flyingSince = level.getGameTime();
+                    FLYING.add(k);
+                }
+                continue;
+            }
+            if (owner.level() == level) tickOrbit(level, owner, e.getValue());
         }
 
         Iterator<Kinetic> it = FLYING.iterator();

@@ -111,6 +111,7 @@ public final class AbilityHandler {
         if (d.has(Mutation.CHAMELEON)) Chameleon.tick(p, ModAttachments.get(p));
         if (d.has(Mutation.PYRO)) Pyro.tick(p, ModAttachments.get(p));
         if (d.has(Mutation.HOST)) Host.tick(p, ModAttachments.get(p));
+        Omega.tick(p, ModAttachments.get(p));
     }
 
     public static void onLevelTick(LevelTickEvent.Pre event) {
@@ -198,6 +199,8 @@ public final class AbilityHandler {
         if (d.has(Mutation.ABSORBER)) Absorber.onHurt(event, p, d);
         if (event.isCanceled()) return;
         if (d.has(Mutation.BLINKER)) Blinker.onHurt(event, p, d);
+        if (event.isCanceled()) return;
+        Omega.onHurt(event, p, d);                    // Undying clamps whatever damage is left
     }
 
     public static void onEffectApplicable(MobEffectEvent.Applicable event) {
@@ -225,6 +228,7 @@ public final class AbilityHandler {
         if (victim instanceof ServerPlayer p) {
             MutationData d = ModAttachments.get(p);
             boolean powered = !Suppression.active(d, p.level());
+            if (powered && Omega.preventDeath(event, p, d)) return;
             if (powered && d.has(Mutation.REGENERATOR) && Regenerator.secondWind(event, p, d)) return;
             if (powered && d.has(Mutation.PYRO) && Pyro.phoenix(event, p, d)) return;
             Telekinesis.release(p, false);
@@ -266,6 +270,10 @@ public final class AbilityHandler {
         if (Suppression.active(d, p.level())) {
             p.sendOverlayMessage(net.minecraft.network.chat.Component.literal("Your powers are suppressed!")
                     .withStyle(net.minecraft.ChatFormatting.GREEN));
+            return;
+        }
+        if (slot == Omega.SLOT) {
+            Omega.use(p);
             return;
         }
         List<ActiveAbility> actives = d.actives();
@@ -393,6 +401,7 @@ public final class AbilityHandler {
         Blinker.forget(p.getUUID());
         Chameleon.forget(p.getUUID());
         Pyro.forget(p);
+        Omega.forget(p);
     }
 
     /** Kept for older callers. */
