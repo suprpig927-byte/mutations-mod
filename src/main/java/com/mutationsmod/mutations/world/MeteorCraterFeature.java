@@ -37,6 +37,7 @@ public record MeteorCraterFeature() implements Feature {
 
     /** Builds the crater around {@code center} (a surface block). Also used by /mutation crater. */
     public static boolean placeAt(WorldGenLevel level, RandomSource rnd, BlockPos center, Heightmap.Types surface) {
+        long seed = rnd.nextLong();
         double radius = 13 + rnd.nextDouble() * 3;      // ~30 blocks across
         double depth = radius * 0.42;
         double rim = 1.3;                                  // rim reaches 30% beyond the bowl
@@ -45,9 +46,11 @@ public record MeteorCraterFeature() implements Feature {
 
         for (int dx = -reach; dx <= reach; dx++) {
             for (int dz = -reach; dz <= reach; dz++) {
+                int x = center.getX() + dx, z = center.getZ() + dz;
+                if (!Clip.insideXZ(x, z)) continue;               // world gen: only this chunk's columns
+                rnd = Clip.at(seed, x, 0, z);                     // per-column randomness, same for every chunk
                 double d = Math.sqrt(dx * dx + dz * dz) / radius + (rnd.nextDouble() - 0.5) * 0.04;
                 if (d > rim) continue;
-                int x = center.getX() + dx, z = center.getZ() + dz;
                 int top = level.getHeight(surface, x, z) - 1;
                 if (d <= 1.0) {
                     int floor = baseY - (int) Math.round(depth * (1 - d * d));
@@ -76,19 +79,19 @@ public record MeteorCraterFeature() implements Feature {
         // The meteorite core: a lumpy, half-buried rock studded with Nullite.
         int floorCenter = baseY - (int) Math.round(depth);
         BlockPos core = new BlockPos(center.getX(), floorCenter + 1, center.getZ());
-        double coreR = 2.8 + rnd.nextDouble();
+        double coreR = 2.8 + Clip.at(seed, 0, 1, 0).nextDouble();
         int cr = (int) Math.ceil(coreR) + 1;
         BlockState rock = ModContent.METEORITE.get().defaultBlockState();
         for (BlockPos p : BlockPos.betweenClosed(core.offset(-cr, -cr, -cr), core.offset(cr, cr, cr))) {
-            double dist = Math.sqrt(p.distSqr(core)) + rnd.nextDouble() * 0.7;
-            if (dist <= coreR) level.setBlock(p, rock, 2);
+            double dist = Math.sqrt(p.distSqr(core)) + Clip.at(seed, p.getX(), p.getY(), p.getZ()).nextDouble() * 0.7;
+            if (dist <= coreR) Clip.set(level, p, rock);
         }
         for (BlockPos p : BlockPos.betweenClosed(core.offset(-cr - 1, -1, -cr - 1), core.offset(cr + 1, cr + 1, cr + 1))) {
-            if (!level.getBlockState(p).isAir() || rnd.nextFloat() > 0.45) continue;
+            if (!Clip.inside(p) || !level.getBlockState(p).isAir() || Clip.at(seed, p.getX(), p.getY() + 7, p.getZ()).nextFloat() > 0.45) continue;
             for (Direction dir : Direction.values()) {
                 if (dir == Direction.UP) continue;               // clusters grow out of the rock, never hang
-                if (level.getBlockState(p.relative(dir)).is(ModContent.METEORITE.get())) {
-                    level.setBlock(p, cluster(ModContent.NULLITE_CLUSTER.get().defaultBlockState(), dir.getOpposite()), 2);
+                if (Clip.inside(p.relative(dir)) && level.getBlockState(p.relative(dir)).is(ModContent.METEORITE.get())) {
+                    com.mutationsmod.mutations.world.Clip.set(level, p, cluster(ModContent.NULLITE_CLUSTER.get().defaultBlockState(), dir.getOpposite()));
                     break;
                 }
             }
@@ -117,8 +120,9 @@ public record MeteorCraterFeature() implements Feature {
 
     private static void set(WorldGenLevel level, int x, int y, int z, BlockState state) {
         BlockPos pos = new BlockPos(x, y, z);
+        if (!Clip.inside(pos)) return;
         BlockState here = level.getBlockState(pos);
         if (here.is(Blocks.BEDROCK) || here.is(BlockTags.FEATURES_CANNOT_REPLACE)) return;
-        level.setBlock(pos, state, 2);
+        com.mutationsmod.mutations.world.Clip.set(level, pos, state);
     }
 }

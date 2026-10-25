@@ -68,8 +68,8 @@ public class SpecimenChamberBlock extends HorizontalDirectionalBlock {
 
     /** Places both halves (used by world gen). */
     public static void placeAt(LevelAccessor level, BlockState state, BlockPos lower) {
-        level.setBlock(lower, state.setValue(HALF, DoubleBlockHalf.LOWER), 2);
-        level.setBlock(lower.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), 2);
+        com.mutationsmod.mutations.world.Clip.set(level, lower, state.setValue(HALF, DoubleBlockHalf.LOWER));
+        com.mutationsmod.mutations.world.Clip.set(level, lower.above(), state.setValue(HALF, DoubleBlockHalf.UPPER));
     }
 
     @Override

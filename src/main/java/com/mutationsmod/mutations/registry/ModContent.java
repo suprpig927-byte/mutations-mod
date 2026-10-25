@@ -35,12 +35,6 @@ public final class ModContent {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MutationsMod.MODID);
     public static final DeferredRegister<com.mojang.serialization.MapCodec<? extends net.minecraft.world.level.levelgen.feature.Feature>> FEATURE_TYPES =
             DeferredRegister.create(Registries.FEATURE_TYPE, MutationsMod.MODID);
-    public static final DeferredHolder<com.mojang.serialization.MapCodec<? extends net.minecraft.world.level.levelgen.feature.Feature>,
-            com.mojang.serialization.MapCodec<com.mutationsmod.mutations.world.MeteorCraterFeature>> METEOR_CRATER =
-            FEATURE_TYPES.register("meteor_crater", () -> com.mutationsmod.mutations.world.MeteorCraterFeature.CODEC);
-    public static final DeferredHolder<com.mojang.serialization.MapCodec<? extends net.minecraft.world.level.levelgen.feature.Feature>,
-            com.mojang.serialization.MapCodec<com.mutationsmod.mutations.world.GeneLabFeature>> GENE_LAB =
-            FEATURE_TYPES.register("gene_lab", () -> com.mutationsmod.mutations.world.GeneLabFeature.CODEC);
     public static final DeferredRegister.Entities ENTITIES = DeferredRegister.createEntities(MutationsMod.MODID);
     public static final DeferredHolder<net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<com.mutationsmod.mutations.entity.FailedExperiment>>
             FAILED_EXPERIMENT = ENTITIES.registerEntityType("failed_experiment", com.mutationsmod.mutations.entity.FailedExperiment::new,
@@ -230,5 +224,6 @@ public final class ModContent {
         EFFECTS.register(modBus);
         BLOCK_ENTITIES.register(modBus);
         FEATURE_TYPES.register(modBus);
+        com.mutationsmod.mutations.world.ModStructures.register(modBus);
     }
 }

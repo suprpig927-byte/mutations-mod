@@ -1,6 +1,6 @@
 {
-  "type": "neoforge:add_features",
+  "type": "mutations:gene_lab",
   "biomes": "#minecraft:is_overworld",
-  "features": "mutations:gene_lab",
+  "spawn_overrides": {},
   "step": "surface_structures"
 }

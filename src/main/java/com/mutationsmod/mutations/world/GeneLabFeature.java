@@ -71,12 +71,17 @@ public record GeneLabFeature() implements Feature {
         BlockPos at(int x, int y, int z) { return o.offset(x, y, z); }
         void set(int x, int y, int z, BlockState s) {
             BlockPos p = at(x, y, z);
+            if (!Clip.inside(p)) return;
             BlockState here = level.getBlockState(p);
             if (here.is(Blocks.BEDROCK) || here.is(BlockTags.FEATURES_CANNOT_REPLACE)) return;
-            level.setBlock(p, s, 2);
+            com.mutationsmod.mutations.world.Clip.set(level, p, s);
         }
         void set(int x, int y, int z, Block b) { set(x, y, z, b.defaultBlockState()); }
-        BlockState get(int x, int y, int z) { return level.getBlockState(at(x, y, z)); }
+        BlockState get(int x, int y, int z) {
+            BlockPos p = at(x, y, z);
+            return Clip.inside(p) ? level.getBlockState(p) : Blocks.STONE.defaultBlockState();   // other chunks: don't touch
+        }
+        boolean here(int x, int y, int z) { return Clip.inside(at(x, y, z)); }
         void fill(int x0, int y0, int z0, int x1, int y1, int z1, BlockState s) {
             for (int x = x0; x <= x1; x++) for (int y = y0; y <= y1; y++) for (int z = z0; z <= z1; z++) set(x, y, z, s);
         }
@@ -182,14 +187,15 @@ public record GeneLabFeature() implements Feature {
         for (int x : new int[]{-4, -2, 2, 4}) chamber(c, x, F + 1, -10, Direction.SOUTH, m, c.rnd.nextFloat() < 0.35f);
         for (int[] s : new int[][]{{-2, -5}, {1, -6}}) {
             c.set(s[0], F + 1, s[1], Blocks.SPAWNER);
-            if (c.level.getBlockEntity(c.at(s[0], F + 1, s[1])) instanceof SpawnerBlockEntity sp) {
-                sp.setEntityId(ModContent.FAILED_EXPERIMENT.get(), c.rnd);
+            if (c.here(s[0], F + 1, s[1]) && c.level.getBlockEntity(c.at(s[0], F + 1, s[1])) instanceof SpawnerBlockEntity sp) {
+                sp.setEntityId(ModContent.FAILED_EXPERIMENT.get(), RandomSource.create(s[0] * 31L + s[1]));
             }
         }
         for (int x = -4; x <= 4; x += 4) for (int z : new int[]{-3, -8}) light(c, x == 4 ? 2 : x, F + 6, z);
         for (int i = 0; i < 10; i++) {
             int x = -6 + c.rnd.nextInt(10), z = -10 + c.rnd.nextInt(10);
-            if (c.get(x, F + 1, z).isAir()) c.set(x, F + 1, z, c.rnd.nextFloat() < 0.4 ? Blocks.COBWEB : c.t.clutter());
+            boolean web = c.rnd.nextFloat() < 0.4;
+            if (c.get(x, F + 1, z).isAir()) c.set(x, F + 1, z, web ? Blocks.COBWEB : c.t.clutter());
         }
     }
 
@@ -227,7 +233,7 @@ public record GeneLabFeature() implements Feature {
         }
         BlockState chest = Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.EAST);
         c.set(-12, F + 1, -5, chest);
-        RandomizableContainer.setBlockEntityLootTable(c.level, c.rnd, c.at(-12, F + 1, -5), RESEARCH_LOOT);
+        if (c.here(-12, F + 1, -5)) RandomizableContainer.setBlockEntityLootTable(c.level, RandomSource.create(c.o.asLong()), c.at(-12, F + 1, -5), RESEARCH_LOOT);
         lectern(c, -9, F + 1, -8, Direction.SOUTH, ResearchNotes.labNote(m));
         lectern(c, -9, F + 1, -3, Direction.NORTH, ResearchNotes.randomGeneral(c.rnd));
         c.set(-11, F + 1, -3, Blocks.CRAFTING_TABLE);
@@ -238,7 +244,7 @@ public record GeneLabFeature() implements Feature {
 
     private static void lectern(Ctx c, int x, int y, int z, Direction facing, ItemStack book) {
         c.set(x, y, z, Blocks.LECTERN.defaultBlockState().setValue(LecternBlock.FACING, facing).setValue(LecternBlock.HAS_BOOK, true));
-        if (c.level.getBlockEntity(c.at(x, y, z)) instanceof LecternBlockEntity lectern) lectern.setBook(book);
+        if (c.here(x, y, z) && c.level.getBlockEntity(c.at(x, y, z)) instanceof LecternBlockEntity lectern) lectern.setBook(book);
     }
 
     // ---- vault ---------------------------------------------------------------------------------
@@ -258,11 +264,12 @@ public record GeneLabFeature() implements Feature {
         // The Catalyst.
         BlockState chest = Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.SOUTH);
         c.set(0, F + 1, -15, chest);
-        if (c.level.getBlockEntity(c.at(0, F + 1, -15)) instanceof Container box) {
+        boolean rod = c.rnd.nextBoolean();
+        if (c.here(0, F + 1, -15) && c.level.getBlockEntity(c.at(0, F + 1, -15)) instanceof Container box) {
             box.setItem(13, new ItemStack(Catalysts.BY_MUTATION.get(m).get()));
             box.setItem(11, new ItemStack(ModContent.MASTERY_TOME.get()));
-            box.setItem(15, new ItemStack(ModContent.MUTAGEN_CRYSTAL.get(), 2 + c.rnd.nextInt(4)));
-            if (c.rnd.nextBoolean()) box.setItem(4, new ItemStack(ModContent.CONTAINMENT_ROD.get()));
+            box.setItem(15, new ItemStack(ModContent.MUTAGEN_CRYSTAL.get(), 3));
+            if (rod) box.setItem(4, new ItemStack(ModContent.CONTAINMENT_ROD.get()));
             box.setItem(22, ResearchNotes.labNote(m));
         }
         chamber(c, -2, F + 1, -15, Direction.SOUTH, m, false);     // the prime subjects, still sealed
