@@ -42,6 +42,14 @@ public class WardenDirector extends PrisonBoss {
                 .add(Attributes.FOLLOW_RANGE, 40.0);
     }
 
+    @Override
+    public net.minecraft.world.entity.SpawnGroupData finalizeSpawn(net.minecraft.world.level.ServerLevelAccessor level, DifficultyInstance difficulty,
+                                                                  EntitySpawnReason reason, net.minecraft.world.entity.SpawnGroupData group) {
+        var data = super.finalizeSpawn(level, difficulty, reason, group);
+        equip();                                      // /summon loads empty equipment over the constructor's
+        return data;
+    }
+
     private void equip() {
         setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModContent.SHOCK_BATON.get()));
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(ModContent.CONTAINMENT_HELMET.get()));
