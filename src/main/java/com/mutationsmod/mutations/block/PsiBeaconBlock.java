@@ -31,11 +31,11 @@ public class PsiBeaconBlock extends Block {
         user.sendSystemMessage(Component.literal("== Psi Beacon: mutants within " + RANGE + " blocks ==").withStyle(ChatFormatting.LIGHT_PURPLE));
         int found = 0;
         for (Player other : level.players()) {
-            if (!(other instanceof ServerPlayer sp) || sp.distanceToSqr(pos.getCenter()) > RANGE * RANGE) continue;
+            if (!(other instanceof ServerPlayer sp) || sp.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(pos)) > RANGE * RANGE) continue;
             MutationData d = ModAttachments.get(sp);
             if (d.mutations().isEmpty()) continue;
             Mutation base = d.base();
-            int dist = (int) Math.sqrt(sp.distanceToSqr(pos.getCenter()));
+            int dist = (int) Math.sqrt(sp.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(pos)));
             user.sendSystemMessage(Component.literal(" " + sp.getName().getString()).withStyle(ChatFormatting.WHITE)
                     .append(Component.literal("  " + (base == null ? "?" : base.displayName())).withColor(base == null ? 0xFFFFFF : base.color() & 0xFFFFFF))
                     .append(Component.literal("  Lv " + d.level() + "  " + dist + "m").withStyle(ChatFormatting.GRAY)));

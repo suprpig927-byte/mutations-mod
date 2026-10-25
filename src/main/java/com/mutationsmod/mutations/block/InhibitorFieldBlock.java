@@ -44,7 +44,7 @@ public class InhibitorFieldBlock extends Block implements EntityBlock {
         long now = level.getGameTime();
         if ((now + pos.hashCode()) % 20 != 0) return;
         AABB area = new AABB(pos).inflate(RADIUS);
-        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, area, e -> e.distanceToSqr(pos.getCenter()) <= RADIUS * RADIUS)) {
+        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, area, e -> e.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(pos)) <= RADIUS * RADIUS)) {
             if (e instanceof ServerPlayer p) {
                 if (!ModAttachments.get(p).mutations().isEmpty()) Suppression.apply(p, 40, false);
             } else if (!(e instanceof Player)) {
