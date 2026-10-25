@@ -65,6 +65,6 @@ public class ThrownRiftKnife extends ThrowableItemProjectile {
 
     private void giveBack(Player p) {
         ItemStack stack = getItem().copy();
-        if (!stack.isEmpty() && !p.getInventory().add(stack)) p.drop(stack, false);
+        if (!stack.isEmpty() && !p.getInventory().add(stack)) p.drop(stack, false, net.minecraft.util.Prediction.SERVER_ONLY);
     }
 }

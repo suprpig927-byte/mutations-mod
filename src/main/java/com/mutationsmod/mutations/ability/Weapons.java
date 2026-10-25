@@ -60,7 +60,7 @@ public final class Weapons {
             Mutation m = ModWeapons.owner(stack.getItem());
             if (m == null || canWield(p, d, stack.getItem())) continue;
             p.setItemInHand(hand, ItemStack.EMPTY);
-            if (!stowAway(p, stack)) p.drop(stack, false);
+            if (!stowAway(p, stack)) p.drop(stack, false, net.minecraft.util.Prediction.SERVER_ONLY);
             p.sendOverlayMessage(Component.literal("Only a " + m.displayName() + " can wield the " + stack.getHoverName().getString() + ".")
                     .withStyle(ChatFormatting.RED));
         }
