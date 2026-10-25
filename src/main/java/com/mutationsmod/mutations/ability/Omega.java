@@ -82,10 +82,10 @@ public final class Omega {
         p.sendSystemMessage(Component.literal("Your " + m.displayName() + " has reached its full potential. New ultimate: ").withStyle(ChatFormatting.GRAY)
                 .append(Component.literal(u.displayName()).withStyle(s -> s.withColor(m.color() & 0xFFFFFF).withBold(true))));
         p.sendSystemMessage(Component.literal(u.description() + " Press Z (rebindable) to use it.").withStyle(ChatFormatting.DARK_GRAY));
-        ServerLevel level = (ServerLevel) p.level();
-        level.playSound(null, p.getX(), p.getY(), p.getZ(), SoundEvents.BEACON_ACTIVATE, net.minecraft.sounds.SoundSource.PLAYERS, 1.0f, 0.7f);
-        level.playSound(null, p.getX(), p.getY(), p.getZ(), SoundEvents.TOTEM_USE, net.minecraft.sounds.SoundSource.PLAYERS, 0.6f, 0.8f);
-        burst(level, p, m, 80);
+        ServerLevel sl = (ServerLevel) p.level();
+        sl.playSound(null, p.getX(), p.getY(), p.getZ(), SoundEvents.BEACON_ACTIVATE, net.minecraft.sounds.SoundSource.PLAYERS, 1.0f, 0.7f);
+        sl.playSound(null, p.getX(), p.getY(), p.getZ(), SoundEvents.TOTEM_USE, net.minecraft.sounds.SoundSource.PLAYERS, 0.6f, 0.8f);
+        burst(sl, p, m, 80);
         Powers.setTimer(p, "omega_glow", 100);
     }
 
@@ -368,7 +368,6 @@ public final class Omega {
         ModAttachments.set(p, ModAttachments.get(p).withCharge(0));
         Powers.setTimer(p, "overload", 200);
         level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, p.getX(), p.getY() + 1, p.getZ(), 1, 0, 0, 0, 0);
-        level.sendParticles(ParticleTypes.FLASH, p.getX(), p.getY() + 1, p.getZ(), 1, 0, 0, 0, 0);
         level.sendParticles(ParticleTypes.END_ROD, p.getX(), p.getY() + 1, p.getZ(), 120, radius * 0.4, 1, radius * 0.4, 0.4);
         Powers.sound(p, SoundEvents.GENERIC_EXPLODE.value(), 2.0f, 0.6f);
         p.sendOverlayMessage(Component.literal(String.format("OVERLOAD: released %.0f charge", charge)).withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
@@ -558,7 +557,7 @@ public final class Omega {
                 e.addEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE, 25, 2, false, false));
             }
             for (Entity proj : level.getEntitiesOfClass(net.minecraft.world.entity.projectile.Projectile.class, p.getBoundingBox().inflate(10),
-                    pr -> pr.getOwner() != p && !pr.getTags().contains("mutations_blurred"))) {
+                    pr -> pr.getOwner() != p && !pr.entityTags().contains("mutations_blurred"))) {
                 proj.setDeltaMovement(proj.getDeltaMovement().scale(0.25));
                 proj.addTag("mutations_blurred");
             }
