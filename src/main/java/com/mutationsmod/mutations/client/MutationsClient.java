@@ -104,6 +104,12 @@ public class MutationsClient {
         modEventBus.addListener((EntityRenderersEvent.RegisterRenderers e) -> e.registerEntityRenderer(
                 com.mutationsmod.mutations.registry.ModContent.HAVEN_MUTANT.get(),
                 com.mutationsmod.mutations.client.render.HavenMutantRenderer::new));
+        modEventBus.addListener((EntityRenderersEvent.RegisterRenderers e) -> {
+            e.registerEntityRenderer(com.mutationsmod.mutations.registry.ModContent.WARDEN_DIRECTOR.get(),
+                    ctx -> new com.mutationsmod.mutations.client.render.BossRenderer<>(ctx, "warden_director", 1f));
+            e.registerEntityRenderer(com.mutationsmod.mutations.registry.ModContent.SUBJECT_ZERO.get(),
+                    ctx -> new com.mutationsmod.mutations.client.render.BossRenderer<>(ctx, "subject_zero", 1.1f));
+        });
         modEventBus.addListener(MutationsClient::addLayers);
         NeoForge.EVENT_BUS.addListener(MutationsClient::onClientTick);
         NeoForge.EVENT_BUS.addListener(MutationsClient::onRenderFrame);

@@ -93,6 +93,16 @@ public final class MutationCommand {
                     return 1;
                 }))
 
+                .then(Commands.literal("prison").executes(ctx -> {
+                    var src = ctx.getSource();
+                    var level = src.getLevel();
+                    var pos = net.minecraft.core.BlockPos.containing(src.getPosition());
+                    int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()) - 1;
+                    com.mutationsmod.mutations.world.PrisonBuilder.build(level, level.getRandom().nextLong(), new net.minecraft.core.BlockPos(pos.getX(), y, pos.getZ()));
+                    src.sendSuccess(() -> Component.literal("Built a Containment Prison (surface y " + y + ")."), true);
+                    return 1;
+                }))
+
                 .then(Commands.literal("list")
                         .executes(ctx -> list(ctx.getSource()))
                         .then(mutationArg().executes(ctx -> listSecondaries(ctx.getSource(), mutation(ctx)))))

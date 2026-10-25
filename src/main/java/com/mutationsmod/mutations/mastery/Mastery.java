@@ -125,8 +125,13 @@ public final class Mastery {
     }
 
     /** Whether the player has an unused roll available right now. */
+    /** Heart of Zero: one extra secondary slot, available right away. */
+    public static boolean heartAbsorbed(MutationData d) {
+        return d.timer("heart_of_zero") > 0;
+    }
+
     public static boolean canRoll(MutationData d) {
-        return d.base() != null && d.secondaries().size() < Math.min(MAX_SECONDARIES, rollsUnlocked(d.level()))
+        return d.base() != null && d.secondaries().size() < Math.min(MAX_SECONDARIES, rollsUnlocked(d.level())) + (heartAbsorbed(d) ? 1 : 0)
                 && !available(d).isEmpty();
     }
 

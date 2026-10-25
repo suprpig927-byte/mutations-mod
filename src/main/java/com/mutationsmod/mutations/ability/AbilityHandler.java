@@ -135,10 +135,14 @@ public final class AbilityHandler {
         }
 
         // Nullite Spear: a jab suppresses a mutant's powers for 5s, a charged hit for 15s.
-        if (victim instanceof ServerPlayer hit && source.getEntity() instanceof LivingEntity spearman) {
+        // The Overseer's Spear doubles that (10s / 30s). Mutated mobs and bosses are suppressed too.
+        if (source.getEntity() instanceof LivingEntity spearman) {
             var weapon = source.getWeaponItem();
-            if (weapon != null && weapon.is(com.mutationsmod.mutations.registry.ModContent.NULLITE_SPEAR.get())) {
-                Suppression.apply(hit, spearman.isUsingItem() ? Suppression.CHARGE : Suppression.JAB, true);
+            boolean overseer = weapon != null && weapon.is(com.mutationsmod.mutations.registry.ModContent.OVERSEERS_SPEAR.get());
+            if (weapon != null && (overseer || weapon.is(com.mutationsmod.mutations.registry.ModContent.NULLITE_SPEAR.get()))) {
+                int ticks = (spearman.isUsingItem() ? Suppression.CHARGE : Suppression.JAB) * (overseer ? 2 : 1);
+                if (victim instanceof ServerPlayer hit) Suppression.apply(hit, ticks, true);
+                else victim.addEffect(new net.minecraft.world.effect.MobEffectInstance(com.mutationsmod.mutations.registry.ModContent.SUPPRESSED, ticks, 0, false, true, true));
             }
         }
 

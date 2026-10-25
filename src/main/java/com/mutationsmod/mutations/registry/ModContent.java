@@ -44,6 +44,12 @@ public final class ModContent {
     public static final DeferredHolder<net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<com.mutationsmod.mutations.entity.HavenMutant>>
             HAVEN_MUTANT = ENTITIES.registerEntityType("haven_mutant", com.mutationsmod.mutations.entity.HavenMutant::new,
             net.minecraft.world.entity.MobCategory.MISC, b -> b.sized(0.6f, 1.95f).eyeHeight(1.62f).clientTrackingRange(10));
+    public static final DeferredHolder<net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<com.mutationsmod.mutations.entity.WardenDirector>>
+            WARDEN_DIRECTOR = ENTITIES.registerEntityType("warden_director", com.mutationsmod.mutations.entity.WardenDirector::new,
+            net.minecraft.world.entity.MobCategory.MONSTER, b -> b.sized(0.6f, 1.95f).eyeHeight(1.62f).clientTrackingRange(10).fireImmune());
+    public static final DeferredHolder<net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<com.mutationsmod.mutations.entity.SubjectZero>>
+            SUBJECT_ZERO = ENTITIES.registerEntityType("subject_zero", com.mutationsmod.mutations.entity.SubjectZero::new,
+            net.minecraft.world.entity.MobCategory.MONSTER, b -> b.sized(0.6f, 1.95f).eyeHeight(1.62f).clientTrackingRange(10));
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MutationsMod.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MutationsMod.MODID);
 
@@ -76,6 +82,9 @@ public final class ModContent {
             net.minecraft.world.level.block.entity.BlockEntityType<com.mutationsmod.mutations.block.InhibitorFieldBlock.Field>> INHIBITOR_FIELD_ENTITY =
             BLOCK_ENTITIES.register("inhibitor_field", () -> new net.minecraft.world.level.block.entity.BlockEntityType<>(
                     com.mutationsmod.mutations.block.InhibitorFieldBlock.Field::new, INHIBITOR_FIELD.get()));
+    public static final DeferredBlock<com.mutationsmod.mutations.block.ContainmentGateBlock> CONTAINMENT_GATE = BLOCKS.registerBlock("containment_gate",
+            com.mutationsmod.mutations.block.ContainmentGateBlock::new,
+            p -> p.mapColor(MapColor.METAL).strength(-1f, 3600000f).noLootTable().sound(SoundType.METAL).lightLevel(s -> 6));
     public static final DeferredBlock<Block> METEORITE = BLOCKS.registerSimpleBlock("meteorite",
             p -> p.mapColor(MapColor.COLOR_BLACK).strength(5f, 9f).requiresCorrectToolForDrops().sound(SoundType.ANCIENT_DEBRIS));
     public static final DeferredBlock<AmethystClusterBlock> NULLITE_CLUSTER = BLOCKS.registerBlock("nullite_cluster",
@@ -175,6 +184,19 @@ public final class ModContent {
         return n;
     }
 
+    public static final DeferredItem<BlockItem> CONTAINMENT_GATE_ITEM = ITEMS.registerSimpleBlockItem("containment_gate", CONTAINMENT_GATE);
+    public static final DeferredItem<Item> DIRECTORS_KEYCARD = ITEMS.registerSimpleItem("directors_keycard", p -> p.stacksTo(1).rarity(Rarity.EPIC));
+    public static final DeferredItem<com.mutationsmod.mutations.item.HeartOfZeroItem> HEART_OF_ZERO = ITEMS.registerItem("heart_of_zero",
+            com.mutationsmod.mutations.item.HeartOfZeroItem::new, p -> p.stacksTo(1).rarity(Rarity.EPIC));
+    /** The Warden-Director's spear: diamond-plus, and its suppression lasts twice as long. */
+    public static final ToolMaterial OVERSEER_MATERIAL = new ToolMaterial(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 1800, 8.5f, 3.5f, 15,
+            TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MutationsMod.MODID, "nullite_tool_materials")));
+    public static final DeferredItem<Item> OVERSEERS_SPEAR = ITEMS.registerItem("overseers_spear", Item::new,
+            p -> p.spear(OVERSEER_MATERIAL, 1.1f, 1.15f, 0.45f, 2.75f, 9.5f, 6.0f, 5.1f, 9.5f, 4.6f).rarity(Rarity.EPIC).fireResistant());
+    public static final DeferredItem<Item> WARDEN_DIRECTOR_SPAWN_EGG = ITEMS.registerItem("warden_director_spawn_egg",
+            net.minecraft.world.item.SpawnEggItem::new, p -> p.spawnEgg(WARDEN_DIRECTOR.get()));
+    public static final DeferredItem<Item> SUBJECT_ZERO_SPAWN_EGG = ITEMS.registerItem("subject_zero_spawn_egg",
+            net.minecraft.world.item.SpawnEggItem::new, p -> p.spawnEgg(SUBJECT_ZERO.get()));
     public static final DeferredItem<BlockItem> METEORITE_ITEM = ITEMS.registerSimpleBlockItem("meteorite", METEORITE);
     public static final DeferredItem<BlockItem> NULLITE_CLUSTER_ITEM = ITEMS.registerSimpleBlockItem("nullite_cluster", NULLITE_CLUSTER);
     public static final DeferredItem<BlockItem> GENE_SPLICER_ITEM = ITEMS.registerSimpleBlockItem("gene_splicer", GENE_SPLICER);
@@ -209,6 +231,12 @@ public final class ModContent {
                 out.accept(NULLITE_SPEAR.get());
                 out.accept(FAILED_EXPERIMENT_SPAWN_EGG.get());
                 out.accept(HAVEN_MUTANT_SPAWN_EGG.get());
+                out.accept(WARDEN_DIRECTOR_SPAWN_EGG.get());
+                out.accept(SUBJECT_ZERO_SPAWN_EGG.get());
+                out.accept(CONTAINMENT_GATE_ITEM.get());
+                out.accept(DIRECTORS_KEYCARD.get());
+                out.accept(OVERSEERS_SPEAR.get());
+                out.accept(HEART_OF_ZERO.get());
                 out.accept(GLOWCAP_STEW.get());
                 out.accept(CAVE_LOAF.get());
                 out.accept(CRYSTAL_CANDY.get());
@@ -242,6 +270,10 @@ public final class ModContent {
                 e.put(FAILED_EXPERIMENT.get(), com.mutationsmod.mutations.entity.FailedExperiment.createAttributes().build()));
         modBus.addListener((net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent e) ->
                 e.put(HAVEN_MUTANT.get(), com.mutationsmod.mutations.entity.HavenMutant.createAttributes().build()));
+        modBus.addListener((net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent e) -> {
+            e.put(WARDEN_DIRECTOR.get(), com.mutationsmod.mutations.entity.WardenDirector.createAttributes().build());
+            e.put(SUBJECT_ZERO.get(), com.mutationsmod.mutations.entity.SubjectZero.createAttributes().build());
+        });
         ITEMS.register(modBus);
         TABS.register(modBus);
         EFFECTS.register(modBus);

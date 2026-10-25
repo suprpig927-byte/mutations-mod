@@ -1,0 +1,11 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 40517733,
+    "separation": 20,
+    "spacing": 56
+  },
+  "structures": [
+    { "structure": "mutations:containment_prison", "weight": 1 }
+  ]
+}

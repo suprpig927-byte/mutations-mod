@@ -1,0 +1,6 @@
+{
+  "type": "mutations:containment_prison",
+  "biomes": "#minecraft:is_overworld",
+  "spawn_overrides": {},
+  "step": "underground_structures"
+}

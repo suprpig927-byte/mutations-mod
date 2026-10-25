@@ -51,7 +51,8 @@ public final class Suppression {
      * powers off/on at the start/end of a suppression. Returns true while suppressed.
      */
     public static boolean tick(ServerPlayer p) {
-        if (p.getMainHandItem().is(ModContent.NULLITE_SPEAR.get()) || p.getOffhandItem().is(ModContent.NULLITE_SPEAR.get())) {
+        if (p.getMainHandItem().is(ModContent.NULLITE_SPEAR.get()) || p.getOffhandItem().is(ModContent.NULLITE_SPEAR.get())
+                || p.getMainHandItem().is(ModContent.OVERSEERS_SPEAR.get()) || p.getOffhandItem().is(ModContent.OVERSEERS_SPEAR.get())) {
             if (p.level().getGameTime() % 10 == 0) apply(p, 40, false);
         }
         // Kryptonite: standing within 8 blocks of Nullite suppresses your powers.
