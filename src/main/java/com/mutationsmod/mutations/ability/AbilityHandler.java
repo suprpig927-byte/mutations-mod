@@ -118,6 +118,7 @@ public final class AbilityHandler {
         if (!(event.getLevel() instanceof ServerLevel level)) return;
         Telekinesis.onLevelTick(event);
         Powers.tickLevel(level);
+        com.mutationsmod.mutations.debug.OmegaTest.tick(level);
         Siren.tickLevel(level);
     }
 

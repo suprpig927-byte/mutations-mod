@@ -150,6 +150,12 @@ public final class MutationCommand {
                             src.sendSuccess(() -> Component.literal("Reset cooldowns for " + name(p)), true);
                         })))))
 
+                .then(Commands.literal("omegatest").executes(ctx -> {
+                    var src = ctx.getSource();
+                    int n = com.mutationsmod.mutations.debug.OmegaTest.start(src.getLevel(), net.minecraft.core.BlockPos.containing(src.getPosition()), null);
+                    src.sendSuccess(() -> Component.literal("Started " + n + " Omega tests"), true);
+                    return n;
+                }))
                 .then(Commands.literal("ultimate").then(players()
                         .executes(ctx -> forEach(ctx, (p, src) -> {
                             var d = ModAttachments.get(p);
