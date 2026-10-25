@@ -45,5 +45,11 @@
   "item.mutations.containment_helmet": "Containment Helmet",
   "item.mutations.containment_chestplate": "Containment Suit",
   "item.mutations.containment_leggings": "Containment Leggings",
-  "item.mutations.containment_boots": "Containment Boots"
+  "item.mutations.containment_boots": "Containment Boots",
+  "entity.mutations.haven_mutant": "Haven Mutant",
+  "item.mutations.haven_mutant_spawn_egg": "Haven Mutant Spawn Egg",
+  "item.mutations.glowcap_stew": "Glowcap Stew",
+  "item.mutations.cave_loaf": "Cave Loaf",
+  "item.mutations.crystal_candy": "Crystal Candy",
+  "item.mutations.smoked_blindfish": "Smoked Blindfish"
 }

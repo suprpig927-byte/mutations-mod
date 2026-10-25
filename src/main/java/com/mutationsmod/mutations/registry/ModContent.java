@@ -41,6 +41,9 @@ public final class ModContent {
             net.minecraft.world.entity.MobCategory.MONSTER, b -> b.sized(0.6f, 1.95f).eyeHeight(1.74f).clientTrackingRange(8));
     public static final DeferredRegister<net.minecraft.world.level.block.entity.BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MutationsMod.MODID);
+    public static final DeferredHolder<net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<com.mutationsmod.mutations.entity.HavenMutant>>
+            HAVEN_MUTANT = ENTITIES.registerEntityType("haven_mutant", com.mutationsmod.mutations.entity.HavenMutant::new,
+            net.minecraft.world.entity.MobCategory.MISC, b -> b.sized(0.6f, 1.95f).eyeHeight(1.62f).clientTrackingRange(10));
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MutationsMod.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MutationsMod.MODID);
 
@@ -119,6 +122,19 @@ public final class ModContent {
     public static final DeferredItem<Item> FAILED_EXPERIMENT_SPAWN_EGG = ITEMS.registerItem("failed_experiment_spawn_egg",
             net.minecraft.world.item.SpawnEggItem::new, p -> p.spawnEgg(FAILED_EXPERIMENT.get()));
 
+    public static final DeferredItem<Item> HAVEN_MUTANT_SPAWN_EGG = ITEMS.registerItem("haven_mutant_spawn_egg",
+            net.minecraft.world.item.SpawnEggItem::new, p -> p.spawnEgg(HAVEN_MUTANT.get()));
+
+    // ---- Haven food: ordinary food, only made in the Mutant Haven ----
+    private static net.minecraft.world.food.FoodProperties food(int nutrition, float saturation) {
+        return new net.minecraft.world.food.FoodProperties.Builder().nutrition(nutrition).saturationModifier(saturation).build();
+    }
+    public static final DeferredItem<Item> GLOWCAP_STEW = ITEMS.registerSimpleItem("glowcap_stew",
+            p -> p.stacksTo(1).food(food(8, 0.6f)).usingConvertsTo(net.minecraft.world.item.Items.BOWL));
+    public static final DeferredItem<Item> CAVE_LOAF = ITEMS.registerSimpleItem("cave_loaf", p -> p.food(food(5, 0.6f)));
+    public static final DeferredItem<Item> CRYSTAL_CANDY = ITEMS.registerSimpleItem("crystal_candy", p -> p.food(food(2, 0.3f)));
+    public static final DeferredItem<Item> SMOKED_BLINDFISH = ITEMS.registerSimpleItem("smoked_blindfish", p -> p.food(food(6, 0.8f)));
+
     public static final DeferredItem<BlockItem> MUTAGEN_ORE_ITEM = ITEMS.registerSimpleBlockItem("mutagen_ore", MUTAGEN_ORE);
     public static final DeferredItem<BlockItem> DEEPSLATE_MUTAGEN_ORE_ITEM = ITEMS.registerSimpleBlockItem("deepslate_mutagen_ore", DEEPSLATE_MUTAGEN_ORE);
     public static final DeferredItem<BlockItem> MUTAGEN_CRYSTAL_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("mutagen_crystal_block", MUTAGEN_CRYSTAL_BLOCK);
@@ -192,6 +208,11 @@ public final class ModContent {
                 out.accept(CONTAINMENT_ROD.get());
                 out.accept(NULLITE_SPEAR.get());
                 out.accept(FAILED_EXPERIMENT_SPAWN_EGG.get());
+                out.accept(HAVEN_MUTANT_SPAWN_EGG.get());
+                out.accept(GLOWCAP_STEW.get());
+                out.accept(CAVE_LOAF.get());
+                out.accept(CRYSTAL_CANDY.get());
+                out.accept(SMOKED_BLINDFISH.get());
                 out.accept(TROLL_HEART.get());
                 out.accept(FOCUS_PRISM.get());
                 out.accept(STORM_ROD.get());
@@ -219,6 +240,8 @@ public final class ModContent {
         BLOCKS.register(modBus);
         modBus.addListener((net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent e) ->
                 e.put(FAILED_EXPERIMENT.get(), com.mutationsmod.mutations.entity.FailedExperiment.createAttributes().build()));
+        modBus.addListener((net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent e) ->
+                e.put(HAVEN_MUTANT.get(), com.mutationsmod.mutations.entity.HavenMutant.createAttributes().build()));
         ITEMS.register(modBus);
         TABS.register(modBus);
         EFFECTS.register(modBus);

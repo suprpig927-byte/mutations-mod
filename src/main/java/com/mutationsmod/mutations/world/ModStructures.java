@@ -103,6 +103,33 @@ public final class ModStructures {
         }
     }
 
+    // ------------------------------------------------------------------ Mutant Haven
+
+    public static class Haven extends Structure {
+        public static final MapCodec<Haven> CODEC = simpleCodec(Haven::new);
+        public Haven(StructureSettings s) { super(s); }
+
+        @Override
+        protected Optional<GenerationStub> findGenerationPoint(GenerationContext ctx) {
+            return dryFlatCenter(ctx, 14).map(c -> new GenerationStub(c, b -> b.addPiece(new HavenPiece(c, 0, ctx.random().nextLong()))));
+        }
+
+        @Override
+        public StructureType<?> type() { return HAVEN.get(); }
+    }
+
+    public static class HavenPiece extends BuilderPiece {
+        public HavenPiece(BlockPos c, int variant, long seed) {
+            super(HAVEN_PIECE.get(), c, variant, seed, box(c, -22, -HavenBuilder.DEPTH - 3, -19, 22, 6, 19));
+        }
+        public HavenPiece(CompoundTag tag) { super(HAVEN_PIECE.get(), tag); }
+
+        @Override
+        protected void build(WorldGenLevel level, RandomSource rnd, BlockPos center, int variant) {
+            HavenBuilder.build(level, seed, center);
+        }
+    }
+
     // ------------------------------------------------------------------ registration
 
     private static <S extends Structure> DeferredHolder<StructureType<?>, StructureType<S>> type(String name, MapCodec<S> codec) {
@@ -115,6 +142,8 @@ public final class ModStructures {
 
     public static final DeferredHolder<StructureType<?>, StructureType<GeneLab>> GENE_LAB = type("gene_lab", GeneLab.CODEC);
     public static final DeferredHolder<StructureType<?>, StructureType<MeteorCrater>> METEOR_CRATER = type("meteor_crater", MeteorCrater.CODEC);
+    public static final DeferredHolder<StructureType<?>, StructureType<Haven>> HAVEN = type("mutant_haven", Haven.CODEC);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> HAVEN_PIECE = piece("mutant_haven", HavenPiece::new);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> GENE_LAB_PIECE = piece("gene_lab", GeneLabPiece::new);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> CRATER_PIECE = piece("meteor_crater", CraterPiece::new);
 
