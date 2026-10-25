@@ -116,7 +116,7 @@ Each base mutation has a Catalyst, found in the vault of that mutation's Gene La
 Rare ruined research labs on the overworld surface (about one per 400 chunks), each built to study one mutation and decorated for it.
 
 - **Surface:** a crumbling white lab building with broken windows and debris. A stairwell leads down.
-- **Specimen hall:** cracked specimen tanks (some smashed) and two **Failed Experiment** spawners.
+- **Specimen hall:** rows of two-block-tall **Specimen Chambers** (glass tubes of glowing fluid in the lab's mutation color, a subject floating inside; about a third are smashed open and empty) and two **Failed Experiment** spawners. Two sealed chambers flank the vault chest.
 - **Research room:** bookshelves, desks, two lecterns with **Research Notes**, a loot chest (Mastery Tomes, Containment Rods, Mutagen, sometimes a Nullite Shard) and sometimes an abandoned Gene Splicer.
 - **Vault:** behind an iron door (press the button beside it): the lab's **Catalyst**, a Mastery Tome, Mutagen Crystals, the lab's research note and sometimes a Containment Rod.
 - Ops can build one with `/mutation lab <mutation>`.
@@ -125,3 +125,7 @@ Rare ruined research labs on the overworld surface (about one per 400 chunks), e
 
 Mutated test subjects that guard the labs. Zombie-like, but they never burn in daylight. Each carries one power:
 **Burning** (sets you on fire, fire-proof), **Frozen** (slows and chills you), **Unstable** (teleports to you and blinks away when hurt), **Hulking** (40% bigger, much tougher and stronger, slower), **Leeching** (heals when it hits you). They drop rotten flesh and sometimes a Mutagen Crystal.
+
+## Specimen Chamber
+
+A two-block-tall glass tube of glowing Mutagen fluid with a subject floating inside, built in the Gene Splicer's style. Craft: Mutagen Ingot / Glass / Mutagen Ingot, Glass / Mutagen Crystal / Glass, Mutagen Ingot / Glass / Mutagen Ingot. Gene Labs have them in their mutation's color.

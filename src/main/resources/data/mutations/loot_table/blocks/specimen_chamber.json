@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "condition": {
+            "type": "minecraft:match_block",
+            "blocks": "mutations:specimen_chamber",
+            "state": {
+              "half": "lower"
+            }
+          },
+          "name": "mutations:specimen_chamber"
+        }
+      ]
+    }
+  ]
+}

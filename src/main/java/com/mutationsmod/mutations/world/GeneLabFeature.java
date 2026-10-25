@@ -177,8 +177,10 @@ public record GeneLabFeature() implements Feature {
     // ---- specimen hall -------------------------------------------------------------------------
 
     private static void hall(Ctx c, int F, Mutation m) {
-        for (int[] t : new int[][]{{-4, -3}, {-4, -8}, {0, -3}, {0, -8}}) tank(c, t[0], F, t[1]);
-        for (int[] s : new int[][]{{-2, -5}, {2, -9}}) {
+        // Specimen chambers line the west and north walls; some are smashed open and empty.
+        for (int z : new int[]{-9, -7, -5, -3, -1}) chamber(c, -6, F + 1, z, Direction.EAST, m, c.rnd.nextFloat() < 0.35f);
+        for (int x : new int[]{-4, -2, 2, 4}) chamber(c, x, F + 1, -10, Direction.SOUTH, m, c.rnd.nextFloat() < 0.35f);
+        for (int[] s : new int[][]{{-2, -5}, {1, -6}}) {
             c.set(s[0], F + 1, s[1], Blocks.SPAWNER);
             if (c.level.getBlockEntity(c.at(s[0], F + 1, s[1])) instanceof SpawnerBlockEntity sp) {
                 sp.setEntityId(ModContent.FAILED_EXPERIMENT.get(), c.rnd);
@@ -189,6 +191,15 @@ public record GeneLabFeature() implements Feature {
             int x = -6 + c.rnd.nextInt(10), z = -10 + c.rnd.nextInt(10);
             if (c.get(x, F + 1, z).isAir()) c.set(x, F + 1, z, c.rnd.nextFloat() < 0.4 ? Blocks.COBWEB : c.t.clutter());
         }
+    }
+
+    private static void chamber(Ctx c, int x, int y, int z, Direction facing, Mutation m, boolean broken) {
+        BlockState s = ModContent.SPECIMEN_CHAMBER.get().defaultBlockState()
+                .setValue(com.mutationsmod.mutations.block.SpecimenChamberBlock.FACING, facing)
+                .setValue(com.mutationsmod.mutations.block.SpecimenChamberBlock.VARIANT, m.ordinal() + 1)
+                .setValue(com.mutationsmod.mutations.block.SpecimenChamberBlock.BROKEN, broken);
+        com.mutationsmod.mutations.block.SpecimenChamberBlock.placeAt(c.level, s, c.at(x, y, z));
+        if (broken) c.set(x + facing.getStepX(), y, z + facing.getStepZ(), Blocks.COBWEB);
     }
 
     /** A 3x3 specimen tank: accent base, glass ring around the specimen, iron cap. Some are smashed. */
@@ -254,8 +265,8 @@ public record GeneLabFeature() implements Feature {
             if (c.rnd.nextBoolean()) box.setItem(4, new ItemStack(ModContent.CONTAINMENT_ROD.get()));
             box.setItem(22, ResearchNotes.labNote(m));
         }
-        c.set(-2, F + 1, -15, c.t.clutter());
-        c.set(2, F + 1, -15, c.t.clutter());
+        chamber(c, -2, F + 1, -15, Direction.SOUTH, m, false);     // the prime subjects, still sealed
+        chamber(c, 2, F + 1, -15, Direction.SOUTH, m, false);
         light(c, 0, F + 6, -13);
     }
 }

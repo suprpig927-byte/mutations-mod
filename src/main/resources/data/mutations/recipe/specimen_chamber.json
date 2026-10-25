@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "I": "mutations:mutagen_ingot",
+    "G": "minecraft:glass",
+    "C": "mutations:mutagen_crystal"
+  },
+  "pattern": [
+    "IGI",
+    "GCG",
+    "IGI"
+  ],
+  "result": {
+    "id": "mutations:specimen_chamber"
+  }
+}

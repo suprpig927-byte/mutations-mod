@@ -1,0 +1,406 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "casing": "mutations:block/gene_splicer_casing",
+    "cap": "mutations:block/gene_splicer_top",
+    "glass": "mutations:block/gene_splicer_glass",
+    "cracked": "mutations:block/specimen_chamber_cracked",
+    "specimen": "mutations:block/specimen",
+    "face": "mutations:block/specimen_face",
+    "fluid": "mutations:block/chamber_fluid_0",
+    "particle": "mutations:block/gene_splicer_casing"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        10,
+        2
+      ],
+      "to": [
+        14,
+        13,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            3
+          ],
+          "texture": "#casing"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            3
+          ],
+          "texture": "#casing"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            3
+          ],
+          "texture": "#casing"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            3
+          ],
+          "texture": "#casing"
+        },
+        "up": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#cap"
+        },
+        "down": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#cap"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        13,
+        4
+      ],
+      "to": [
+        12,
+        15,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            12,
+            6
+          ],
+          "texture": "#cap"
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            12,
+            6
+          ],
+          "texture": "#cap"
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            12,
+            6
+          ],
+          "texture": "#cap"
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            12,
+            6
+          ],
+          "texture": "#cap"
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            6
+          ],
+          "texture": "#cap"
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            12,
+            6
+          ],
+          "texture": "#cap"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        15,
+        7
+      ],
+      "to": [
+        9,
+        16,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "texture": "#fluid"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "texture": "#fluid"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "texture": "#fluid"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "texture": "#fluid"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "texture": "#fluid"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "texture": "#fluid"
+        }
+      },
+      "light_emission": 15
+    },
+    {
+      "from": [
+        1,
+        0,
+        13
+      ],
+      "to": [
+        3,
+        10,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            2,
+            10
+          ],
+          "texture": "#casing"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            2,
+            10
+          ],
+          "texture": "#casing"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            2,
+            10
+          ],
+          "texture": "#casing"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            2,
+            10
+          ],
+          "texture": "#casing"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            2,
+            10
+          ],
+          "texture": "#casing"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            2,
+            10
+          ],
+          "texture": "#casing"
+        }
+      }
+    },
+    {
+      "from": [
+        13,
+        0,
+        13
+      ],
+      "to": [
+        15,
+        10,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            2,
+            10
+          ],
+          "texture": "#casing"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            2,
+            10
+          ],
+          "texture": "#casing"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            2,
+            10
+          ],
+          "texture": "#casing"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            2,
+            10
+          ],
+          "texture": "#casing"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            2,
+            10
+          ],
+          "texture": "#casing"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            2,
+            10
+          ],
+          "texture": "#casing"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        6,
+        3
+      ],
+      "to": [
+        13,
+        10,
+        13
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ],
+          "texture": "#cracked"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ],
+          "texture": "#cracked"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ],
+          "texture": "#cracked"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ],
+          "texture": "#cracked"
+        }
+      }
+    }
+  ]
+}

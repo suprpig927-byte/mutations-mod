@@ -64,6 +64,9 @@ public final class ModContent {
             GeneSplicerBlock::new,
             p -> p.mapColor(MapColor.METAL).strength(3.5f, 6f).requiresCorrectToolForDrops().sound(SoundType.METAL).lightLevel(s -> 7).noOcclusion());
 
+    public static final DeferredBlock<com.mutationsmod.mutations.block.SpecimenChamberBlock> SPECIMEN_CHAMBER = BLOCKS.registerBlock("specimen_chamber",
+            com.mutationsmod.mutations.block.SpecimenChamberBlock::new,
+            p -> p.mapColor(MapColor.METAL).strength(3f, 6f).requiresCorrectToolForDrops().sound(SoundType.METAL).lightLevel(s -> 9).noOcclusion());
     public static final DeferredBlock<Block> METEORITE = BLOCKS.registerSimpleBlock("meteorite",
             p -> p.mapColor(MapColor.COLOR_BLACK).strength(5f, 9f).requiresCorrectToolForDrops().sound(SoundType.ANCIENT_DEBRIS));
     public static final DeferredBlock<AmethystClusterBlock> NULLITE_CLUSTER = BLOCKS.registerBlock("nullite_cluster",
@@ -114,6 +117,7 @@ public final class ModContent {
     public static final DeferredItem<BlockItem> DEEPSLATE_MUTAGEN_ORE_ITEM = ITEMS.registerSimpleBlockItem("deepslate_mutagen_ore", DEEPSLATE_MUTAGEN_ORE);
     public static final DeferredItem<BlockItem> MUTAGEN_CRYSTAL_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("mutagen_crystal_block", MUTAGEN_CRYSTAL_BLOCK);
     public static final DeferredItem<BlockItem> MUTAGEN_CLUSTER_ITEM = ITEMS.registerSimpleBlockItem("mutagen_cluster", MUTAGEN_CLUSTER);
+    public static final DeferredItem<BlockItem> SPECIMEN_CHAMBER_ITEM = ITEMS.registerSimpleBlockItem("specimen_chamber", SPECIMEN_CHAMBER);
     public static final DeferredItem<BlockItem> METEORITE_ITEM = ITEMS.registerSimpleBlockItem("meteorite", METEORITE);
     public static final DeferredItem<BlockItem> NULLITE_CLUSTER_ITEM = ITEMS.registerSimpleBlockItem("nullite_cluster", NULLITE_CLUSTER);
     public static final DeferredItem<BlockItem> GENE_SPLICER_ITEM = ITEMS.registerSimpleBlockItem("gene_splicer", GENE_SPLICER);
@@ -132,6 +136,7 @@ public final class ModContent {
                 out.accept(MUTAGEN_CRYSTAL.get());
                 out.accept(MUTAGEN_CRYSTAL_BLOCK_ITEM.get());
                 out.accept(GENE_SPLICER_ITEM.get());
+                out.accept(SPECIMEN_CHAMBER_ITEM.get());
                 out.accept(MASTERY_TOME.get());
                 out.accept(METEORITE_ITEM.get());
                 out.accept(NULLITE_CLUSTER_ITEM.get());

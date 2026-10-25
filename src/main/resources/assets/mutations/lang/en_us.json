@@ -37,5 +37,6 @@
   "item.mutations.ember_heart": "Ember Heart",
   "item.mutations.symbiote_jar": "Symbiote Jar",
   "entity.mutations.failed_experiment": "Failed Experiment",
-  "item.mutations.failed_experiment_spawn_egg": "Failed Experiment Spawn Egg"
+  "item.mutations.failed_experiment_spawn_egg": "Failed Experiment Spawn Egg",
+  "block.mutations.specimen_chamber": "Specimen Chamber"
 }
