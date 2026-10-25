@@ -37,7 +37,7 @@ jobs:
           sleep 5
           CMDS="${{ github.event.inputs.commands }}"
           if [ -n "$CMDS" ]; then
-            python3 - "$CMDS" <<'PY' >> server.log 2>&1
+            python3 - "$CMDS" <<'PY' > rcon.log 2>&1
           import sys, time
           from mcrcon import MCRcon
           with MCRcon("127.0.0.1", "test", port=25575) as m:
