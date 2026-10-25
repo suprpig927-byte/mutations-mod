@@ -26,7 +26,7 @@ jobs:
         run: |
           chmod +x gradlew
           mkdir -p run && echo "eula=true" > run/eula.txt
-          printf "level-seed=mutations\nspawn-protection=0\nenable-rcon=true\nrcon.password=test\nrcon.port=25575\n" > run/server.properties
+          printf "level-seed=mutations\nspawn-protection=0\nenable-rcon=true\nrcon.password=test\nrcon.port=25575\npause-when-empty-seconds=0\n" > run/server.properties
           pip install --quiet mcrcon
           ./gradlew runServer > server.log 2>&1 &
           for i in $(seq 1 120); do
@@ -43,7 +43,9 @@ jobs:
           with MCRcon("127.0.0.1", "test", port=25575) as m:
               for c in sys.argv[1].split(";"):
                   c = c.strip()
-                  if c:
+                  if c.startswith("wait "):
+                      time.sleep(float(c[5:])); print("waited", c[5:])
+                  elif c:
                       print("RCON>", c, "=>", m.command(c)); time.sleep(2)
           PY
           fi
