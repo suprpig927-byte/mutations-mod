@@ -126,6 +126,7 @@ public final class AbilityHandler {
         Powers.tickLevel(level);
         com.mutationsmod.mutations.debug.OmegaTest.tick(level);
         com.mutationsmod.mutations.debug.WeaponTest.tick(level);
+        com.mutationsmod.mutations.debug.NewMutationTest.tick(level);
         Siren.tickLevel(level);
     }
 

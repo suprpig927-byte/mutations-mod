@@ -150,6 +150,12 @@ public final class MutationCommand {
                             src.sendSuccess(() -> Component.literal("Reset cooldowns for " + name(p)), true);
                         })))))
 
+                .then(Commands.literal("newtest").executes(ctx -> {
+                    var src = ctx.getSource();
+                    com.mutationsmod.mutations.debug.NewMutationTest.start(src.getLevel(), net.minecraft.core.BlockPos.containing(src.getPosition()));
+                    src.sendSuccess(() -> Component.literal("Started new mutation tests"), true);
+                    return 1;
+                }))
                 .then(Commands.literal("weapontest").executes(ctx -> {
                     var src = ctx.getSource();
                     int n = com.mutationsmod.mutations.debug.WeaponTest.start(src.getLevel(), net.minecraft.core.BlockPos.containing(src.getPosition()));
