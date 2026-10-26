@@ -1,4 +1,4 @@
-# Mutations — v0.17.0 (NeoForge, Minecraft 26.3)
+# Mutations — v0.18.0 (NeoForge, Minecraft 26.3)
 
 Every player is born with a random, permanent mutation. Use your powers to earn mastery XP,
 level up, spend stat points, and evolve secondary mutations.
@@ -6,9 +6,9 @@ See **DESIGN.md** for every mutation, ability and secondary.
 
 ## What's in this version
 
-- **All 12 base mutations:** Regenerator, Kinetic Mind, Stormcaller, Phaser, Cryo, Blinker,
-  Colossus, Siren, Absorber, Chameleon, Pyro, Host.
-- **96 secondary mutations** (8 per base). At mastery levels **10, 25 and 50** you're offered
+- **All 14 base mutations:** Regenerator, Kinetic Mind, Stormcaller, Phaser, Cryo, Blinker,
+  Colossus, Siren, Absorber, Chameleon, Pyro, Host, Bullet, Fierce Wings.
+- **112 secondary mutations** (8 per base). At mastery levels **10, 25 and 50** you're offered
   3 random ones from your base's list and pick one.
 - **Stats:** Strength, Vitality, Agility, Endurance, Luck, Mutation. +3 points per mastery level,
   no caps. **Respec** refunds everything for 30 Minecraft XP levels.
@@ -113,6 +113,8 @@ Each base mutation has a Catalyst, found in the vault of that mutation's Gene La
 | Chameleon | Prism Cloak | Mimic lasts twice as long |
 | Pyro | Ember Heart | Rain no longer hurts you (water still does) |
 | Host | Symbiote Jar | The organism starves half as fast |
+| Bullet | Heat Sink | Fire twice as much before you overheat |
+| Fierce Wings | Gale Feather | Stronger flaps that cost no hunger |
 
 ## Abandoned Gene Labs
 
@@ -191,6 +193,8 @@ At **mastery level 75** your base mutation reaches its full potential and unlock
 | Absorber | **Overload** | Releases all your stored charge in one blast (bigger and stronger the more charge), then for 10s you absorb 100% of damage as charge. |
 | Chameleon | **Doppelganger** | Three decoys wearing your skin wander off and draw the mobs, while you go fully invisible (armor too) for 20s. |
 | Pyro | **Supernova** | You explode in a ring of fire on the ground where you stand, then launch up and fly as living flame for 15s. |
+| Bullet | **Bullet Storm** | 6 seconds of full-auto fire with your selected ammo. It uses no ammo and builds no heat. |
+| Fierce Wings | **Skyfall** | You soar up and hover, raining razor feathers on the mobs below for about 8 seconds. |
 | Host | **Consume** | Tendrils seize up to 5 nearby mobs, drag them in and devour them; you heal 2 hearts and get food for each, and the organism is fed. |
 
 Bosses can't be stunned by Banshee Wail or seized by Consume.
@@ -214,4 +218,38 @@ Every recipe uses Mutagen Ingots (M), Mutagen Crystals (C), sticks (S) and one t
 | Absorber | **Capacitor Blade** | Hits store 1 charge. Right-click spends 10 charge on a 24-block energy slash. | Block of Redstone |
 | Chameleon | **Shade Fang** | Deals 2.5x damage from behind, or while you're hidden or invisible. | Ink Sac |
 | Pyro | **Ember Scythe** | Hits set mobs on fire. Right-click sweeps an arc of flame in front of you (3s cooldown). | Blaze Rod |
+| Bullet | **Gunblade** | Right-click fires a round of your selected ammo that builds no heat (1s cooldown). | Crossbow |
+| Fierce Wings | **Talon Glaive** | Hits deal 50% more while you're in the air. Right-click does a wing-powered dash forward (2s cooldown). | Hawk Feather |
 | Host | **Symbiote Whip** | +2.5 reach. Hits yank mobs toward you and push the organism's hunger back by 30s. | Fermented Spider Eye |
+
+## Bullet
+
+Your body turns ore into ammunition. **Fire** (R by default) shoots a round of your selected ammo from your inventory, **Switch Ammo** cycles to the next kind you're carrying, and **Scattershot** fires a 5-pellet shotgun blast for one ammo. If you run out of your selected ammo, Fire switches to the next kind you have. The HUD shows your ammo and heat.
+
+| Ammo | Round |
+|---|---|
+| Iron nugget | Standard round (6 damage) |
+| Coal | Incendiary: sets the target on fire |
+| Copper ingot | Shock: arcs to the nearest other mob for 70% damage |
+| Gold nugget | Very fast, bounces off a wall once |
+| Redstone | Blast: explodes on impact, hurting everything within 3 blocks (no block damage) |
+| Lapis lazuli | Heavy: big knockback and Slowness II |
+| Diamond | Piercing: goes through up to 4 mobs (10 damage) |
+| Netherite scrap | 16 damage that ignores armor |
+
+**Heat:** each shot adds 12 heat and a Scattershot adds 35. Heat cools by 1 every tick. At 100 you **overheat**: you catch fire, take a little damage, and can't shoot for 5 seconds.
+
+## Fierce Wings
+
+Permanent hawk wings, folded on your back on the ground and spread while you glide.
+- **Glide:** jump while you're in the air to spread your wings and glide like an elytra.
+- **Flap:** press jump while gliding for a burst of lift and speed. Each flap costs a little hunger.
+- **No fall damage**, ever.
+- **Downsides:** chestplates (and elytra) won't fit over your wings, and fire hurts you 50% more.
+
+**Actives:**
+- **Feather Volley:** throws a fan of 5 razor feathers.
+- **Wing Gust:** blasts mobs back and turns projectiles around.
+- **Dive Strike:** used in the air, it plunges you down. The landing hits everything around you harder the farther you fell.
+
+The Hawk Feather (2 from a Feather plus Brown Dye) is used to craft the Talon Glaive.

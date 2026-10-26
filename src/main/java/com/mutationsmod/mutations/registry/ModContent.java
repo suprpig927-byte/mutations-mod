@@ -134,7 +134,7 @@ public final class ModContent {
     public static final DeferredItem<Item> EMBER_HEART = ITEMS.registerSimpleItem("ember_heart", p -> catalyst(p, "Pyro", "Rain no longer hurts you (water still does)"));
     public static final DeferredItem<Item> SYMBIOTE_JAR = ITEMS.registerSimpleItem("symbiote_jar", p -> catalyst(p, "Host", "The organism starves half as fast"));
     public static final DeferredItem<Item> HEAT_SINK = ITEMS.registerSimpleItem("heat_sink", p -> catalyst(p, "Bullet", "Fire twice as much before you overheat"));
-    public static final DeferredItem<Item> GALE_FEATHER = ITEMS.registerSimpleItem("gale_feather", p -> catalyst(p, "Fierce Wings", "Flapping costs no hunger"));
+    public static final DeferredItem<Item> GALE_FEATHER = ITEMS.registerSimpleItem("gale_feather", p -> catalyst(p, "Fierce Wings", "Stronger flaps that cost no hunger"));
     /** A Fierce Wings razor feather (the projectile's look; also a plain crafting feather). */
     public static final DeferredItem<Item> HAWK_FEATHER = ITEMS.registerSimpleItem("hawk_feather");
 

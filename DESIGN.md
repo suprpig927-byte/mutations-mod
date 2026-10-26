@@ -216,3 +216,39 @@ Generated from the code: every base mutation, its abilities, and its secondary m
 | [A] Lash | Whip every mob around you. |
 | Well Fed | The organism can go 15 minutes between kills instead of 10. |
 | Parasite | Your hits heal you for 20% of the damage. |
+
+## Bullet
+- **Upside:** Fire bullets made from ores in your inventory. Every material shoots differently.
+- **Downside:** Firing too fast overheats you: you burn and can't shoot until you cool down.
+- **[A] Fire** (0.25s): Shoot a round of your selected ammo.
+- **[A] Switch Ammo** (0.25s): Cycle to the next kind of ammo you're carrying.
+- **[A] Scattershot** (8s): A shotgun blast of 5 pellets (uses one ammo, lots of heat).
+
+| Secondary | Effect |
+|---|---|
+| Hollow Points | Bullets deal 25% more damage. |
+| Ricochet | Every bullet bounces off a wall once. |
+| Steady Aim | While sneaking, bullets deal 50% more damage and Scattershot spreads half as much. |
+| Scrap Collector | Mobs you kill with bullets drop 1-3 iron nuggets. |
+| Tracer Rounds | Anything your bullets hit glows for 10 seconds. |
+| Recycler | A 1 in 3 chance not to use up ammo. |
+| Coolant | Heat builds up 40% slower. |
+| [A] Overpressure | A charged cannon round with triple damage. |
+
+## Fierce Wings
+- **Upside:** Permanent hawk wings: no fall damage. Jump in mid-air to spread them and glide; press jump while gliding to flap upward.
+- **Downside:** Your wings won't fit under a chestplate, and fire hurts you 50% more.
+- **[A] Feather Volley** (5s): Throw a fan of 5 razor feathers.
+- **[A] Wing Gust** (10s): A beat of your wings blasts mobs away and knocks projectiles out of the air.
+- **[A] Dive Strike** (8s): In the air: plunge to the ground. The landing hits harder the farther you fell.
+
+| Secondary | Effect |
+|---|---|
+| Razor Plumes | Feathers pierce through mobs and deal 30% more damage. |
+| Tailwind | Glide 30% faster. |
+| Talon Strike | Dive Strike hits 50% harder and leaves mobs reeling. |
+| Keen Eye | While you're in the air, creatures within 40 blocks glow for you. |
+| [A] Wing Shield | Wrap yourself in your wings: projectiles bounce off, half damage. |
+| [A] Updraft | Shoot straight up into the sky. |
+| Plume Regrowth | Feather Volley cooldown halved. |
+| Predator | Deal 25% more damage while you're in the air. |
