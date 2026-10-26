@@ -97,6 +97,7 @@ public class BulletRound extends ThrowableItemProjectile {
     protected void onHitEntity(EntityHitResult result) {
         if (!(level() instanceof ServerLevel sl) || !(result.getEntity() instanceof LivingEntity target)) return;
         hit.add(target.getId());
+        com.mutationsmod.mutations.MutationsMod.LOGGER.info("BULLETHIT {} {} dmg={}", ammo(), target, damage);
         Bullet.Ammo a = ammo();
         ServerPlayer owner = getOwner() instanceof ServerPlayer sp ? sp : null;
         if (a == Bullet.Ammo.NETHERITE) {
@@ -150,6 +151,7 @@ public class BulletRound extends ThrowableItemProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (!(level() instanceof ServerLevel sl)) return;
+        com.mutationsmod.mutations.MutationsMod.LOGGER.info("BULLETBLOCK {} at {} life={}", ammo(), result.getBlockPos(), life);
         if (ammo() == Bullet.Ammo.REDSTONE) {
             blast(sl, getOwner() instanceof ServerPlayer sp ? sp : null, result.getLocation());
             discard();

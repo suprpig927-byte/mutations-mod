@@ -59,7 +59,12 @@ public final class NewMutationTest {
             b.getInventory().add(new ItemStack(Items.REDSTONE, 4));
             b.getInventory().add(new ItemStack(Items.DIAMOND, 2));
             List<Zombie> bz = zombies(level, b, 1, 6);
-            for (int i = 0; i < 3; i++) Bullet.fire(b, ModAttachments.get(b));
+            for (int i = 0; i < 3; i++) {
+                Bullet.fire(b, ModAttachments.get(b));
+            }
+            var probe = level.getEntitiesOfClass(com.mutationsmod.mutations.entity.BulletRound.class, b.getBoundingBox().inflate(10));
+            for (var r : probe) MutationsMod.LOGGER.info("NEWTEST round at {} vel {} owner={}", r.position(), r.getDeltaMovement(), r.getOwner());
+            MutationsMod.LOGGER.info("NEWTEST shooter at {} look {} zombie at {}", b.position(), b.getLookAngle(), bz.get(0).position());
             Bullet.scattershot(b, ModAttachments.get(b));
             boolean switched = Bullet.switchAmmo(b, ModAttachments.get(b));
             MutationsMod.LOGGER.info("NEWTEST bullet switched={} now={} iron={} heat={}", switched, Bullet.selected(ModAttachments.get(b)),
