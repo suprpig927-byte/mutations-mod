@@ -34,6 +34,8 @@ public final class NewMutationTest {
         FakePlayer p = FakePlayerFactory.get(level, new GameProfile(UUID.nameUUIDFromBytes(name.getBytes()), name));
         p.getInventory().clearContent();
         p.snapTo(x + 0.5, y, z + 0.5, 0, 0);
+        for (int dx = -3; dx <= 3; dx++) for (int dz = -1; dz <= 8; dz++) for (int dy = 0; dy <= 3; dy++)   // a clear firing range
+            level.setBlock(new BlockPos(x + dx, y + dy, z + dz), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 2);
         ModAttachments.set(p, MutationData.EMPTY.withMutations(List.of(m.id())).withRolled(true).withMastery(40, 0, 0));
         return p;
     }
