@@ -30,7 +30,7 @@ public final class NewMutationTest {
     private static final List<Check> CHECKS = new ArrayList<>();
 
     private static FakePlayer fake(ServerLevel level, String name, Mutation m, int x, int z) {
-        int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+        int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
         FakePlayer p = FakePlayerFactory.get(level, new GameProfile(UUID.nameUUIDFromBytes(name.getBytes()), name));
         p.getInventory().clearContent();
         p.snapTo(x + 0.5, y, z + 0.5, 0, 0);
