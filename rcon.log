@@ -1,0 +1,5 @@
+RCON> forceload add -360 -676 -300 -644 => Marked 15 chunks in Overworld from [-23, -43] to [-19, -41] to be force loaded
+
+RCON> execute positioned -350 100 -660 run mutation newtest => Started new mutation tests
+
+waited 6

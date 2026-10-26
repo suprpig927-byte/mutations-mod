@@ -1,0 +1,89 @@
+[26Oct2026 01:32:14.565] [main/INFO] [net.neoforged.fml.startup.Entrypoint/]: JVM Uptime at startup: 96ms
+[26Oct2026 01:32:14.578] [main/INFO] [net.neoforged.fml.loading.FMLLoader/]: Starting FancyModLoader version 12.0.12 (DEDICATED_SERVER in DEV)
+[26Oct2026 01:32:14.578] [main/INFO] [net.neoforged.fml.loading.FMLLoader/]: Game directory: /home/runner/work/mutations-mod/mutations-mod/run
+[26Oct2026 01:32:14.614] [main/INFO] [net.neoforged.fml.loading.EarlyServiceDiscovery/]: Found 2 early service jars (out of 98) in 16ms
+[26Oct2026 01:32:14.615] [main/INFO] [net.neoforged.fml.loading.FMLLoader/]: Loading FML Early Services:
+[26Oct2026 01:32:14.616] [main/INFO] [net.neoforged.fml.loading.FMLLoader/]:  - /home/runner/.gradle/caches/modules-2/files-2.1/net.neoforged.fancymodloader/loader/12.0.12/f097a25d6289aa0b289e7cdb6de83a5c8c72f77e/loader-12.0.12.jar
+[26Oct2026 01:32:14.616] [main/INFO] [net.neoforged.fml.loading.FMLLoader/]:  - /home/runner/.gradle/caches/modules-2/files-2.1/net.neoforged.fancymodloader/earlydisplay/12.0.12/8437387fd35033b1ea0d3fac7cc28ced4efdc6b/earlydisplay-12.0.12.jar
+[26Oct2026 01:32:14.620] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: Not loading early display in headless mode.
+[26Oct2026 01:32:14.666] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.GameLocator/]: Detected a joined NeoForge and Minecraft configuration. Applying filtering...
+[26Oct2026 01:32:14.757] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.InDevFolderLocator/CORE]: Got mod coordinates mutations%%/home/runner/work/mutations-mod/mutations-mod/build/classes/java/main:mutations%%/home/runner/work/mutations-mod/mutations-mod/build/resources/main from env
+[26Oct2026 01:32:14.870] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator/]: Found 2 dependencies adding them to mods collection
+[26Oct2026 01:32:14.872] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: 
+     Mod List:
+		Name Version (Mod Id)
+
+		Minecraft 26.3 (minecraft)
+		Mutations 0.17.0 (mutations)
+		NeoForge 26.3.0.95 (neoforge)
+[26Oct2026 01:32:15.706] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/home/runner/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.17.4+mixin.0.8.7/5f66cc9f59b8efaa942155a3d5a30599bf6640dd/sponge-mixin-0.17.4+mixin.0.8.7.jar Service=FML Env=SERVER
+[26Oct2026 01:32:15.739] [main/INFO] [net.neoforged.fml.loading.FMLLoader/]: Loading FML Plugins:
+[26Oct2026 01:32:15.739] [main/INFO] [net.neoforged.fml.loading.FMLLoader/]:  - /home/runner/.gradle/caches/modules-2/files-2.1/net.neoforged/neoforge/26.3.0.95/cd04422b412a6a61191f86505503e5abe0ed2abb/neoforge-26.3.0.95-universal.jar > net.neoforged.neoforge-coremods-26.3.0.95.jar
+[26Oct2026 01:32:15.838] [main/INFO] [net.neoforged.fml.loading.FMLLoader/]: Building game content classloader:
+ - minecraft (composite(filtered(jar(/home/runner/work/mutations-mod/mutations-mod/build/moddev/artifacts/minecraft-patched-26.3.0.95.jar)), filtered(jar(/home/runner/work/mutations-mod/mutations-mod/build/moddev/artifacts/minecraft-patched-26.3.0.95.jar))))
+ - mixinextras.neoforge (jar(/home/runner/.gradle/caches/modules-2/files-2.1/net.neoforged/neoforge/26.3.0.95/cd04422b412a6a61191f86505503e5abe0ed2abb/neoforge-26.3.0.95-universal.jar > mixinextras-neoforge-0.5.5.jar))
+ - mutations (composite(folder(/home/runner/work/mutations-mod/mutations-mod/build/classes/java/main), folder(/home/runner/work/mutations-mod/mutations-mod/build/resources/main)))
+ - neoforge (composite(filtered(jar(/home/runner/.gradle/caches/modules-2/files-2.1/net.neoforged/neoforge/26.3.0.95/cd04422b412a6a61191f86505503e5abe0ed2abb/neoforge-26.3.0.95-universal.jar))))
+ - net.neoforged.fml.generated (empty(VirtualJar/net.neoforged.fml.generated))
+[26Oct2026 01:32:15.852] [main/INFO] [net.neoforged.fml.loading.FMLLoader/]: Built game content classloader in 21ms
+[26Oct2026 01:32:17.141] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.5).
+[26Oct2026 01:32:21.931] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[26Oct2026 01:32:21.933] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[26Oct2026 01:32:21.936] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[26Oct2026 01:32:21.937] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[26Oct2026 01:32:21.939] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[26Oct2026 01:32:21.940] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [time, set, time] and [time, set, timemarker] with inputs: [0, 0s, 0d, 0t]
+[26Oct2026 01:32:21.941] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [time, set, timemarker] and [time, set, time] with inputs: [012]
+[26Oct2026 01:32:21.943] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [time, of, clock, set, time] and [time, of, clock, set, timemarker] with inputs: [0, 0s, 0d, 0t]
+[26Oct2026 01:32:21.944] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [time, of, clock, set, timemarker] and [time, of, clock, set, time] with inputs: [012]
+[26Oct2026 01:32:22.010] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 26.3.0.95, for MC 26.3
+[26Oct2026 01:32:22.295] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.VersionChecker/]: No mods enabled for version check
+[26Oct2026 01:32:22.358] [main/INFO] [com.mojang.authlib.services.MinecraftServicesDiscoveryService/]: Environment: Environment[discoveryUrl=https://discovery.minecraftservices.com/minecraft/client, name=PROD]
+[26Oct2026 01:32:23.301] [Worker-Main-3/INFO] [net.minecraft.server.Main/]: No existing world data, creating new world
+[26Oct2026 01:32:23.737] [Worker-Main-1/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1866 advancements
+[26Oct2026 01:32:23.879] [main/INFO] [net.neoforged.neoforge.common.crafting.RecipePriorityManager/]: Loaded 0 recipe priority overrides
+[26Oct2026 01:32:24.036] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Starting minecraft server version 26.3
+[26Oct2026 01:32:24.036] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Loading properties
+[26Oct2026 01:32:24.036] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Default game type: SURVIVAL
+[26Oct2026 01:32:24.036] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[26Oct2026 01:32:24.085] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Starting Minecraft server on *:25565
+[26Oct2026 01:32:24.155] [Server thread/WARN] [net.minecraft.server.dedicated.DedicatedServer/]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[26Oct2026 01:32:24.155] [Server thread/WARN] [net.minecraft.server.dedicated.DedicatedServer/]: The server will make no attempt to authenticate usernames. Beware.
+[26Oct2026 01:32:24.155] [Server thread/WARN] [net.minecraft.server.dedicated.DedicatedServer/]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[26Oct2026 01:32:24.155] [Server thread/WARN] [net.minecraft.server.dedicated.DedicatedServer/]: To change this, set "online-mode" to "true" in the server.properties file.
+[26Oct2026 01:32:24.200] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Preparing level "world"
+[26Oct2026 01:32:24.403] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Selecting global world spawn...
+[26Oct2026 01:32:26.959] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Loading 0 persistent chunks...
+[26Oct2026 01:32:26.959] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Preparing spawn area: 100%
+[26Oct2026 01:32:26.960] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Time elapsed: 2558 ms
+[26Oct2026 01:32:26.961] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Done (2.788s)! For help, type "help"
+[26Oct2026 01:32:26.961] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Starting remote control listener
+[26Oct2026 01:32:26.963] [Server thread/INFO] [net.minecraft.server.rcon.thread.GenericThread/]: Thread RCON Listener started
+[26Oct2026 01:32:26.963] [Server thread/INFO] [net.minecraft.server.rcon.thread.RconThread/]: RCON running on 0.0.0.0:25575
+[26Oct2026 01:32:26.965] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[26Oct2026 01:32:27.024] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[26Oct2026 01:32:27.026] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[26Oct2026 01:32:27.072] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[26Oct2026 01:32:35.228] [RCON Listener #1/INFO] [net.minecraft.server.rcon.thread.GenericThread/]: Thread RCON Client /127.0.0.1 started
+[26Oct2026 01:32:37.434] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: [Rcon: Marked 15 chunks in Overworld from [-23, -43] to [-19, -41] to be force loaded]
+[26Oct2026 01:32:37.435] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2161ms or 43 ticks behind
+[26Oct2026 01:32:39.527] [Server thread/INFO] [com.mutationsmod.mutations.MutationsMod/]: NEWTEST round at (-349.5, 66.52000000327826, -659.5) vel (-0.01491777430919563, 0.02586197762465547, 3.214752590442369) owner=FakePlayer['BulletTest'/59, l='ServerLevel[world]', x=-349.50, y=65.00, z=-659.50]
+[26Oct2026 01:32:39.527] [Server thread/INFO] [com.mutationsmod.mutations.MutationsMod/]: NEWTEST round at (-349.5, 66.52000000327826, -659.5) vel (0.010539789071504645, 0.016948495128448003, 3.1925429903563476) owner=FakePlayer['BulletTest'/59, l='ServerLevel[world]', x=-349.50, y=65.00, z=-659.50]
+[26Oct2026 01:32:39.527] [Server thread/INFO] [com.mutationsmod.mutations.MutationsMod/]: NEWTEST round at (-349.5, 66.52000000327826, -659.5) vel (-0.007287204508110117, 0.012227910537583679, 3.1881759017706157) owner=FakePlayer['BulletTest'/59, l='ServerLevel[world]', x=-349.50, y=65.00, z=-659.50]
+[26Oct2026 01:32:39.527] [Server thread/INFO] [com.mutationsmod.mutations.MutationsMod/]: NEWTEST shooter at (-349.5, 65.0, -659.5) look (0.0, -0.0, 1.0) zombie at (-349.5, 65.0, -653.5)
+[26Oct2026 01:32:39.529] [Server thread/INFO] [com.mutationsmod.mutations.MutationsMod/]: NEWTEST bullet switched=true now=REDSTONE iron=16 heat=71.0
+[26Oct2026 01:32:39.530] [Server thread/INFO] [com.mutationsmod.mutations.MutationsMod/]: NEWTEST bullet overheated=true onFire=60 heat=0.0
+[26Oct2026 01:32:39.535] [Server thread/INFO] [com.mutationsmod.mutations.MutationsMod/]: NEWTEST wings gliding=1.0 chest=minecraft:air
+[26Oct2026 01:32:39.542] [Server thread/INFO] [com.mutationsmod.mutations.MutationsMod/]: NEWTEST wings gust zombieZ -656.5 hp=17.06
+[26Oct2026 01:32:39.543] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: [Rcon: Started new mutation tests]
+[26Oct2026 01:32:40.427] [Server thread/INFO] [com.mutationsmod.mutations.MutationsMod/]: NEWTEST wings-gust zombies=[17.1@z-656.5]
+[26Oct2026 01:32:40.925] [Server thread/INFO] [com.mutationsmod.mutations.MutationsMod/]: NEWTEST wings-volley zombies=[15.1@z-654.5 16.1@z-654.5 16.1@z-654.5]
+[26Oct2026 01:32:41.425] [Server thread/INFO] [com.mutationsmod.mutations.MutationsMod/]: NEWTEST bullet zombies=[14.1@z-653.5]
+[26Oct2026 01:32:47.547] [RCON Client /127.0.0.1 #2/INFO] [net.minecraft.server.rcon.thread.RconClient/]: Thread RCON Client /127.0.0.1 shutting down
+[26Oct2026 01:33:02.575] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[26Oct2026 01:33:02.577] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[26Oct2026 01:33:02.577] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[26Oct2026 01:33:02.693] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[26Oct2026 01:33:04.538] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[26Oct2026 01:33:04.541] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[26Oct2026 01:33:04.559] [Server thread/INFO] [net.minecraft.server.rcon.thread.GenericThread/]: Thread RCON Listener stopped
