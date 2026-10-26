@@ -172,6 +172,19 @@ public final class Weapons {
                 Powers.sound(p, SoundEvents.BLAZE_SHOOT, 1.0f, 0.9f);
                 return true;
             }
+            case GUNBLADE -> {
+                if (!com.mutationsmod.mutations.ability.power.Bullet.gunbladeShot(p, d)) return false;
+                p.getCooldowns().addCooldown(stack, 20);
+                return true;
+            }
+            case GLAIVE -> {
+                Vec3 look = p.getLookAngle();
+                Powers.impulse(p, look.scale(1.6).add(0, 0.25, 0), false);
+                level.sendParticles(ParticleTypes.CLOUD, p.getX(), p.getY() + 0.5, p.getZ(), 12, 0.4, 0.2, 0.4, 0.05);
+                p.getCooldowns().addCooldown(stack, 40);
+                Powers.sound(p, SoundEvents.ENDER_DRAGON_FLAP, 0.7f, 1.4f);
+                return true;
+            }
             default -> {
                 return false;
             }
@@ -229,6 +242,9 @@ public final class Weapons {
                 }
             }
             case SCYTHE -> target.igniteForSeconds(5);
+            case GLAIVE -> {
+                if (!p.onGround()) event.setAmount(event.getAmount() * 1.5f);
+            }
             case WHIP -> {
                 Vec3 pull = p.position().subtract(target.position());
                 if (pull.length() > 2) Powers.impulse(target, pull.normalize().scale(0.9).add(0, 0.25, 0), false);

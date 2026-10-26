@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:feather",
+    "minecraft:brown_dye"
+  ],
+  "result": {
+    "id": "mutations:hawk_feather",
+    "count": 2
+  }
+}

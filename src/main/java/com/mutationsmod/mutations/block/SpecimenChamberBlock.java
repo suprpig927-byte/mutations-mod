@@ -33,7 +33,7 @@ import org.jspecify.annotations.Nullable;
  */
 public class SpecimenChamberBlock extends HorizontalDirectionalBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
-    public static final IntegerProperty VARIANT = IntegerProperty.create("variant", 0, 12);
+    public static final IntegerProperty VARIANT = IntegerProperty.create("variant", 0, 14);
     public static final BooleanProperty BROKEN = BooleanProperty.create("broken");
     private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 16, 15);
 

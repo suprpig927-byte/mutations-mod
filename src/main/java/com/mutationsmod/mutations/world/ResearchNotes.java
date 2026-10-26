@@ -70,6 +70,12 @@ public final class ResearchNotes {
             case HOST -> new String[]{"Subject H: Symbiosis", "Dr. ???",
                     "H is not alone in his body. The organism makes him strong, but it is always hungry.",
                     "Sealed in the Symbiote Jar, a sample of it keeps the rest calm. It starves half as fast. It is watching me write this."};
+            case BULLET -> new String[]{"Subject B: Ballistics", "Dr. Okafor",
+                    "B swallowed a handful of iron nuggets and fired them back at us through his palms. Every ore makes a different round.",
+                    "He burns hot when he fires too fast. The Heat Sink draws it off: twice the rounds before the fever takes him."};
+            case FIERCE_WINGS -> new String[]{"Subject W: Flight", "Dr. Moreau",
+                    "W grew wings in a week. Real feathers, hollow bones. She glides from the roof of the lab and beats her way back up.",
+                    "Fire terrifies her, and with reason: it catches in the plumage. The Gale Feather lets her flap all day without tiring."};
         };
     }
 

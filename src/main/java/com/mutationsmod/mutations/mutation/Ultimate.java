@@ -13,6 +13,8 @@ public enum Ultimate {
     OVERLOAD(Mutation.ABSORBER, "Overload", "Dump all your stored charge in one blast that grows with the charge, then absorb 100% of damage for 10 seconds.", 200),
     DOPPELGANGER(Mutation.CHAMELEON, "Doppelganger", "Three decoy copies of you draw the mobs while you go fully invisible, armor and all, for 20 seconds.", 400),
     SUPERNOVA(Mutation.PYRO, "Supernova", "Explode in a ring of fire where you stand, then launch up and fly as living flame for 15 seconds.", 320),
+    BULLET_STORM(Mutation.BULLET, "Bullet Storm", "6 seconds of full-auto fire that uses no ammo and builds no heat.", 120),
+    SKYFALL(Mutation.FIERCE_WINGS, "Skyfall", "Soar high into the sky and rain a storm of razor feathers on everything below for 8 seconds.", 180),
     CONSUME(Mutation.HOST, "Consume", "The organism takes over: tendrils seize up to 5 nearby mobs and devour them, healing you for each.", 40);
 
     public static final int LEVEL = 75;

@@ -95,6 +95,9 @@ public final class AbilityHandler {
         MutationData d = ModAttachments.get(p);
         if (p.level().getGameTime() % 10 == 0) StatEffects.apply(p, d);
         Weapons.tick(p, d);
+        if (!d.has(Mutation.FIERCE_WINGS) || Suppression.active(d, p.level())) {
+            Powers.add(p, NeoForgeMod.GLIDING_FLIGHT, "fierce_wings", 0);    // no wings, no gliding
+        }
         if (Suppression.tick(p)) return; // Nullite: powers are off
         if (d.mutations().isEmpty()) return;
         Powers.tickRush(p);
@@ -112,6 +115,8 @@ public final class AbilityHandler {
         if (d.has(Mutation.CHAMELEON)) Chameleon.tick(p, ModAttachments.get(p));
         if (d.has(Mutation.PYRO)) Pyro.tick(p, ModAttachments.get(p));
         if (d.has(Mutation.HOST)) Host.tick(p, ModAttachments.get(p));
+        if (d.has(Mutation.BULLET)) com.mutationsmod.mutations.ability.power.Bullet.tick(p, ModAttachments.get(p));
+        if (d.has(Mutation.FIERCE_WINGS)) com.mutationsmod.mutations.ability.power.Wings.tick(p, ModAttachments.get(p));
         Omega.tick(p, ModAttachments.get(p));
     }
 
@@ -172,6 +177,7 @@ public final class AbilityHandler {
             if (a.has(Mutation.PYRO) && Pyro.lit(a)) Pyro.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.ABSORBER)) Absorber.onMelee(event, attacker, a, victim);
             if (a.has(Mutation.HOST)) Host.onMelee(event, attacker, a, victim);
+            if (a.has(Mutation.FIERCE_WINGS)) com.mutationsmod.mutations.ability.power.Wings.onMelee(event, attacker, a, victim);
             Weapons.onMelee(event, attacker, a, victim);
         }
 
@@ -203,6 +209,8 @@ public final class AbilityHandler {
         if (d.has(Mutation.ABSORBER)) Absorber.onHurt(event, p, d);
         if (event.isCanceled()) return;
         if (d.has(Mutation.BLINKER)) Blinker.onHurt(event, p, d);
+        if (event.isCanceled()) return;
+        if (d.has(Mutation.FIERCE_WINGS)) com.mutationsmod.mutations.ability.power.Wings.onHurt(event, p, d);
         if (event.isCanceled()) return;
         Omega.onHurt(event, p, d);                    // Undying clamps whatever damage is left
     }
@@ -276,6 +284,10 @@ public final class AbilityHandler {
                     .withStyle(net.minecraft.ChatFormatting.GREEN));
             return;
         }
+        if (slot == com.mutationsmod.mutations.ability.power.Wings.FLAP_SLOT) {
+            com.mutationsmod.mutations.ability.power.Wings.flap(p);
+            return;
+        }
         if (slot == Omega.SLOT) {
             Omega.use(p);
             return;
@@ -347,6 +359,15 @@ public final class AbilityHandler {
             case TENDRIL -> Host.tendril(p, d);
             case BOND -> Host.toggleBond(p, d);
             case LASH -> Host.lash(p, d);
+            case FIRE -> com.mutationsmod.mutations.ability.power.Bullet.fire(p, d);
+            case SWITCH_AMMO -> com.mutationsmod.mutations.ability.power.Bullet.switchAmmo(p, d);
+            case SCATTERSHOT -> com.mutationsmod.mutations.ability.power.Bullet.scattershot(p, d);
+            case OVERPRESSURE -> com.mutationsmod.mutations.ability.power.Bullet.overpressure(p, d);
+            case FEATHER_VOLLEY -> com.mutationsmod.mutations.ability.power.Wings.featherVolley(p, d);
+            case WING_GUST -> com.mutationsmod.mutations.ability.power.Wings.wingGust(p, d);
+            case DIVE_STRIKE -> com.mutationsmod.mutations.ability.power.Wings.diveStrike(p, d);
+            case WING_SHIELD -> com.mutationsmod.mutations.ability.power.Wings.wingShield(p, d);
+            case UPDRAFT -> com.mutationsmod.mutations.ability.power.Wings.updraft(p, d);
         };
         if (!used) return;
 
@@ -356,7 +377,9 @@ public final class AbilityHandler {
             ModAttachments.set(p, ModAttachments.get(p).withCooldown(ability, now + cooldown(ability, d)));
             if (ability == ActiveAbility.BLINK && d.has(Secondary.ECHO_BLINK)) Powers.setTimer(p, "echo_blink", 40);
         }
-        if (ability == ActiveAbility.TELEKINESIS || ability == ActiveAbility.ITEM_MAGNET || ability == ActiveAbility.BOND
+        if (ability == ActiveAbility.FIRE || ability == ActiveAbility.SWITCH_AMMO) {
+            if (ability == ActiveAbility.FIRE && p.getRandom().nextInt(3) == 0) Mastery.addXp(p, 1);   // rapid fire: a little XP
+        } else if (ability == ActiveAbility.TELEKINESIS || ability == ActiveAbility.ITEM_MAGNET || ability == ActiveAbility.BOND
                 || ability == ActiveAbility.STEEL_FORM || ability == ActiveAbility.FLAME_ON
                 || ability == ActiveAbility.TITAN_LEAP || ability == ActiveAbility.CHARGED_LEAP) {
             Mastery.addXp(p, 1); // cheap, spammable abilities give less XP
@@ -371,6 +394,7 @@ public final class AbilityHandler {
         if (a == ActiveAbility.BLINK && d.has(Secondary.SHORT_FUSE)) ticks *= 0.5f;
         if (a == ActiveAbility.SUMMON_STORM && d.has(Secondary.SUPERCELL)) ticks *= 0.5f;
         if (a == ActiveAbility.TENDRIL && d.has(Secondary.HUNGRY_TENDRILS)) ticks *= 0.5f;
+        if (a == ActiveAbility.FEATHER_VOLLEY && d.has(Secondary.PLUME_REGROWTH)) ticks *= 0.5f;
         return Math.max(1, Math.round(ticks));
     }
 

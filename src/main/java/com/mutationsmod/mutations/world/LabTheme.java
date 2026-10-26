@@ -22,6 +22,8 @@ public record LabTheme(Block accent, Block floor, Block tankFill, Block light, B
             case CHAMELEON -> new LabTheme(Blocks.CONCRETE.green(), Blocks.MOSS_BLOCK, Blocks.OAK_LEAVES, Blocks.VERDANT_FROGLIGHT, Blocks.MOSS_CARPET, Blocks.TINTED_GLASS);
             case PYRO -> new LabTheme(Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.MAGMA_BLOCK, Blocks.MAGMA_BLOCK, Blocks.SHROOMLIGHT, Blocks.GILDED_BLACKSTONE, Blocks.STAINED_GLASS.orange());
             case HOST -> new LabTheme(Blocks.CONCRETE.black(), Blocks.SCULK, Blocks.COAL_BLOCK, Blocks.SOUL_LANTERN, Blocks.COBWEB, Blocks.TINTED_GLASS);
+            case BULLET -> new LabTheme(Blocks.CONCRETE.lightGray(), Blocks.SMOOTH_STONE, Blocks.RAW_IRON_BLOCK, Blocks.LANTERN, Blocks.TARGET, Blocks.STAINED_GLASS.yellow());
+            case FIERCE_WINGS -> new LabTheme(Blocks.CONCRETE.brown(), Blocks.SPRUCE_PLANKS, Blocks.HAY_BLOCK, Blocks.LANTERN, Blocks.STRIPPED_SPRUCE_LOG, Blocks.STAINED_GLASS.brown());
         };
     }
 

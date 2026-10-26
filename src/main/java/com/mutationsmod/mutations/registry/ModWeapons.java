@@ -55,6 +55,8 @@ public final class ModWeapons {
     public static final DeferredItem<MutantWeapon> SHADE_FANG = melee("shade_fang", Mutation.CHAMELEON, Kind.SHADE_FANG, 2.0f, -1.8f);
     public static final DeferredItem<MutantWeapon> EMBER_SCYTHE = melee("ember_scythe", Mutation.PYRO, Kind.SCYTHE, 4.0f, -2.8f);
     public static final DeferredItem<MutantWeapon> SYMBIOTE_WHIP = melee("symbiote_whip", Mutation.HOST, Kind.WHIP, 2.5f, -2.4f);
+    public static final DeferredItem<MutantWeapon> GUNBLADE = melee("gunblade", Mutation.BULLET, Kind.GUNBLADE, 3.0f, -2.4f);
+    public static final DeferredItem<MutantWeapon> TALON_GLAIVE = melee("talon_glaive", Mutation.FIERCE_WINGS, Kind.GLAIVE, 3.5f, -2.6f);
 
     private static DeferredItem<EchoBowItem> registerBow() {
         DeferredItem<EchoBowItem> item = ModContent.ITEMS.registerItem("echo_bow", EchoBowItem::new,

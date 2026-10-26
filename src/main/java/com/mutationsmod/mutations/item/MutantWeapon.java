@@ -29,7 +29,9 @@ public class MutantWeapon extends Item {
         CAPACITOR("Hits store 1 charge. Right-click: spend 10 charge on a long-range energy slash."),
         SHADE_FANG("2.5x damage when you strike from behind or while hidden or invisible."),
         SCYTHE("Hits set mobs on fire. Right-click: sweep an arc of flame in front of you."),
-        WHIP("Long reach. Hits yank mobs toward you and push back the organism's hunger.");
+        WHIP("Long reach. Hits yank mobs toward you and push back the organism's hunger."),
+        GUNBLADE("Right-click: fire a round of your selected ammo that builds no heat (1s cooldown)."),
+        GLAIVE("Hits deal 50% more while you're in the air. Right-click: a wing-powered dash forward (2s cooldown).");
 
         public final String power;
         Kind(String power) { this.power = power; }
@@ -53,6 +55,7 @@ public class MutantWeapon extends Item {
         if (player.getCooldowns().isOnCooldown(stack)) return InteractionResult.PASS;
         if (!(player instanceof ServerPlayer sp)) {
             return kind == Kind.CHAKRAM || kind == Kind.RIFT_KNIFE || kind == Kind.HALBERD || kind == Kind.CAPACITOR || kind == Kind.SCYTHE
+                    || kind == Kind.GUNBLADE || kind == Kind.GLAIVE
                     ? InteractionResult.SUCCESS : InteractionResult.PASS;
         }
         if (!Weapons.canWield(sp, ModAttachments.get(sp), this)) return InteractionResult.FAIL;

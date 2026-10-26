@@ -50,7 +50,18 @@ public enum ActiveAbility {
     FOCUSED_BEAM("Focused Beam", "Spend 15 charge on one powerful long-range beam.", 1),
     SMOKE_BURST("Smoke Burst", "Blind nearby mobs and vanish.", 30),
     FLARE("Flare", "A blinding flash that dazzles everything nearby.", 20),
-    LASH("Lash", "Whip every mob around you and drag them closer.", 10);
+    LASH("Lash", "Whip every mob around you and drag them closer.", 10),
+
+    // ---- Bullet & Fierce Wings ----
+    FIRE("Fire", "Shoot a round of your selected ammo.", 0.25),
+    SWITCH_AMMO("Switch Ammo", "Cycle to the next kind of ammo you're carrying.", 0.25),
+    SCATTERSHOT("Scattershot", "A shotgun blast of 5 pellets (uses one ammo, lots of heat).", 8),
+    OVERPRESSURE("Overpressure", "A charged cannon round: triple damage and huge knockback, but it kicks you back too.", 12),
+    FEATHER_VOLLEY("Feather Volley", "Throw a fan of 5 razor feathers.", 5),
+    WING_GUST("Wing Gust", "A beat of your wings blasts mobs away and knocks projectiles out of the air.", 10),
+    DIVE_STRIKE("Dive Strike", "In the air: plunge to the ground. The landing hits harder the farther you fell.", 8),
+    WING_SHIELD("Wing Shield", "Wrap yourself in your wings for 4 seconds: projectiles bounce off and you take half damage.", 20),
+    UPDRAFT("Updraft", "Shoot straight up into the sky and spread your wings.", 12);
 
     private final String displayName;
     private final String description;

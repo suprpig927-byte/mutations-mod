@@ -131,7 +131,27 @@ public enum Secondary {
     SHAPELESS(HOST, "Shapeless", "Sneak into a 1-block gap to squeeze through it."),
     LASH(HOST, "Lash", "Whip every mob around you.", ActiveAbility.LASH),
     WELL_FED(HOST, "Well Fed", "The organism can go 15 minutes between kills instead of 10."),
-    PARASITE(HOST, "Parasite", "Your hits heal you for 20% of the damage.");
+    PARASITE(HOST, "Parasite", "Your hits heal you for 20% of the damage."),
+
+    // ---------------- Bullet ----------------
+    HOLLOW_POINTS(BULLET, "Hollow Points", "Bullets deal 25% more damage."),
+    RICOCHET(BULLET, "Ricochet", "Every bullet bounces off a wall once."),
+    STEADY_AIM(BULLET, "Steady Aim", "While sneaking, bullets deal 50% more damage and Scattershot spreads half as much."),
+    SCRAP_COLLECTOR(BULLET, "Scrap Collector", "Mobs you kill with bullets drop 1-3 iron nuggets."),
+    TRACER_ROUNDS(BULLET, "Tracer Rounds", "Anything your bullets hit glows for 10 seconds."),
+    RECYCLER(BULLET, "Recycler", "A 1 in 3 chance not to use up ammo."),
+    COOLANT(BULLET, "Coolant", "Heat builds up 40% slower."),
+    OVERPRESSURE(BULLET, "Overpressure", "A charged cannon round with triple damage.", ActiveAbility.OVERPRESSURE),
+
+    // ---------------- Fierce Wings ----------------
+    RAZOR_PLUMES(FIERCE_WINGS, "Razor Plumes", "Feathers pierce through mobs and deal 30% more damage."),
+    TAILWIND(FIERCE_WINGS, "Tailwind", "Glide 30% faster."),
+    TALON_STRIKE(FIERCE_WINGS, "Talon Strike", "Dive Strike hits 50% harder and leaves mobs reeling."),
+    KEEN_EYE(FIERCE_WINGS, "Keen Eye", "While you're in the air, creatures within 40 blocks glow for you."),
+    WING_SHIELD(FIERCE_WINGS, "Wing Shield", "Wrap yourself in your wings: projectiles bounce off, half damage.", ActiveAbility.WING_SHIELD),
+    UPDRAFT(FIERCE_WINGS, "Updraft", "Shoot straight up into the sky.", ActiveAbility.UPDRAFT),
+    PLUME_REGROWTH(FIERCE_WINGS, "Plume Regrowth", "Feather Volley cooldown halved."),
+    PREDATOR(FIERCE_WINGS, "Predator", "Deal 25% more damage while you're in the air.");
 
     private final Mutation base;
     private final String displayName;

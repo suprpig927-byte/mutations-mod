@@ -133,6 +133,18 @@ public final class Omega {
             case DOPPELGANGER -> doppelganger(p);
             case SUPERNOVA -> supernova(p);
             case CONSUME -> consume(p, d);
+            case BULLET_STORM -> {
+                Powers.setTimer(p, "bullet_storm", 120);
+                Powers.sound(p, SoundEvents.CROSSBOW_LOADING_END.value(), 1.2f, 0.6f);
+                yield true;
+            }
+            case SKYFALL -> {
+                Powers.impulse(p, new Vec3(0, 2.8, 0), true);
+                p.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200, 0, false, false, true));
+                Powers.setTimer(p, "skyfall", 180);
+                Powers.sound(p, SoundEvents.ENDER_DRAGON_FLAP, 1.5f, 0.7f);
+                yield true;
+            }
         };
     }
 
@@ -616,6 +628,14 @@ public final class Omega {
         else if (nova > 0) level.sendParticles(ParticleTypes.FLAME, p.getX(), p.getY() + 0.5, p.getZ(), 10, 0.3, 0.3, 0.3, 0.05);
 
         tickFeast(p, d, level);
+
+        // Bullet Storm: full-auto, no ammo, no heat.
+        if (active(d, p, "bullet_storm") && now % 2 == 0) com.mutationsmod.mutations.ability.power.Bullet.stormShot(p, d);
+        // Skyfall: hover high and rain feathers once you've climbed.
+        if (active(d, p, "skyfall") && d.timer("skyfall") - now < 150 && now % 4 == 0) {
+            p.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 6, 0, false, false, false));
+            com.mutationsmod.mutations.ability.power.Wings.skyfallTick(p, d);
+        }
 
         // The Omega aura (also drawn as a glow on the player model by the client).
         if (active(d, p, "omega_glow") && now % 3 == 0 && d.base() != null) {

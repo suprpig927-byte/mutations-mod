@@ -50,6 +50,12 @@ public final class ModContent {
     public static final DeferredHolder<net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<com.mutationsmod.mutations.entity.SubjectZero>>
             SUBJECT_ZERO = ENTITIES.registerEntityType("subject_zero", com.mutationsmod.mutations.entity.SubjectZero::new,
             net.minecraft.world.entity.MobCategory.MONSTER, b -> b.sized(0.6f, 1.95f).eyeHeight(1.62f).clientTrackingRange(10));
+    public static final DeferredHolder<net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<com.mutationsmod.mutations.entity.BulletRound>>
+            BULLET_ROUND = ENTITIES.registerEntityType("bullet_round", com.mutationsmod.mutations.entity.BulletRound::new,
+            net.minecraft.world.entity.MobCategory.MISC, b -> b.sized(0.2f, 0.2f).clientTrackingRange(8).updateInterval(1).noLootTable());
+    public static final DeferredHolder<net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<com.mutationsmod.mutations.entity.FeatherDart>>
+            FEATHER_DART = ENTITIES.registerEntityType("feather_dart", com.mutationsmod.mutations.entity.FeatherDart::new,
+            net.minecraft.world.entity.MobCategory.MISC, b -> b.sized(0.25f, 0.25f).clientTrackingRange(8).updateInterval(1).noLootTable());
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MutationsMod.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MutationsMod.MODID);
 
@@ -127,6 +133,10 @@ public final class ModContent {
     public static final DeferredItem<Item> PRISM_CLOAK = ITEMS.registerSimpleItem("prism_cloak", p -> catalyst(p, "Chameleon", "Mimic lasts twice as long"));
     public static final DeferredItem<Item> EMBER_HEART = ITEMS.registerSimpleItem("ember_heart", p -> catalyst(p, "Pyro", "Rain no longer hurts you (water still does)"));
     public static final DeferredItem<Item> SYMBIOTE_JAR = ITEMS.registerSimpleItem("symbiote_jar", p -> catalyst(p, "Host", "The organism starves half as fast"));
+    public static final DeferredItem<Item> HEAT_SINK = ITEMS.registerSimpleItem("heat_sink", p -> catalyst(p, "Bullet", "Fire twice as much before you overheat"));
+    public static final DeferredItem<Item> GALE_FEATHER = ITEMS.registerSimpleItem("gale_feather", p -> catalyst(p, "Fierce Wings", "Flapping costs no hunger"));
+    /** A Fierce Wings razor feather (the projectile's look; also a plain crafting feather). */
+    public static final DeferredItem<Item> HAWK_FEATHER = ITEMS.registerSimpleItem("hawk_feather");
 
     public static final DeferredItem<Item> FAILED_EXPERIMENT_SPAWN_EGG = ITEMS.registerItem("failed_experiment_spawn_egg",
             net.minecraft.world.item.SpawnEggItem::new, p -> p.spawnEgg(FAILED_EXPERIMENT.get()));
@@ -258,6 +268,9 @@ public final class ModContent {
                 out.accept(PRISM_CLOAK.get());
                 out.accept(EMBER_HEART.get());
                 out.accept(SYMBIOTE_JAR.get());
+                out.accept(HEAT_SINK.get());
+                out.accept(GALE_FEATHER.get());
+                out.accept(HAWK_FEATHER.get());
             }).build());
 
     private static Item.Properties catalyst(Item.Properties p, String mutation, String effect) {

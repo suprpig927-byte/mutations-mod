@@ -54,7 +54,15 @@ public enum Mutation {
     HOST("Host", 0xFF8A8AA8,
             "A living organism with tendrils: extra reach, wall climbing, stronger after a kill. Bond with it for full power.",
             "It's always hungry: go 10 minutes without a kill and it feeds on you. Takes 75% less fall damage.",
-            List.of(ActiveAbility.TENDRIL, ActiveAbility.BOND));
+            List.of(ActiveAbility.TENDRIL, ActiveAbility.BOND)),
+    BULLET("Bullet", 0xFFE0B04A,
+            "Fire bullets made from ores in your inventory. Every material shoots differently.",
+            "Firing too fast overheats you: you burn and can't shoot until you cool down.",
+            List.of(ActiveAbility.FIRE, ActiveAbility.SWITCH_AMMO, ActiveAbility.SCATTERSHOT)),
+    FIERCE_WINGS("Fierce Wings", 0xFFB5652F,
+            "Permanent hawk wings: no fall damage. Jump in mid-air to spread them and glide; press jump while gliding to flap upward.",
+            "Your wings won't fit under a chestplate, and fire hurts you 50% more.",
+            List.of(ActiveAbility.FEATHER_VOLLEY, ActiveAbility.WING_GUST, ActiveAbility.DIVE_STRIKE));
 
     private final String displayName;
     private final int color;

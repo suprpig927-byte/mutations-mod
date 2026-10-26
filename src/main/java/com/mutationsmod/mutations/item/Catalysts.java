@@ -27,6 +27,8 @@ public final class Catalysts {
         BY_MUTATION.put(Mutation.CHAMELEON, ModContent.PRISM_CLOAK::get);
         BY_MUTATION.put(Mutation.PYRO, ModContent.EMBER_HEART::get);
         BY_MUTATION.put(Mutation.HOST, ModContent.SYMBIOTE_JAR::get);
+        BY_MUTATION.put(Mutation.BULLET, ModContent.HEAT_SINK::get);
+        BY_MUTATION.put(Mutation.FIERCE_WINGS, ModContent.GALE_FEATHER::get);
     }
 
     /** True if the player holds this mutation's Catalyst in either hand. Works on both client and server. */

@@ -33,6 +33,8 @@ public final class ClientPowers {
     private static long lastPhaseRequest = 0;
     private static int sprintLock = 0;
     /** Entity ids that should glow for this player (read by the render-state modifier). */
+    private static boolean wingJumpHeld;
+    private static long lastFlap;
     public static final Set<Integer> GLOWING = java.util.concurrent.ConcurrentHashMap.newKeySet();
 
     public static void tick(Minecraft mc, LocalPlayer p, MutationData d) {
@@ -47,6 +49,26 @@ public final class ClientPowers {
         boolean rainFlight = d.has(Secondary.RAINWALKER) && (level.isRainingAt(p.blockPosition().above()) || com.mutationsmod.mutations.item.Catalysts.holding(p, com.mutationsmod.mutations.mutation.Mutation.STORMCALLER));
         if (flying && !p.isCreative() && (flameFlight || rainFlight) && mc.options.keyUp.isDown()) {
             p.setDeltaMovement(p.getLookAngle().scale(flameFlight ? 1.0 : 0.9));
+            dm = p.getDeltaMovement();
+        }
+
+        // Fierce Wings: press jump while gliding to flap (a burst of lift and speed). Tailwind glides faster.
+        if (d.has(Mutation.FIERCE_WINGS)) {
+            boolean jump = mc.options.keyJump.isDown();
+            if (jump && !wingJumpHeld && p.isFallFlying() && now - lastFlap >= 8) {
+                lastFlap = now;
+                Vec3 look = p.getLookAngle();
+                boolean gale = com.mutationsmod.mutations.item.Catalysts.holding(p, Mutation.FIERCE_WINGS);
+                double lift = gale ? 0.75 : 0.6;
+                p.setDeltaMovement(dm.add(look.scale(0.35)).add(0, lift, 0));
+                net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(
+                        new com.mutationsmod.mutations.network.ModPayloads.UseAbility(com.mutationsmod.mutations.ability.power.Wings.FLAP_SLOT));
+            }
+            wingJumpHeld = jump;
+            if (d.has(Secondary.TAILWIND) && p.isFallFlying()) {
+                Vec3 v = p.getDeltaMovement();
+                if (v.horizontalDistance() < 2.2) p.setDeltaMovement(v.x * 1.012, v.y, v.z * 1.012);
+            }
             dm = p.getDeltaMovement();
         }
 
@@ -134,6 +156,7 @@ public final class ClientPowers {
         double range = 0;
         boolean players = false;
         if (d.has(Mutation.SIREN)) range = d.has(Secondary.ECHOLOCATION) ? 32 : 16;
+        if (d.has(Secondary.KEEN_EYE) && !p.onGround()) range = Math.max(range, 40);
         if (d.has(Secondary.SPATIAL_SENSE)) {
             range = Math.max(range, 24);
             players = true;

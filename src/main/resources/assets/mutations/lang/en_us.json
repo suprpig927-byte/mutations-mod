@@ -76,5 +76,12 @@
   "item.mutations.ember_scythe": "Ember Scythe",
   "item.mutations.symbiote_whip": "Symbiote Whip",
   "entity.mutations.orbit_chakram": "Orbit Chakram",
-  "entity.mutations.rift_knife": "Rift Knife"
+  "entity.mutations.rift_knife": "Rift Knife",
+  "item.mutations.heat_sink": "Heat Sink",
+  "item.mutations.gale_feather": "Gale Feather",
+  "item.mutations.hawk_feather": "Hawk Feather",
+  "item.mutations.gunblade": "Gunblade",
+  "item.mutations.talon_glaive": "Talon Glaive",
+  "entity.mutations.bullet_round": "Bullet",
+  "entity.mutations.feather_dart": "Razor Feather"
 }

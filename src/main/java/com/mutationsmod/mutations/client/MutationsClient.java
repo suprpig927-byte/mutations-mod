@@ -101,6 +101,10 @@ public class MutationsClient {
                     ctx -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(ctx, 1.2f, true));
             e.registerEntityRenderer(com.mutationsmod.mutations.registry.ModWeapons.RIFT_KNIFE_ENTITY.get(),
                     net.minecraft.client.renderer.entity.ThrownItemRenderer::new);
+            e.registerEntityRenderer(com.mutationsmod.mutations.registry.ModContent.BULLET_ROUND.get(),
+                    ctx -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(ctx, 0.5f, true));
+            e.registerEntityRenderer(com.mutationsmod.mutations.registry.ModContent.FEATHER_DART.get(),
+                    ctx -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(ctx, 0.75f, false));
         });
         modEventBus.addListener(MutationsClient::registerKeys);
         modEventBus.addListener(MutationsClient::registerHud);
@@ -187,6 +191,19 @@ public class MutationsClient {
                     } else {
                         state.setRenderData(StormRenderData.KEY, null);
                     }
+                    // Fierce Wings: folded on the ground, spread while gliding, beating on each flap.
+                    if (hd.has(Mutation.FIERCE_WINGS)) {
+                        long gt = hostPlayer.level().getGameTime();
+                        float wt = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
+                        float spread = hostPlayer.isFallFlying() ? 1f : hostPlayer.onGround() || hostPlayer.isInWater() ? 0f : 0.35f;
+                        long flap = hd.timer("flap_anim") - gt;
+                        float beat = flap > 0 ? 1f - (flap - wt) / 8f : 0f;
+                        if (beat > 0) spread = Math.max(spread, 0.8f);
+                        state.setRenderData(com.mutationsmod.mutations.client.render.WingsRenderData.KEY,
+                                new com.mutationsmod.mutations.client.render.WingsRenderData(spread, Math.max(0f, Math.min(1f, beat)), (gt % 100000L) + wt));
+                    } else {
+                        state.setRenderData(com.mutationsmod.mutations.client.render.WingsRenderData.KEY, null);
+                    }
                     // Omega: blazing eyes and an aura while an ultimate runs.
                     if (hd.base() != null && hd.timer("omega_glow") > hostPlayer.level().getGameTime()) {
                         float ot = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
@@ -226,6 +243,8 @@ public class MutationsClient {
             new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "pyro_flames"), "main");
     public static final ModelLayerLocation STORM_FX =
             new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "storm_fx"), "main");
+    public static final ModelLayerLocation WINGS =
+            new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "fierce_wings"), "main");
     public static final ModelLayerLocation OMEGA_AURA =
             new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutationsMod.MODID, "omega_aura"), "main");
     public static final ModelLayerLocation CRYSTALS =
@@ -243,6 +262,7 @@ public class MutationsClient {
         event.registerLayerDefinition(COLOSSUS_PLATES, ColossusPlatesModel::createLayer);
         event.registerLayerDefinition(PYRO_FLAMES, PyroFlamesModel::createLayer);
         event.registerLayerDefinition(STORM_FX, StormFxModel::createLayer);
+        event.registerLayerDefinition(WINGS, com.mutationsmod.mutations.client.render.WingsModel::createLayer);
         event.registerLayerDefinition(OMEGA_AURA, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.45f), 0f), 64, 32));
         var frost = HumanoidModel.createArmorMeshSet(new CubeDeformation(0.6f), new CubeDeformation(1.1f));
         event.registerLayerDefinition(FROST_ARMOR[0], () -> LayerDefinition.create(frost.head(), 64, 32));
@@ -260,6 +280,8 @@ public class MutationsClient {
                 renderer.addLayer(new HostLayer(renderer, new TendrilModel(models.bakeLayer(TENDRILS))));
                 renderer.addLayer(new ColossusLayer(renderer, new ColossusPlatesModel(models.bakeLayer(COLOSSUS_PLATES))));
                 renderer.addLayer(new PyroLayer(renderer, new PyroFlamesModel(models.bakeLayer(PYRO_FLAMES))));
+                renderer.addLayer(new com.mutationsmod.mutations.client.render.WingsLayer(renderer,
+                        new com.mutationsmod.mutations.client.render.WingsModel(models.bakeLayer(WINGS))));
                 renderer.addLayer(new com.mutationsmod.mutations.client.render.OmegaLayer(renderer, new HumanoidModel<>(models.bakeLayer(OMEGA_AURA))));
                 renderer.addLayer(new StormLayer(renderer, new StormFxModel(models.bakeLayer(STORM_FX))));
                 renderer.addLayer(new CryoLayer(renderer, new CrystalModel(models.bakeLayer(CRYSTALS)),
@@ -399,6 +421,15 @@ public class MutationsClient {
         if (d.timer("suppressed") > now) out.add("SUPPRESSED: " + formatTime(d.timer("suppressed") - now));
         if (d.has(Mutation.HOST)) out.add(d.timer("bonded") > 0 ? "Organism: BONDED" : "Organism: dormant");
         if (d.has(Mutation.PYRO)) out.add(d.timer("flame_on") > 0 ? "Flame On" : "Flames: out");
+        if (d.has(Mutation.BULLET)) {
+            var ammo = com.mutationsmod.mutations.ability.power.Bullet.selected(d);
+            out.add("Ammo: " + ammo.label + " (" + com.mutationsmod.mutations.ability.power.Bullet.count(mc.player, ammo) + ")");
+            if (com.mutationsmod.mutations.ability.power.Bullet.overheated(d, now)) out.add("OVERHEATED: " + formatTime(d.timer("overheat") - now));
+            else {
+                float h = com.mutationsmod.mutations.ability.power.Bullet.heat(d, now) / com.mutationsmod.mutations.ability.power.Bullet.heatCap(d, mc.player);
+                if (h > 0.01f) out.add(String.format("Heat %d%%", Math.round(h * 100)));
+            }
+        }
         if (d.has(Mutation.COLOSSUS)) out.add(d.timer("steel") > 0 ? "Steel Form: ON" : "Steel Form: off");
         if (d.timer("phasing") > now) out.add("Phasing: " + formatTime(d.timer("phasing") - now));
         if (d.timer("vibrate") > now) out.add("Vibrating!");
