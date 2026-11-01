@@ -131,12 +131,14 @@ public final class Test18 {
                     ItemStack w = new ItemStack(ModWeapons.BY_MUTATION.get(m).get());
                     p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, w);
                     boolean ok = ExtraPowers.weaponUse(p, d, m, w);
-                    if (target != null) { p.resetAttackStrengthTicker(); p.attack(target); }
-                    MutationsMod.LOGGER.info("T18 {} WEAPON {} use={} after hit zombies=[{}]", m, w.getHoverName().getString(), ok, hp(r.zs()));
+                    boolean hit = target != null && target.hurtServer(level, level.damageSources().playerAttack(p), 6f);
+                    MutationsMod.LOGGER.info("T18 {} WEAPON {} use={} hit={} zombies=[{}]", m, w.getHoverName().getString(), ok, hit, hp(r.zs()));
                 } else if (step == all.size() + 2) {
                     what = "KILL";
                     if (target != null) {
-                        target.hurtServer(level, level.damageSources().playerAttack(p), 1000f);
+                        int inv = target.invulnerableTime;
+                        boolean ok = target.hurtServer(level, level.damageSources().playerAttack(p), 1000f);
+                        MutationsMod.LOGGER.info("T18 {} KILL ok={} inv={} invuln={} removed={} hp={} dist={}", m, ok, inv, target.isInvulnerable(), target.isRemoved(), target.getHealth(), target.distanceTo(p));
                     }
                     p.hurtServer(level, level.damageSources().generic(), 3f);
                     MutationsMod.LOGGER.info("T18 {} after kill+hurt hp={} timers={}", m, p.getHealth(), ModAttachments.get(p).toString().length());
