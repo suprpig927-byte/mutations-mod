@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "mutations:mutagen_crystal",
+    "M": "mutations:mutagen_ingot",
+    "S": "minecraft:stick",
+    "X": "minecraft:honeycomb"
+  },
+  "pattern": [
+    "  X",
+    " M ",
+    "CS "
+  ],
+  "result": {
+    "id": "mutations:stinger_rapier"
+  }
+}

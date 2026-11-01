@@ -41,6 +41,7 @@ public class ElasticPower implements ExtraPower {
         Powers.add(p, Attributes.ENTITY_INTERACTION_RANGE, "elastic", reach);
         Powers.add(p, Attributes.BLOCK_INTERACTION_RANGE, "elastic", reach);
         Powers.add(p, Attributes.KNOCKBACK_RESISTANCE, "elastic", 0.5);
+        if (d.has(Secondary.SQUEEZE)) squeeze(p);
         ServerLevel level = (ServerLevel) p.level();
         if (Powers.timerActive(d, level, "rampage")) {
             Powers.effect(p, MobEffects.JUMP_BOOST, 10, 3);
@@ -166,6 +167,16 @@ public class ElasticPower implements ExtraPower {
     public void weaponHit(LivingIncomingDamageEvent e, ServerPlayer p, MutationData d, LivingEntity target) {
         Powers.later((ServerLevel) p.level(), 1, () -> Powers.knockAway(target, p.position(), 1.2, 0.3));
         Powers.impulse(p, new Vec3(0, 0.35, 0), false);
+    }
+
+    /** Squeeze: sneaking into a wall with a 1-block gap flattens you to crawl through. Runs on both sides. */
+    public static void squeeze(net.minecraft.world.entity.player.Player p) {
+        boolean standFits = p.level().noCollision(p, p.getDimensions(net.minecraft.world.entity.Pose.STANDING).makeBoundingBox(p.position()));
+        if (p.getForcedPose() == net.minecraft.world.entity.Pose.SWIMMING) {
+            if (standFits && !p.isShiftKeyDown()) p.setForcedPose(null);
+        } else if (p.isShiftKeyDown() && p.horizontalCollision && !p.isInWater()) {
+            p.setForcedPose(net.minecraft.world.entity.Pose.SWIMMING);
+        }
     }
 
     @Override

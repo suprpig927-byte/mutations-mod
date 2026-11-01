@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "mutations:mutagen_crystal",
+    "S": "minecraft:stick",
+    "X": "minecraft:oak_sapling"
+  },
+  "pattern": [
+    "  X",
+    " C ",
+    "S  "
+  ],
+  "result": {
+    "id": "mutations:thornbranch_staff"
+  }
+}

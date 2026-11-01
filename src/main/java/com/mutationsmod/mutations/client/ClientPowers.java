@@ -148,6 +148,22 @@ public final class ClientPowers {
             p.setDeltaMovement(dm.x, Math.max(dm.y, 0.1), dm.z);
         }
 
+        // Shadow: Creeping Dark climbs walls while merged.
+        if (d.has(Secondary.CREEPING_DARK) && d.has(Mutation.SHADOW) && d.timer("merged") > 0 && p.horizontalCollision) {
+            dm = p.getDeltaMovement();
+            p.setDeltaMovement(dm.x, p.isShiftKeyDown() ? 0 : 0.2, dm.z);
+            p.resetFallDistance();
+        }
+        // Graviton: Feather Step runs across water and lava.
+        if (d.has(Secondary.FEATHER_STEP) && d.has(Mutation.GRAVITON) && p.isSprinting()) {
+            boolean fluidBelow = !level.getFluidState(BlockPos.containing(p.getX(), p.getY() - 0.1, p.getZ())).isEmpty();
+            dm = p.getDeltaMovement();
+            if (p.isInWater() || p.isInLava()) p.setDeltaMovement(dm.x, Math.max(dm.y, 0.15), dm.z);
+            else if (fluidBelow && dm.y < 0) { p.setDeltaMovement(dm.x, 0, dm.z); p.setOnGround(true); p.resetFallDistance(); }
+        }
+        // Elastic: Squeeze through 1-block gaps.
+        if (d.has(Secondary.SQUEEZE) && d.has(Mutation.ELASTIC)) com.mutationsmod.mutations.ability.extra.ElasticPower.squeeze(p);
+
         updateGlow(level, p, d);
     }
 

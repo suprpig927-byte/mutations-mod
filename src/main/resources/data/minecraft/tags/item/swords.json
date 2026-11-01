@@ -13,6 +13,23 @@
     "mutations:ember_scythe",
     "mutations:symbiote_whip",
     "mutations:gunblade",
-    "mutations:talon_glaive"
+    "mutations:talon_glaive",
+    "mutations:duskblade",
+    "mutations:isotope_cleaver",
+    "mutations:dawn_saber",
+    "mutations:lodestone_flail",
+    "mutations:viper_kukri",
+    "mutations:thornbranch_staff",
+    "mutations:packleaders_spear",
+    "mutations:hourglass_blade",
+    "mutations:stinger_rapier",
+    "mutations:event_horizon",
+    "mutations:coral_trident",
+    "mutations:geode_blade",
+    "mutations:recoil_hammer",
+    "mutations:reapers_sickle",
+    "mutations:scale_hammer",
+    "mutations:gavel_of_collections",
+    "mutations:master_key"
   ]
 }

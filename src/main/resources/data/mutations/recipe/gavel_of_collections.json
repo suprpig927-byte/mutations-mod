@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "mutations:mutagen_crystal",
+    "M": "mutations:mutagen_ingot",
+    "S": "minecraft:stick",
+    "X": "minecraft:gold_block"
+  },
+  "pattern": [
+    "MXM",
+    "MCM",
+    " S "
+  ],
+  "result": {
+    "id": "mutations:gavel_of_collections"
+  }
+}

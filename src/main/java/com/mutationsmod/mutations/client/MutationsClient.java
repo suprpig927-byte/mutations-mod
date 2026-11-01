@@ -439,6 +439,7 @@ public class MutationsClient {
         for (Chameleon.Trait t : Chameleon.Trait.values()) {
             if (d.timer(t.timer()) > now) out.add("Copycat (" + t.label + "): " + formatTime(d.timer(t.timer()) - now));
         }
+        ExtraHud.lines(mc, d, now, out);
         if (Mastery.canRoll(d) || !d.rollOptions().isEmpty()) out.add("Secondary roll ready! (" + OPEN_SCREEN.getTranslatedKeyMessage().getString() + ")");
         else if (d.statPoints() > 0) out.add(d.statPoints() + " stat points to spend (" + OPEN_SCREEN.getTranslatedKeyMessage().getString() + ")");
         return out;

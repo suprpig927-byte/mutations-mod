@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "M": "mutations:mutagen_ingot",
+    "S": "minecraft:stick",
+    "X": "minecraft:bone"
+  },
+  "pattern": [
+    "  X",
+    " M ",
+    "S  "
+  ],
+  "result": {
+    "id": "mutations:packleaders_spear"
+  }
+}

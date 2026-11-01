@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "M": "mutations:mutagen_ingot",
+    "S": "minecraft:stick",
+    "X": "minecraft:prismarine_shard"
+  },
+  "pattern": [
+    "  X",
+    " M ",
+    "S  "
+  ],
+  "result": {
+    "id": "mutations:coral_trident"
+  }
+}

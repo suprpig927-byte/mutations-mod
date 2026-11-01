@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "mutations:mutagen_crystal",
+    "M": "mutations:mutagen_ingot",
+    "S": "minecraft:stick",
+    "X": "minecraft:spider_eye"
+  },
+  "pattern": [
+    " X",
+    "MC",
+    "S "
+  ],
+  "result": {
+    "id": "mutations:viper_kukri"
+  }
+}

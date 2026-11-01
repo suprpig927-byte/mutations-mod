@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "mutations:mutagen_crystal",
+    "M": "mutations:mutagen_ingot",
+    "S": "minecraft:stick",
+    "X": "minecraft:soul_sand"
+  },
+  "pattern": [
+    "MM ",
+    "XC",
+    " S "
+  ],
+  "result": {
+    "id": "mutations:reapers_sickle"
+  }
+}

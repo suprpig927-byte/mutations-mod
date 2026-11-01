@@ -291,6 +291,24 @@ public final class ModContent {
                 out.accept(SYMBIOTE_JAR.get());
                 out.accept(HEAT_SINK.get());
                 out.accept(GALE_FEATHER.get());
+                out.accept(VOID_LANTERN.get());
+                out.accept(LEAD_LINED_CORE.get());
+                out.accept(SUNSTONE.get());
+                out.accept(LODESTONE_HEART.get());
+                out.accept(VENOM_GLAND.get());
+                out.accept(HEARTSEED.get());
+                out.accept(GEODE_HEART.get());
+                out.accept(ALPHA_FANG.get());
+                out.accept(BROKEN_POCKETWATCH.get());
+                out.accept(QUEENS_JELLY.get());
+                out.accept(NEUTRON_CORE.get());
+                out.accept(TIDE_PEARL.get());
+                out.accept(FLAWLESS_GEM.get());
+                out.accept(RUBBER_CORE.get());
+                out.accept(PHYLACTERY.get());
+                out.accept(SIZE_CRYSTAL.get());
+                out.accept(GOLDEN_LEDGER.get());
+                out.accept(GOLDEN_DEED.get());
                 out.accept(HAWK_FEATHER.get());
             }).build());
 
