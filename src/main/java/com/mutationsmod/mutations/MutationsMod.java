@@ -35,10 +35,28 @@ public class MutationsMod {
         game.addListener(AbilityHandler::onRightClickItem);
         game.addListener(MutationCommand::register);
         game.addListener(com.mutationsmod.mutations.ability.Weapons::onProjectileImpact);
+        game.addListener(com.mutationsmod.mutations.ability.extra.ShadowPower::onBreak);
+        game.addListener(com.mutationsmod.mutations.ability.extra.VerdantPower::onBreak);
+        game.addListener(com.mutationsmod.mutations.ability.extra.EarthshaperPower::onBreakSpeed);
+        game.addListener(com.mutationsmod.mutations.ability.extra.VerdantPower::onRightClickBlock);
+        game.addListener(com.mutationsmod.mutations.ability.extra.VerdantPower::onUseStart);
+        game.addListener(com.mutationsmod.mutations.ability.extra.VerdantPower::onUseFinish);
+        game.addListener(com.mutationsmod.mutations.ability.extra.SoulbinderPower::onHeal);
+        game.addListener(com.mutationsmod.mutations.ability.extra.LandlordPower::onFinalizeSpawn);
+        game.addListener((net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.EntityInteract e) -> {
+            if (e.getLevel().isClientSide()) return;
+            com.mutationsmod.mutations.ability.extra.BeastcallerPower.onInteract(e);
+            if (!e.isCanceled()) com.mutationsmod.mutations.ability.extra.MicroPower.onInteract(e);
+            if (!e.isCanceled() && e.getEntity() instanceof net.minecraft.server.level.ServerPlayer sp) com.mutationsmod.mutations.ability.extra.TaxManPower.onVillagerInteract(sp, e.getTarget());
+        });
+        game.addListener((net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent e) -> {
+            if (e.getEntity() instanceof net.minecraft.server.level.ServerPlayer sp) com.mutationsmod.mutations.ability.extra.SoulbinderPower.onLogin(sp);
+        });
         // Omega decoys left behind in unloaded chunks reload as plain mannequins: remove them.
         game.addListener((net.neoforged.neoforge.event.entity.EntityJoinLevelEvent e) -> {
             if (!e.getLevel().isClientSide() && e.getEntity().entityTags().contains(com.mutationsmod.mutations.entity.Decoy.TAG)
                     && !(e.getEntity() instanceof com.mutationsmod.mutations.entity.Decoy)) e.setCanceled(true);
+            if (!e.getLevel().isClientSide() && e.loadedFromDisk() && e.getEntity().entityTags().contains(com.mutationsmod.mutations.ability.extra.Minions.TAG)) e.setCanceled(true);
         });
     }
 }

@@ -105,6 +105,8 @@ public class MutationsClient {
                     ctx -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(ctx, 0.5f, true));
             e.registerEntityRenderer(com.mutationsmod.mutations.registry.ModContent.FEATHER_DART.get(),
                     ctx -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(ctx, 0.75f, false));
+            e.registerEntityRenderer(com.mutationsmod.mutations.registry.ModContent.MUTANT_SHOT.get(),
+                    ctx -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(ctx, 0.75f, true));
         });
         modEventBus.addListener(MutationsClient::registerKeys);
         modEventBus.addListener(MutationsClient::registerHud);

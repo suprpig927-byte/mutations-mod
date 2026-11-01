@@ -145,6 +145,7 @@ public final class Omega {
                 Powers.sound(p, SoundEvents.ENDER_DRAGON_FLAP, 1.5f, 0.7f);
                 yield true;
             }
+            default -> com.mutationsmod.mutations.ability.extra.ExtraPowers.ultimate(p, d, u.mutation());
         };
     }
 

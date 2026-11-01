@@ -43,6 +43,14 @@ public final class ModWeapons {
         return item;
     }
 
+    private static DeferredItem<MutantWeapon> tool(String name, Mutation m, Kind kind, float damage, float speed) {
+        DeferredItem<MutantWeapon> item = ModContent.ITEMS.registerItem(name, p -> new MutantWeapon(p, m, kind),
+                p -> p.pickaxe(MUTANT_MATERIAL, damage, speed).rarity(Rarity.RARE));
+        BY_MUTATION.put(m, item::get);
+        ALL.add(item);
+        return item;
+    }
+
     public static final DeferredItem<MutantWeapon> BLOODTHORN_BLADE = melee("bloodthorn_blade", Mutation.REGENERATOR, Kind.BLOODTHORN, 3.0f, -2.4f);
     public static final DeferredItem<MutantWeapon> ORBIT_CHAKRAM = melee("orbit_chakram", Mutation.KINETIC_MIND, Kind.CHAKRAM, 2.0f, -2.0f);
     public static final DeferredItem<MutantWeapon> THUNDERHEAD_MAUL = melee("thunderhead_maul", Mutation.STORMCALLER, Kind.MAUL, 5.5f, -3.1f);
@@ -57,6 +65,26 @@ public final class ModWeapons {
     public static final DeferredItem<MutantWeapon> SYMBIOTE_WHIP = melee("symbiote_whip", Mutation.HOST, Kind.WHIP, 2.5f, -2.4f);
     public static final DeferredItem<MutantWeapon> GUNBLADE = melee("gunblade", Mutation.BULLET, Kind.GUNBLADE, 3.0f, -2.4f);
     public static final DeferredItem<MutantWeapon> TALON_GLAIVE = melee("talon_glaive", Mutation.FIERCE_WINGS, Kind.GLAIVE, 3.5f, -2.6f);
+
+    // ---- v0.19 ----
+    public static final DeferredItem<MutantWeapon> DUSKBLADE = melee("duskblade", Mutation.SHADOW, Kind.DUSKBLADE, 3.0f, -2.4f);
+    public static final DeferredItem<MutantWeapon> ISOTOPE_CLEAVER = melee("isotope_cleaver", Mutation.RADIATION, Kind.CLEAVER, 4.0f, -2.9f);
+    public static final DeferredItem<MutantWeapon> DAWN_SABER = melee("dawn_saber", Mutation.LUMINARY, Kind.DAWN_SABER, 3.0f, -2.4f);
+    public static final DeferredItem<MutantWeapon> LODESTONE_FLAIL = melee("lodestone_flail", Mutation.MAGNETAR, Kind.FLAIL, 3.5f, -2.7f);
+    public static final DeferredItem<MutantWeapon> VIPER_KUKRI = melee("viper_kukri", Mutation.VENOM, Kind.KUKRI, 2.0f, -2.0f);
+    public static final DeferredItem<MutantWeapon> THORNBRANCH_STAFF = melee("thornbranch_staff", Mutation.VERDANT, Kind.STAFF, 3.0f, -2.6f);
+    public static final DeferredItem<MutantWeapon> QUARRY_MAUL = tool("quarry_maul", Mutation.EARTHSHAPER, Kind.QUARRY_MAUL, 5.0f, -3.1f);
+    public static final DeferredItem<MutantWeapon> PACKLEADERS_SPEAR = melee("packleaders_spear", Mutation.BEASTCALLER, Kind.PACK_SPEAR, 3.5f, -2.6f);
+    public static final DeferredItem<MutantWeapon> HOURGLASS_BLADE = melee("hourglass_blade", Mutation.CHRONO, Kind.HOURGLASS, 3.0f, -2.4f);
+    public static final DeferredItem<MutantWeapon> STINGER_RAPIER = melee("stinger_rapier", Mutation.SWARM, Kind.RAPIER, 2.0f, -1.8f);
+    public static final DeferredItem<MutantWeapon> EVENT_HORIZON = melee("event_horizon", Mutation.GRAVITON, Kind.EVENT_HORIZON, 5.0f, -3.0f);
+    public static final DeferredItem<MutantWeapon> CORAL_TRIDENT = melee("coral_trident", Mutation.TIDECALLER, Kind.CORAL_TRIDENT, 4.0f, -2.8f);
+    public static final DeferredItem<MutantWeapon> GEODE_BLADE = melee("geode_blade", Mutation.CRYSTALLINE, Kind.GEODE_BLADE, 3.0f, -2.4f);
+    public static final DeferredItem<MutantWeapon> RECOIL_HAMMER = melee("recoil_hammer", Mutation.ELASTIC, Kind.RECOIL_HAMMER, 4.0f, -2.8f);
+    public static final DeferredItem<MutantWeapon> REAPERS_SICKLE = melee("reapers_sickle", Mutation.SOULBINDER, Kind.SICKLE, 3.5f, -2.6f);
+    public static final DeferredItem<MutantWeapon> SCALE_HAMMER = melee("scale_hammer", Mutation.MICRO, Kind.SCALE_HAMMER, 4.0f, -2.8f);
+    public static final DeferredItem<MutantWeapon> GAVEL_OF_COLLECTIONS = melee("gavel_of_collections", Mutation.TAX_MAN, Kind.GAVEL, 4.5f, -3.0f);
+    public static final DeferredItem<MutantWeapon> MASTER_KEY = melee("master_key", Mutation.LANDLORD, Kind.MASTER_KEY, 4.0f, -2.8f);
 
     private static DeferredItem<EchoBowItem> registerBow() {
         DeferredItem<EchoBowItem> item = ModContent.ITEMS.registerItem("echo_bow", EchoBowItem::new,

@@ -76,6 +76,60 @@ public final class ResearchNotes {
             case FIERCE_WINGS -> new String[]{"Subject W: Flight", "Dr. Moreau",
                     "W grew wings in a week. Real feathers, hollow bones. She glides from the roof of the lab and beats her way back up.",
                     "Fire terrifies her, and with reason: it catches in the plumage. The Gale Feather lets her flap all day without tiring."};
+            case SHADOW -> new String[]{"Subject S: Umbra", "Dr. Vance",
+                    "S walks into a dark corner and is simply gone. Bring a torch and she stumbles out, blinking.",
+                    "Carrying the Void Lantern she stayed hidden even under the lab lamps. We no longer know where she is."};
+            case RADIATION -> new String[]{"Subject R: Isotope", "Dr. Petrov",
+                    "R's cell counters click without stopping. Plants in his wing died within a week.",
+                    "Behind the Lead-Lined Core his beam holds steady for twice as long. Wear the badge at all times."};
+            case LUMINARY -> new String[]{"Subject L: Radiance", "Dr. Ilse",
+                    "L drinks sunlight. After an hour outdoors she lit the corridor brighter than our lamps.",
+                    "The Sunstone holds her light through the night. She has not slept in the dark since."};
+            case MAGNETAR -> new String[]{"Subject M: Polarity", "Dr. Brandt",
+                    "Every loose bolt in the room ends up stuck to M. Our rifles jammed when we raised them.",
+                    "With the Lodestone Heart his pull reaches across the whole yard. Keep the vault doors closed."};
+            case VENOM -> new String[]{"Subject V: Toxin", "Dr. Okoye",
+                    "V's bite put a cow down in seconds. Her own blood neutralises any poison we try.",
+                    "With the Venom Gland implanted the toxin lingers twice as long. She is sluggish in the cold store."};
+            case VERDANT -> new String[]{"Subject G: Growth", "Dr. Arden",
+                    "G turned down every meal we offered except salad. The seedlings around her cot are already waist high.",
+                    "The Heartseed in her palm doubles her healing in the greenhouse, and she finally ate a steak."};
+            case EARTHSHAPER -> new String[]{"Subject E: Bedrock", "Dr. Kaur",
+                    "E pressed his palm to the floor and a pillar threw the guard into the ceiling.",
+                    "The Geode Heart doubles everything he raises. We have moved his testing outdoors."};
+            case BEASTCALLER -> new String[]{"Subject B: Pack", "Dr. Lowe",
+                    "Every dog on the base followed B to breakfast. When a hen died in the yard, he clutched his chest.",
+                    "With the Alpha Fang his spirit wolves stay twice as long. They will not let us near him."};
+            case CHRONO -> new String[]{"Subject C: Loop", "Dr. Sato",
+                    "C finished the maze before we started the clock. Then she did it again, from five seconds earlier.",
+                    "The Broken Pocketwatch lets her slip twice as far back. I have written this entry three times."};
+            case SWARM -> new String[]{"Subject W: Hive", "Dr. Moss",
+                    "W hums. The sound comes from under his skin. When he is angry, it comes out.",
+                    "On Queen's Jelly the swarm is twice as fierce and our smoke canisters do nothing."};
+            case GRAVITON -> new String[]{"Subject N: Mass", "Dr. Ruiz",
+                    "N drops a spoon and it falls sideways. She herself falls up, now and then.",
+                    "The Neutron Core steadies her field. With it she hovers twice as long and stays on the floor."};
+            case TIDECALLER -> new String[]{"Subject T: Current", "Dr. Nwosu",
+                    "T sleeps in the tank. Left in the dry lab for a day she could barely stand.",
+                    "The Tide Pearl keeps her damp in the desert. She flooded the canteen on purpose."};
+            case CRYSTALLINE -> new String[]{"Subject Q: Lattice", "Dr. Fournier",
+                    "Q's skin rings like a glass when you tap it. Our scalpels broke on it.",
+                    "The Flawless Gem seals her cracks. The blast test that should have shattered her left a chip."};
+            case ELASTIC -> new String[]{"Subject P: Plastic", "Dr. Hughes",
+                    "P reached the top shelf from across the room. Dropped from the roof, he bounced back up to it.",
+                    "The Rubber Core lengthens his reach again. Our knives still worry him."};
+            case SOULBINDER -> new String[]{"Subject D: Threshold", "Dr. Hollis",
+                    "D's heart stopped on the table for four minutes. He came back with company.",
+                    "The Phylactery holds twice the souls, and he walks in the sun again. The company stays."};
+            case MICRO -> new String[]{"Subject Z: Scale", "Dr. Amari",
+                    "Z escaped through the air vent at the size of a mouse. We found her stuck in the doorway, ten feet tall.",
+                    "The Size Crystal makes her changes instant. She hides in the coffee cups now."};
+            case TAX_MAN -> new String[]{"Subject $: Audit", "Dr. Pell",
+                    "$ collected a gold nugget from every rat in the lab. Nobody remembers agreeing to it.",
+                    "With the Golden Ledger he takes twice as much, and death only halves the books."};
+            case LANDLORD -> new String[]{"Subject K: Tenure", "Dr. Beaumont",
+                    "K claimed the east wing on his first day. Inside it he is unbeatable; outside it he mopes.",
+                    "The Golden Deed doubles his holdings and his rent. He has started charging us."};
         };
     }
 

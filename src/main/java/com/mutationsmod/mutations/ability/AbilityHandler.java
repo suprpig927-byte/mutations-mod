@@ -117,6 +117,7 @@ public final class AbilityHandler {
         if (d.has(Mutation.HOST)) Host.tick(p, ModAttachments.get(p));
         if (d.has(Mutation.BULLET)) com.mutationsmod.mutations.ability.power.Bullet.tick(p, ModAttachments.get(p));
         if (d.has(Mutation.FIERCE_WINGS)) com.mutationsmod.mutations.ability.power.Wings.tick(p, ModAttachments.get(p));
+        com.mutationsmod.mutations.ability.extra.ExtraPowers.tick(p, ModAttachments.get(p));
         Omega.tick(p, ModAttachments.get(p));
     }
 
@@ -128,6 +129,7 @@ public final class AbilityHandler {
         com.mutationsmod.mutations.debug.WeaponTest.tick(level);
         com.mutationsmod.mutations.debug.NewMutationTest.tick(level);
         Siren.tickLevel(level);
+        com.mutationsmod.mutations.ability.extra.ExtraPowers.tickLevel(level);
     }
 
     // ------------------------------------------------------------------ damage
@@ -137,6 +139,18 @@ public final class AbilityHandler {
         if (victim.level().isClientSide()) return;
         Siren.onMobHurt(victim);
         var source = event.getSource();
+        com.mutationsmod.mutations.ability.extra.Minions.onDamage(event);
+        if (event.isCanceled()) return;
+        com.mutationsmod.mutations.ability.extra.ChronoPower.onAnyDamage(event);
+        com.mutationsmod.mutations.ability.extra.BeastcallerPower.onAnyDamage(event);
+        if (event.isCanceled()) return;
+
+        // New mutations: any damage a mutant deals (melee or ability).
+        if (source.getEntity() instanceof ServerPlayer dealer && dealer != victim
+                && !Suppression.active(ModAttachments.get(dealer), dealer.level())) {
+            boolean melee = source.getDirectEntity() == dealer && !Powers.ABILITY_DAMAGE.get();
+            com.mutationsmod.mutations.ability.extra.ExtraPowers.onDealDamage(event, dealer, victim, melee);
+        }
 
         // Containment Suit: each piece blocks 15% of damage from mutant abilities.
         if (Powers.ABILITY_DAMAGE.get()) {
@@ -213,6 +227,8 @@ public final class AbilityHandler {
         if (event.isCanceled()) return;
         if (d.has(Mutation.FIERCE_WINGS)) com.mutationsmod.mutations.ability.power.Wings.onHurt(event, p, d);
         if (event.isCanceled()) return;
+        com.mutationsmod.mutations.ability.extra.ExtraPowers.onHurt(event, p, d);
+        if (event.isCanceled()) return;
         Omega.onHurt(event, p, d);                    // Undying clamps whatever damage is left
     }
 
@@ -222,6 +238,8 @@ public final class AbilityHandler {
         if (Suppression.active(d, p.level())) return;
         if (d.has(Mutation.REGENERATOR)) Regenerator.onEffect(event, p, d);
         if (d.has(Mutation.SIREN)) Siren.onEffect(event, d);
+        if (p instanceof ServerPlayer sp && com.mutationsmod.mutations.ability.extra.ExtraPowers.blocksEffect(sp, d, event.getEffectInstance().getEffect()))
+            event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
     }
 
     public static void onStruckByLightning(EntityStruckByLightningEvent event) {
@@ -244,7 +262,9 @@ public final class AbilityHandler {
             if (powered && Omega.preventDeath(event, p, d)) return;
             if (powered && d.has(Mutation.REGENERATOR) && Regenerator.secondWind(event, p, d)) return;
             if (powered && d.has(Mutation.PYRO) && Pyro.phoenix(event, p, d)) return;
+            if (powered && com.mutationsmod.mutations.ability.extra.ExtraPowers.cheatDeath(event, p, d)) return;
             Telekinesis.release(p, false);
+            com.mutationsmod.mutations.ability.extra.ExtraPowers.onDeath(p, ModAttachments.get(p));
         }
 
         if (event.getSource().getEntity() instanceof ServerPlayer killer && killer != victim) {
@@ -253,11 +273,15 @@ public final class AbilityHandler {
                     victim.getType().getCategory() == MobCategory.MONSTER, victim instanceof Player));
             if (k.has(Mutation.HOST)) Host.onKill(killer, k);
             if (k.has(Mutation.CHAMELEON)) Chameleon.onKill(killer, victim);
+            if (!Suppression.active(k, killer.level())) com.mutationsmod.mutations.ability.extra.ExtraPowers.onKill(killer, victim);
         }
+        com.mutationsmod.mutations.ability.extra.BeastcallerPower.onAnyDeath(victim);
     }
 
     public static void onDrops(LivingDropsEvent event) {
-        if (!event.getEntity().level().isClientSide()) Chameleon.onDrops(event);
+        if (event.getEntity().level().isClientSide()) return;
+        Chameleon.onDrops(event);
+        com.mutationsmod.mutations.ability.extra.ExtraPowers.onDrops(event);
     }
 
     public static void onChangeTarget(LivingChangeTargetEvent event) {
@@ -265,6 +289,7 @@ public final class AbilityHandler {
         if (event.getNewAboutToBeSetTarget() instanceof ServerPlayer target
                 && Suppression.active(ModAttachments.get(target), target.level())) return;
         Chameleon.onChangeTarget(event);
+        com.mutationsmod.mutations.ability.extra.ExtraPowers.onChangeTarget(event);
     }
 
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
@@ -314,6 +339,12 @@ public final class AbilityHandler {
         if (now < readyAt && !echo) {
             long secs = (readyAt - now + 19) / 20;
             p.sendOverlayMessage(Component.literal(ability.displayName() + " is recharging (" + secs + "s)").withStyle(ChatFormatting.RED));
+            return;
+        }
+
+        String why = com.mutationsmod.mutations.ability.extra.ExtraPowers.blocked(p, d);
+        if (why != null) {
+            p.sendOverlayMessage(Component.literal(why).withStyle(ChatFormatting.GRAY));
             return;
         }
 
@@ -369,16 +400,19 @@ public final class AbilityHandler {
             case DIVE_STRIKE -> com.mutationsmod.mutations.ability.power.Wings.diveStrike(p, d);
             case WING_SHIELD -> com.mutationsmod.mutations.ability.power.Wings.wingShield(p, d);
             case UPDRAFT -> com.mutationsmod.mutations.ability.power.Wings.updraft(p, d);
+            default -> com.mutationsmod.mutations.ability.extra.ExtraPowers.use(p, d, ability);
         };
         if (!used) return;
 
         if (echo) {
             Powers.clearTimer(p, "echo_blink"); // the free echo doesn't trigger a cooldown
         } else {
-            ModAttachments.set(p, ModAttachments.get(p).withCooldown(ability, now + cooldown(ability, d)));
+            long cd = Math.max(1, Math.round(cooldown(ability, d) * com.mutationsmod.mutations.ability.extra.ExtraPowers.cooldownFactor(p, d, ability)));
+            ModAttachments.set(p, ModAttachments.get(p).withCooldown(ability, now + cd));
             if (ability == ActiveAbility.BLINK && d.has(Secondary.ECHO_BLINK)) Powers.setTimer(p, "echo_blink", 40);
         }
-        if (ability == ActiveAbility.FIRE || ability == ActiveAbility.SWITCH_AMMO) {
+        com.mutationsmod.mutations.ability.extra.ExtraPowers.afterAbility(p, ModAttachments.get(p));
+        if (ability == ActiveAbility.FIRE || ability == ActiveAbility.SWITCH_AMMO || ability == ActiveAbility.SIZE_SHIFT) {
             if (ability == ActiveAbility.FIRE && p.getRandom().nextInt(3) == 0) Mastery.addXp(p, 1);   // rapid fire: a little XP
         } else if (ability == ActiveAbility.TELEKINESIS || ability == ActiveAbility.ITEM_MAGNET || ability == ActiveAbility.BOND
                 || ability == ActiveAbility.STEEL_FORM || ability == ActiveAbility.FLAME_ON
@@ -431,6 +465,7 @@ public final class AbilityHandler {
         Chameleon.forget(p.getUUID());
         Pyro.forget(p);
         Omega.forget(p);
+        com.mutationsmod.mutations.ability.extra.ExtraPowers.reset(p);
     }
 
     /** Kept for older callers. */

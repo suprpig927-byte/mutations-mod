@@ -296,10 +296,25 @@ public final class Powers {
         }
     }
 
+    // ------------------------------------------------------------------ delayed actions
+
+    private record Later(ServerLevel level, long at, Runnable action) {}
+    private static final List<Later> LATER = new ArrayList<>();
+
+    /** Runs {@code action} after {@code ticks} ticks (on the server thread). */
+    public static void later(ServerLevel level, int ticks, Runnable action) {
+        LATER.add(new Later(level, level.getGameTime() + ticks, action));
+    }
+
     // ------------------------------------------------------------------ level tick
 
     public static void tickLevel(ServerLevel level) {
         long now = level.getGameTime();
+        for (Later l : List.copyOf(LATER)) {
+            if (l.level() != level || now < l.at()) continue;
+            LATER.remove(l);
+            try { l.action().run(); } catch (RuntimeException ex) { com.mutationsmod.mutations.MutationsMod.LOGGER.error("delayed action failed", ex); }
+        }
         Iterator<TempBlock> it = TEMP_BLOCKS.iterator();
         while (it.hasNext()) {
             TempBlock t = it.next();

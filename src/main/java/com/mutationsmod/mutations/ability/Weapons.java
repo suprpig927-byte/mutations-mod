@@ -186,7 +186,7 @@ public final class Weapons {
                 return true;
             }
             default -> {
-                return false;
+                return com.mutationsmod.mutations.ability.extra.ExtraPowers.weaponUse(p, d, w.mutation(), stack);
             }
         }
     }

@@ -50,6 +50,9 @@ public final class ModContent {
     public static final DeferredHolder<net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<com.mutationsmod.mutations.entity.SubjectZero>>
             SUBJECT_ZERO = ENTITIES.registerEntityType("subject_zero", com.mutationsmod.mutations.entity.SubjectZero::new,
             net.minecraft.world.entity.MobCategory.MONSTER, b -> b.sized(0.6f, 1.95f).eyeHeight(1.62f).clientTrackingRange(10));
+    public static final DeferredHolder<net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<com.mutationsmod.mutations.entity.MutantShot>>
+            MUTANT_SHOT = ENTITIES.registerEntityType("mutant_shot", com.mutationsmod.mutations.entity.MutantShot::new,
+            net.minecraft.world.entity.MobCategory.MISC, b -> b.sized(0.3f, 0.3f).clientTrackingRange(8).updateInterval(1).noLootTable());
     public static final DeferredHolder<net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<com.mutationsmod.mutations.entity.BulletRound>>
             BULLET_ROUND = ENTITIES.registerEntityType("bullet_round", com.mutationsmod.mutations.entity.BulletRound::new,
             net.minecraft.world.entity.MobCategory.MISC, b -> b.sized(0.2f, 0.2f).clientTrackingRange(8).updateInterval(1).noLootTable());
@@ -135,6 +138,24 @@ public final class ModContent {
     public static final DeferredItem<Item> SYMBIOTE_JAR = ITEMS.registerSimpleItem("symbiote_jar", p -> catalyst(p, "Host", "The organism starves half as fast"));
     public static final DeferredItem<Item> HEAT_SINK = ITEMS.registerSimpleItem("heat_sink", p -> catalyst(p, "Bullet", "Fire twice as much before you overheat"));
     public static final DeferredItem<Item> GALE_FEATHER = ITEMS.registerSimpleItem("gale_feather", p -> catalyst(p, "Fierce Wings", "Stronger flaps that cost no hunger"));
+    public static final DeferredItem<Item> VOID_LANTERN = ITEMS.registerSimpleItem("void_lantern", p -> catalyst(p, "Shadow", "Stay merged in the shadows up to light level 13"));
+    public static final DeferredItem<Item> LEAD_LINED_CORE = ITEMS.registerSimpleItem("lead_lined_core", p -> catalyst(p, "Radiation", "Radiation Beam lasts 4 seconds and hits 30% harder"));
+    public static final DeferredItem<Item> SUNSTONE = ITEMS.registerSimpleItem("sunstone", p -> catalyst(p, "Luminary", "Radiance never drains in the dark"));
+    public static final DeferredItem<Item> LODESTONE_HEART = ITEMS.registerSimpleItem("lodestone_heart", p -> catalyst(p, "Magnetar", "Doubles your item magnet and Polarity Pull range"));
+    public static final DeferredItem<Item> VENOM_GLAND = ITEMS.registerSimpleItem("venom_gland", p -> catalyst(p, "Venom", "All your poisons last twice as long"));
+    public static final DeferredItem<Item> HEARTSEED = ITEMS.registerSimpleItem("heartseed", p -> catalyst(p, "Verdant", "Heal twice as fast on grass, and meat feeds you again"));
+    public static final DeferredItem<Item> GEODE_HEART = ITEMS.registerSimpleItem("geode_heart", p -> catalyst(p, "Earthshaper", "Pillars and walls are bigger and last twice as long"));
+    public static final DeferredItem<Item> ALPHA_FANG = ITEMS.registerSimpleItem("alpha_fang", p -> catalyst(p, "Beastcaller", "Spirit wolves last 60 seconds and hit 50% harder"));
+    public static final DeferredItem<Item> BROKEN_POCKETWATCH = ITEMS.registerSimpleItem("broken_pocketwatch", p -> catalyst(p, "Chrono", "Rewind goes back 10 seconds, and the hunger downside is gone"));
+    public static final DeferredItem<Item> QUEENS_JELLY = ITEMS.registerSimpleItem("queens_jelly", p -> catalyst(p, "Swarm", "The swarm stings twice as often and smoke no longer scatters it"));
+    public static final DeferredItem<Item> NEUTRON_CORE = ITEMS.registerSimpleItem("neutron_core", p -> catalyst(p, "Graviton", "No more gravity flips, and you can hover for 6 seconds"));
+    public static final DeferredItem<Item> TIDE_PEARL = ITEMS.registerSimpleItem("tide_pearl", p -> catalyst(p, "Tidecaller", "You never dry out"));
+    public static final DeferredItem<Item> FLAWLESS_GEM = ITEMS.registerSimpleItem("flawless_gem", p -> catalyst(p, "Crystalline", "No shatter weakness, and reflection rises to 35%"));
+    public static final DeferredItem<Item> RUBBER_CORE = ITEMS.registerSimpleItem("rubber_core", p -> catalyst(p, "Elastic", "+2 more reach, and no weakness to sharp weapons"));
+    public static final DeferredItem<Item> PHYLACTERY = ITEMS.registerSimpleItem("phylactery", p -> catalyst(p, "Soulbinder", "Store up to 20 souls, and daylight no longer burns you"));
+    public static final DeferredItem<Item> SIZE_CRYSTAL = ITEMS.registerSimpleItem("size_crystal", p -> catalyst(p, "Micro", "Instant size shifts, and being big costs no extra hunger"));
+    public static final DeferredItem<Item> GOLDEN_LEDGER = ITEMS.registerSimpleItem("golden_ledger", p -> catalyst(p, "Tax Man", "Collect twice as much Revenue, and keep half of it when you die"));
+    public static final DeferredItem<Item> GOLDEN_DEED = ITEMS.registerSimpleItem("golden_deed", p -> catalyst(p, "Landlord", "Own up to 6 chunks, and rent is doubled"));
     /** A Fierce Wings razor feather (the projectile's look; also a plain crafting feather). */
     public static final DeferredItem<Item> HAWK_FEATHER = ITEMS.registerSimpleItem("hawk_feather");
 

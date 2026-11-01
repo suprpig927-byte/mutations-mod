@@ -151,7 +151,187 @@ public enum Secondary {
     WING_SHIELD(FIERCE_WINGS, "Wing Shield", "Wrap yourself in your wings: projectiles bounce off, half damage.", ActiveAbility.WING_SHIELD),
     UPDRAFT(FIERCE_WINGS, "Updraft", "Shoot straight up into the sky.", ActiveAbility.UPDRAFT),
     PLUME_REGROWTH(FIERCE_WINGS, "Plume Regrowth", "Feather Volley cooldown halved."),
-    PREDATOR(FIERCE_WINGS, "Predator", "Deal 25% more damage while you're in the air.");
+    PREDATOR(FIERCE_WINGS, "Predator", "Deal 25% more damage while you're in the air."),
+
+    // ---------------- Shadow ----------------
+    UMBRAL_STRIKE(SHADOW, "Umbral Strike", "Your first hit within 5 seconds of leaving the shadows deals 3x damage."),
+    NIGHT_EYES(SHADOW, "Night Eyes", "Permanent Night Vision."),
+    DEEP_DARK(SHADOW, "Deep Dark", "Being pulled out of the shadows doesn't blind you."),
+    CREEPING_DARK(SHADOW, "Creeping Dark", "While merged, walk into a wall to climb it."),
+    SHADE_CLOAK(SHADOW, "Shade Cloak", "While merged you heal half a heart every 2 seconds."),
+    LIGHTLESS(SHADOW, "Lightless", "Bright light takes 3 seconds to pull you out instead of pulling you out at once."),
+    SHADOW_CLONE(SHADOW, "Shadow Clone", "A shadow spirit fights beside you for 10 seconds.", ActiveAbility.SHADOW_CLONE),
+    GRASPING_SHADOWS(SHADOW, "Grasping Shadows", "Shadow hands hold every mob within 6 blocks of the spot you look at in place for 3 seconds.", ActiveAbility.GRASPING_SHADOWS),
+
+    // ---------------- Radiation ----------------
+    HALF_LIFE(RADIATION, "Half-Life", "Radiation Sickness lasts twice as long."),
+    FALLOUT(RADIATION, "Fallout", "Mobs that die while sick spread their sickness to mobs within 3 blocks."),
+    RAD_SHIELD(RADIATION, "Rad Shield", "Anything that shoots you gets sickness."),
+    ISOTOPE_FEEDING(RADIATION, "Isotope Feeding", "Standing within 6 blocks of sick mobs slowly heals you."),
+    CONTAINED(RADIATION, "Contained", "You stop glowing, and animals and mobs treat you normally again."),
+    GAMMA_BURST(RADIATION, "Gamma Burst", "Radiation Beam passes through up to 2 blocks."),
+    IRRADIATE(RADIATION, "Irradiate", "Turn the spot you look at into a glowing patch that sickens mobs on it for 30 seconds.", ActiveAbility.IRRADIATE),
+    DECAY_TOUCH(RADIATION, "Decay Touch", "Wither the mob you look at for 8 seconds and drain 3 hearts from it.", ActiveAbility.DECAY_TOUCH),
+
+    // ---------------- Luminary ----------------
+    PHOTOSYNTHESIS(LUMINARY, "Photosynthesis", "At full Radiance you slowly heal."),
+    REFRACTION(LUMINARY, "Refraction", "Prism Lance splits into 3 beams."),
+    HALO(LUMINARY, "Halo", "Undead within 6 blocks take 1 damage every 2 seconds."),
+    RADIANT_AFTERGLOW(LUMINARY, "Afterglow", "Radiance charges at light level 8 and up."),
+    BLINDING_AURA(LUMINARY, "Blinding Aura", "Mobs that hit you are blinded for 2 seconds."),
+    LIGHTFOOTED(LUMINARY, "Lightfooted", "Speed I while you have more than 50 Radiance."),
+    BEACON_PULSE(LUMINARY, "Beacon Pulse", "A column of light reveals every mob within 32 blocks for 10 seconds.", ActiveAbility.BEACON_PULSE),
+    MIRROR_WARD(LUMINARY, "Mirror Ward", "For 5 seconds, projectiles that hit you are reflected.", ActiveAbility.MIRROR_WARD),
+
+    // ---------------- Magnetar ----------------
+    IRON_SKIN(MAGNETAR, "Iron Skin", "+4 armor while you wear no armor."),
+    DISARMING_FIELD(MAGNETAR, "Disarming Field", "Mobs that hit you sometimes drop their weapon."),
+    RAILRIDER(MAGNETAR, "Railrider", "Minecarts you ride go much faster."),
+    BULLET_CATCHER(MAGNETAR, "Bullet Catcher", "Projectiles you deflect stop dead and drop."),
+    FERROUS_FIST(MAGNETAR, "Ferrous Fist", "Hits on mobs wearing or holding metal deal 50% more damage."),
+    COMPASS_SENSE(MAGNETAR, "Compass Sense", "The HUD points to the nearest ore within 16 blocks."),
+    SHRAPNEL_BURST(MAGNETAR, "Shrapnel Burst", "Fling up to 8 iron nuggets from your inventory in every direction.", ActiveAbility.SHRAPNEL_BURST),
+    METAL_SHELL(MAGNETAR, "Metal Shell", "Orbiting iron blocks every melee hit for 6 seconds.", ActiveAbility.METAL_SHELL),
+
+    // ---------------- Venom ----------------
+    NEUROTOXIN(VENOM, "Neurotoxin", "Poisoned mobs deal 30% less damage."),
+    TOXIC_BLOOD(VENOM, "Toxic Blood", "Mobs that hit you get poisoned."),
+    VENOM_FEAST(VENOM, "Venom Feast", "Killing a poisoned mob restores 2 hunger."),
+    CORROSIVE(VENOM, "Corrosive", "Acid Pool also dissolves dirt, sand and gravel (they come back afterwards)."),
+    LETHAL_DOSE(VENOM, "Lethal Dose", "Your poison can kill: poisoned mobs at half a heart keep taking damage."),
+    WARM_SCALES(VENOM, "Warm Scales", "The cold weakness is gone."),
+    PARALYZING_BITE(VENOM, "Paralyzing Bite", "Freeze the mob you look at in place for 3 seconds.", ActiveAbility.PARALYZING_BITE),
+    SERPENT_LUNGE(VENOM, "Serpent Lunge", "Lunge forward and bite the first mob you hit.", ActiveAbility.SERPENT_LUNGE),
+
+    // ---------------- Verdant ----------------
+    BARKSKIN(VERDANT, "Barkskin", "+4 armor while you stand still."),
+    POLLEN_CLOUD(VERDANT, "Pollen Cloud", "Mobs that hit you sometimes get Nausea."),
+    DEEP_ROOTS(VERDANT, "Deep Roots", "Knockback can't move you while you're sneaking."),
+    GREEN_THUMB(VERDANT, "Green Thumb", "Grown crops you harvest drop 50% more."),
+    THORNMAIL(VERDANT, "Thornmail", "Melee attackers take 2 damage back."),
+    SUN_FED(VERDANT, "Sun-Fed", "Under the open sky in daytime your hunger doesn't drain."),
+    VINE_SWING(VERDANT, "Vine Swing", "Shoot a vine to the block you look at and swing toward it.", ActiveAbility.VINE_SWING),
+    HEALING_BLOOM(VERDANT, "Healing Bloom", "A bloom that heals every player within 5 blocks for 10 seconds.", ActiveAbility.HEALING_BLOOM),
+
+    // ---------------- Earthshaper ----------------
+    STONESKIN(EARTHSHAPER, "Stoneskin", "+3 armor while standing on stone."),
+    ORE_SENSE(EARTHSHAPER, "Ore Sense", "The HUD lists the ores within 8 blocks of you."),
+    LANDSLIDE(EARTHSHAPER, "Landslide", "Earth Wall shoves mobs back as it rises."),
+    SURE_FOOTING(EARTHSHAPER, "Sure Footing", "Immune to knockback while on the ground."),
+    SANDSTORM(EARTHSHAPER, "Sandstorm", "Burrow leaves a dust cloud that blinds nearby mobs."),
+    RUBBLE(EARTHSHAPER, "Rubble", "Stone Pillar showers nearby mobs with rubble."),
+    FISSURE(EARTHSHAPER, "Fissure", "Crack the ground in a line: mobs on it are stuck and hurt for 3 seconds.", ActiveAbility.FISSURE),
+    BOULDER_TOSS(EARTHSHAPER, "Boulder Toss", "Rip a boulder from the ground and throw it.", ActiveAbility.BOULDER_TOSS),
+
+    // ---------------- Beastcaller ----------------
+    BIGGER_PACK(BEASTCALLER, "Bigger Pack", "Call the Pack summons 5 wolves."),
+    BEAST_HIDE(BEASTCALLER, "Beast Hide", "Mobs ignore you while you're riding an animal."),
+    SWIFT_MOUNT(BEASTCALLER, "Swift Mount", "Animals you ride get Speed II."),
+    HERD_HEALER(BEASTCALLER, "Herd Healer", "Your tamed animals regenerate near you."),
+    THICK_FUR(BEASTCALLER, "Thick Fur", "The animal-death downside is halved."),
+    ANIMAL_TONGUE(BEASTCALLER, "Animal Tongue", "Your tamed animals near you get Speed I and Strength I."),
+    HAWK_EYE(BEASTCALLER, "Hawk Eye", "A spirit hawk circles overhead and marks every mob within 48 blocks for 10 seconds.", ActiveAbility.HAWK_EYE),
+    BEAR_FORM(BEASTCALLER, "Bear Form", "Become a spirit bear for 15 seconds: more health, big claw hits, slower.", ActiveAbility.BEAR_FORM),
+
+    // ---------------- Chrono ----------------
+    DEJA_VU(CHRONO, "Deja Vu", "The dodge chance rises to 20%."),
+    LONG_BUBBLE(CHRONO, "Long Bubble", "Time Bubble lasts twice as long."),
+    ACCELERATE(CHRONO, "Accelerate", "After Rewind you get Speed II and Haste II for 5 seconds."),
+    FAST_FORWARD(CHRONO, "Fast Forward", "Crops near you grow faster."),
+    ECHO_STRIKE(CHRONO, "Echo Strike", "Your hits sometimes land a second time a moment later."),
+    BORROWED_TIME(CHRONO, "Borrowed Time", "Once every 10 minutes, a killing blow rewinds you 5 seconds instead."),
+    HASTE_FIELD(CHRONO, "Haste Field", "You and nearby players move and attack faster for 8 seconds.", ActiveAbility.HASTE_FIELD),
+    AGE(CHRONO, "Age", "Age the mob you look at: its armor and damage drop for 10 seconds.", ActiveAbility.AGE),
+
+    // ---------------- Swarm ----------------
+    KILLER_BEES(SWARM, "Killer Bees", "Swarm stings deal 2 damage."),
+    HONEY_BODY(SWARM, "Honey Body", "Honey, cookies, cake and pie heal you 2 extra hearts."),
+    POLLINATOR(SWARM, "Pollinator", "Crops near you grow faster."),
+    BUZZING_SHIELD(SWARM, "Buzzing Shield", "The swarm knocks 30% of projectiles out of the air."),
+    LARVAL_REBIRTH(SWARM, "Larval Rebirth", "Once every 10 minutes, a killing blow scatters you instead, leaving you at 3 hearts."),
+    CARRIER_SWARM(SWARM, "Carrier Swarm", "Fall damage is halved."),
+    HIVE_SUMMON(SWARM, "Hive Summon", "Call 4 angry bees to fight for you for 20 seconds.", ActiveAbility.HIVE_SUMMON),
+    WASP_BARRAGE(SWARM, "Wasp Barrage", "A spray of stinging insects in a cone in front of you.", ActiveAbility.WASP_BARRAGE),
+
+    // ---------------- Graviton ----------------
+    FEATHER_STEP(GRAVITON, "Feather Step", "Walk on water and lava while sprinting."),
+    CRUSHING_WEIGHT(GRAVITON, "Crushing Weight", "Mobs in Heavy Field take 1 damage every second."),
+    ORBIT(GRAVITON, "Orbit", "Dropped items within 6 blocks drift to you."),
+    MASS_SHIFT(GRAVITON, "Mass Shift", "Immune to knockback, and your hits knock mobs twice as far."),
+    MOONWALK(GRAVITON, "Moonwalk", "Jump even higher."),
+    REPULSOR_FIELD(GRAVITON, "Repulsor Field", "Arrows fired at you slow to a stop and drop."),
+    REVERSE(GRAVITON, "Reverse", "Gravity flips for mobs within 8 blocks: they fall upward for 2 seconds.", ActiveAbility.REVERSE),
+    GRAVITY_LASH(GRAVITON, "Gravity Lash", "Pull yourself toward the block you look at.", ActiveAbility.GRAVITY_LASH),
+
+    // ---------------- Tidecaller ----------------
+    RAIN_DANCER(TIDECALLER, "Rain Dancer", "Rain gives you Speed I and Strength I."),
+    DEEP_PRESSURE(TIDECALLER, "Deep Pressure", "Your hits deal 30% more to mobs in water."),
+    HYDRO_JET(TIDECALLER, "Hydro Jet", "Swimming is twice as fast."),
+    CLEANSING_WATER(TIDECALLER, "Cleansing Water", "Standing in water clears poison and wither."),
+    ICE_SHAPER(TIDECALLER, "Ice Shaper", "Water Whip freezes the water under the mob it hits."),
+    UNDERTOW(TIDECALLER, "Undertow", "Mobs in water near you are dragged down."),
+    GEYSER(TIDECALLER, "Geyser", "A column of water launches you, or the mob you look at, high into the air.", ActiveAbility.GEYSER),
+    RAINMAKER(TIDECALLER, "Rainmaker", "Start a rainstorm for 60 seconds.", ActiveAbility.RAINMAKER),
+
+    // ---------------- Crystalline ----------------
+    DIAMOND_SKIN(CRYSTALLINE, "Diamond Skin", "+4 more armor."),
+    REFRACTING_BODY(CRYSTALLINE, "Refracting Body", "25% of projectiles bounce off you."),
+    RESONANCE_SHARDS(CRYSTALLINE, "Resonance", "Your shards deal 50% more damage."),
+    REGROWTH(CRYSTALLINE, "Regrowth", "Out of combat for 5 seconds, you regenerate."),
+    GLIMMER(CRYSTALLINE, "Glimmer", "You shine in the dark like a torch."),
+    SHARP_EDGES(CRYSTALLINE, "Sharp Edges", "Mobs touching you take 1 damage every second."),
+    CRYSTAL_BRIDGE(CRYSTALLINE, "Crystal Bridge", "Grow a 12-block crystal walkway where you look for 20 seconds.", ActiveAbility.CRYSTAL_BRIDGE),
+    SHATTER_NOVA(CRYSTALLINE, "Shatter Nova", "Break your skin outward: big damage around you, but you lose its armor for 10 seconds.", ActiveAbility.SHATTER_NOVA),
+
+    // ---------------- Elastic ----------------
+    SUPER_BOUNCE(ELASTIC, "Super Bounce", "You bounce back almost as high as you fell."),
+    LONG_ARMS(ELASTIC, "Long Arms", "+2 more blocks of reach."),
+    ABSORBENT(ELASTIC, "Absorbent", "Explosion damage is halved."),
+    SQUEEZE(ELASTIC, "Squeeze", "Sneak into a 1-block gap to squeeze through it."),
+    REBOUND(ELASTIC, "Rebound", "30% of arrows bounce back at the shooter."),
+    TANGLE(ELASTIC, "Tangle", "Your hits slow the target for 2 seconds."),
+    PARACHUTE(ELASTIC, "Parachute", "Stretch into a canopy and float down for 10 seconds.", ActiveAbility.PARACHUTE),
+    RUBBER_WALL(ELASTIC, "Rubber Wall", "A rubbery wall in front of you bounces mobs and projectiles back for 5 seconds.", ActiveAbility.RUBBER_WALL),
+
+    // ---------------- Soulbinder ----------------
+    GRAVE_PACT(SOULBINDER, "Grave Pact", "Your raised allies deal 30% more damage."),
+    SOUL_SIPHON(SOULBINDER, "Soul Siphon", "Each soul you collect heals half a heart."),
+    UNDEAD_KIN(SOULBINDER, "Undead Kin", "Zombies and skeletons leave you alone unless you attack them."),
+    LINGERING_DEAD(SOULBINDER, "Lingering Dead", "Raised allies last 120 seconds."),
+    SOUL_SPEED(SOULBINDER, "Soul Speed", "Move fast on soul sand and soul soil."),
+    DEATHLY_CHILL(SOULBINDER, "Deathly Chill", "Your hits slow the target for 2 seconds."),
+    SOUL_SWAP(SOULBINDER, "Soul Swap", "Trade places with your nearest raised ally.", ActiveAbility.SOUL_SWAP),
+    SPIRIT_WALK(SOULBINDER, "Spirit Walk", "Leave your body as a ghost for 10 seconds and fly through walls, then snap back.", ActiveAbility.SPIRIT_WALK),
+
+    // ---------------- Micro ----------------
+    TINY_TERROR(MICRO, "Tiny Terror", "Tiny hits deal normal damage."),
+    UNSEEN(MICRO, "Unseen", "While tiny, mobs can't spot you beyond 6 blocks."),
+    HEAVYWEIGHT(MICRO, "Heavyweight", "While big, you're immune to knockback."),
+    POCKET_RIDER(MICRO, "Pocket Rider", "While tiny, sneak-right-click a player to ride on their shoulder."),
+    QUICK_SHIFT(MICRO, "Quick Shift", "Size Shift cooldown halved."),
+    GIANTS_GRIP(MICRO, "Giant's Grip", "While big, right-click a small mob to pick it up; right-click again to throw it."),
+    ENLARGE_ALLY(MICRO, "Enlarge Ally", "Make the player you look at big for 20 seconds.", ActiveAbility.ENLARGE_ALLY),
+    MICROSCOPIC(MICRO, "Microscopic", "Shrink so small you're invisible for 5 seconds.", ActiveAbility.MICROSCOPIC),
+
+    // ---------------- Tax Man ----------------
+    DEDUCTIONS(TAX_MAN, "Deductions", "Abilities cost 30% less Revenue."),
+    COMPOUND_INTEREST(TAX_MAN, "Compound Interest", "While you hold 50+ Revenue, you gain 1 more every 10 seconds."),
+    LOOPHOLE(TAX_MAN, "Loophole", "Once every 10 minutes, 50 Revenue pays off a killing blow and you survive at 2 hearts."),
+    COLLECTIONS_AGENCY(TAX_MAN, "Collections Agency", "Mobs marked by Levy have Slowness II."),
+    TAX_HAVEN(TAX_MAN, "Tax Haven", "Near villagers you regenerate, and villagers stop overcharging you."),
+    GOLDEN_PARACHUTE(TAX_MAN, "Golden Parachute", "Fall damage is paid with Revenue (1 per heart) instead of health."),
+    BRIBE(TAX_MAN, "Bribe", "The mob you look at stops attacking for 20 seconds. Costs 30 Revenue.", ActiveAbility.BRIBE),
+    REPOSSESS(TAX_MAN, "Repossess", "Rip the armor and held item off the mob you look at.", ActiveAbility.REPOSSESS),
+
+    // ---------------- Landlord ----------------
+    GATED_COMMUNITY(LANDLORD, "Gated Community", "Hostile mobs can't spawn on your Property."),
+    SECURITY_DEPOSIT(LANDLORD, "Security Deposit", "Mobs that hurt you on your Property drop double loot."),
+    HOME_FIELD(LANDLORD, "Home Field", "You take 25% less damage on your Property."),
+    PRIME_REAL_ESTATE(LANDLORD, "Prime Real Estate", "Crops, saplings and baby animals on your Property grow faster."),
+    PROPERTY_VALUE(LANDLORD, "Property Value", "+1 max heart for each chunk you own."),
+    REMOTE_LANDLORD(LANDLORD, "Remote Landlord", "The homesick downside is gone."),
+    RETURN_HOME(LANDLORD, "Return Home", "Teleport to the center of your nearest chunk.", ActiveAbility.RETURN_HOME),
+    HIRE_HELP(LANDLORD, "Hire Help", "Two iron golem groundskeepers guard you for 60 seconds.", ActiveAbility.HIRE_HELP);
 
     private final Mutation base;
     private final String displayName;

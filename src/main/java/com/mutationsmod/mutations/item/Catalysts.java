@@ -29,6 +29,24 @@ public final class Catalysts {
         BY_MUTATION.put(Mutation.HOST, ModContent.SYMBIOTE_JAR::get);
         BY_MUTATION.put(Mutation.BULLET, ModContent.HEAT_SINK::get);
         BY_MUTATION.put(Mutation.FIERCE_WINGS, ModContent.GALE_FEATHER::get);
+        BY_MUTATION.put(Mutation.SHADOW, ModContent.VOID_LANTERN::get);
+        BY_MUTATION.put(Mutation.RADIATION, ModContent.LEAD_LINED_CORE::get);
+        BY_MUTATION.put(Mutation.LUMINARY, ModContent.SUNSTONE::get);
+        BY_MUTATION.put(Mutation.MAGNETAR, ModContent.LODESTONE_HEART::get);
+        BY_MUTATION.put(Mutation.VENOM, ModContent.VENOM_GLAND::get);
+        BY_MUTATION.put(Mutation.VERDANT, ModContent.HEARTSEED::get);
+        BY_MUTATION.put(Mutation.EARTHSHAPER, ModContent.GEODE_HEART::get);
+        BY_MUTATION.put(Mutation.BEASTCALLER, ModContent.ALPHA_FANG::get);
+        BY_MUTATION.put(Mutation.CHRONO, ModContent.BROKEN_POCKETWATCH::get);
+        BY_MUTATION.put(Mutation.SWARM, ModContent.QUEENS_JELLY::get);
+        BY_MUTATION.put(Mutation.GRAVITON, ModContent.NEUTRON_CORE::get);
+        BY_MUTATION.put(Mutation.TIDECALLER, ModContent.TIDE_PEARL::get);
+        BY_MUTATION.put(Mutation.CRYSTALLINE, ModContent.FLAWLESS_GEM::get);
+        BY_MUTATION.put(Mutation.ELASTIC, ModContent.RUBBER_CORE::get);
+        BY_MUTATION.put(Mutation.SOULBINDER, ModContent.PHYLACTERY::get);
+        BY_MUTATION.put(Mutation.MICRO, ModContent.SIZE_CRYSTAL::get);
+        BY_MUTATION.put(Mutation.TAX_MAN, ModContent.GOLDEN_LEDGER::get);
+        BY_MUTATION.put(Mutation.LANDLORD, ModContent.GOLDEN_DEED::get);
     }
 
     /** True if the player holds this mutation's Catalyst in either hand. Works on both client and server. */
