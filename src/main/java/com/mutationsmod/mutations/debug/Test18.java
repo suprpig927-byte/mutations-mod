@@ -33,7 +33,7 @@ import net.neoforged.neoforge.common.util.FakePlayerFactory;
 public final class Test18 {
     private Test18() {}
 
-    private record Run(Mutation m, FakePlayer p, List<Zombie> zs, int step) {}
+    private record Run(Mutation m, FakePlayer p, List<Zombie> zs, int step, String last) {}
     private static final List<Run> RUNS = new ArrayList<>();
     private static long nextStep = 0;
 
@@ -58,7 +58,8 @@ public final class Test18 {
                 p.snapTo(x + 0.5, y, z + 0.5, 0, 0);
                 p.setHealth(p.getMaxHealth());
                 List<String> secs = Secondary.forBase(m).stream().map(Secondary::id).toList();
-                ModAttachments.set(p, MutationData.EMPTY.withMutations(List.of(m.id())).withRolled(true).withMastery(80, 0, 0).withSecondaries(secs));
+                ModAttachments.set(p, MutationData.EMPTY.withMutations(List.of(m.id())).withRolled(true).withMastery(80, 0, 0).withSecondaries(secs)
+                        .withTimer("m_radiance", 100).withTimer("m_souls", 10).withTimer("m_revenue", 100));
                 p.getInventory().add(new ItemStack(Items.IRON_NUGGET, 32));
                 List<Zombie> zs = new ArrayList<>();
                 for (int i = 0; i < 3; i++) {
@@ -66,10 +67,11 @@ public final class Test18 {
                     zb.snapTo(x + 0.5 + (i - 1) * 1.5, y, z + 4.5, 180, 0);
                     zb.setNoAi(true);
                     zb.setPersistenceRequired();
+                    zb.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD, new ItemStack(Items.LEATHER_HELMET));
                     level.addFreshEntity(zb);
                     zs.add(zb);
                 }
-                RUNS.add(new Run(m, p, zs, 0));
+                RUNS.add(new Run(m, p, zs, 0, "-"));
             } catch (Throwable t) {
                 MutationsMod.LOGGER.error("T18 {} SETUP CRASHED", m, t);
             }
@@ -107,6 +109,8 @@ public final class Test18 {
             for (Secondary s : Secondary.forBase(m)) if (s.active() != null) all.add(s.active());
             int step = r.step();
             String what = "?";
+            MutationsMod.LOGGER.info("T18 {} RESULT {} -> zombies=[{}] me={}", m, r.last(), hp(r.zs()), p.getHealth());
+            heal(r.zs());
             try {
                 // face the middle zombie
                 Zombie target = r.zs().get(1).isAlive() ? r.zs().get(1) : r.zs().stream().filter(LivingEntity::isAlive).findFirst().orElse(null);
@@ -145,8 +149,7 @@ public final class Test18 {
             } catch (Throwable t) {
                 MutationsMod.LOGGER.error("T18 {} step {} ({}) CRASHED", m, step, what, t);
             }
-            heal(r.zs());
-            next.add(new Run(m, p, r.zs(), step + 1));
+            next.add(new Run(m, p, r.zs(), step + 1, what));
         }
         RUNS.clear();
         RUNS.addAll(next);
