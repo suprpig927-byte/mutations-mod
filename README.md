@@ -1,4 +1,4 @@
-# Mutations — v0.18.0 (NeoForge, Minecraft 26.3)
+# Mutations — v0.19.0 (NeoForge, Minecraft 26.3)
 
 Every player is born with a random, permanent mutation. Use your powers to earn mastery XP,
 level up, spend stat points, and evolve secondary mutations.
@@ -6,9 +6,11 @@ See **DESIGN.md** for every mutation, ability and secondary.
 
 ## What's in this version
 
-- **All 14 base mutations:** Regenerator, Kinetic Mind, Stormcaller, Phaser, Cryo, Blinker,
-  Colossus, Siren, Absorber, Chameleon, Pyro, Host, Bullet, Fierce Wings.
-- **112 secondary mutations** (8 per base). At mastery levels **10, 25 and 50** you're offered
+- **All 32 base mutations:** Regenerator, Kinetic Mind, Stormcaller, Phaser, Cryo, Blinker,
+  Colossus, Siren, Absorber, Chameleon, Pyro, Host, Bullet, Fierce Wings, and (new in v0.19) Shadow, Radiation,
+  Luminary, Magnetar, Venom, Verdant, Earthshaper, Beastcaller, Chrono, Swarm, Graviton, Tidecaller, Crystalline,
+  Elastic, Soulbinder, Micro, Tax Man and Landlord.
+- **256 secondary mutations** (8 per base). At mastery levels **10, 25 and 50** you're offered
   3 random ones from your base's list and pick one.
 - **Stats:** Strength, Vitality, Agility, Endurance, Luck, Mutation. +3 points per mastery level,
   no caps. **Respec** refunds everything for 30 Minecraft XP levels.
@@ -115,6 +117,24 @@ Each base mutation has a Catalyst, found in the vault of that mutation's Gene La
 | Host | Symbiote Jar | The organism starves half as fast |
 | Bullet | Heat Sink | Fire twice as much before you overheat |
 | Fierce Wings | Gale Feather | Stronger flaps that cost no hunger |
+| Shadow | Void Lantern | Stay merged in the shadows up to light level 13 |
+| Radiation | Lead-Lined Core | Radiation Beam lasts 4 seconds and hits 30% harder |
+| Luminary | Sunstone | Radiance never drains in the dark |
+| Magnetar | Lodestone Heart | Doubles your item magnet and Polarity Pull range |
+| Venom | Venom Gland | All your poisons last twice as long |
+| Verdant | Heartseed | Heal twice as fast on grass, and meat feeds you again |
+| Earthshaper | Geode Heart | Pillars and walls are bigger and last twice as long |
+| Beastcaller | Alpha Fang | Spirit wolves last 60 seconds and hit 50% harder |
+| Chrono | Broken Pocketwatch | Rewind goes back 10 seconds, and the hunger downside is gone |
+| Swarm | Queen's Jelly | The swarm stings twice as often and smoke no longer scatters it |
+| Graviton | Neutron Core | No more gravity flips, and you can hover for 6 seconds |
+| Tidecaller | Tide Pearl | You never dry out |
+| Crystalline | Flawless Gem | No shatter weakness, and reflection rises to 35% |
+| Elastic | Rubber Core | +2 more reach, and no weakness to sharp weapons |
+| Soulbinder | Phylactery | Store up to 20 souls, and daylight no longer burns you |
+| Micro | Size Crystal | Instant size shifts, and being big costs no extra hunger |
+| Tax Man | Golden Ledger | Collect twice as much Revenue, and keep half of it when you die |
+| Landlord | Golden Deed | Own up to 6 chunks, and rent is doubled |
 
 ## Abandoned Gene Labs
 
@@ -221,6 +241,24 @@ Every recipe uses Mutagen Ingots (M), Mutagen Crystals (C), sticks (S) and one t
 | Bullet | **Gunblade** | Right-click fires a round of your selected ammo that builds no heat (1s cooldown). | Crossbow |
 | Fierce Wings | **Talon Glaive** | Hits deal 50% more while you're in the air. Right-click does a wing-powered dash forward (2s cooldown). | Hawk Feather |
 | Host | **Symbiote Whip** | +2.5 reach. Hits yank mobs toward you and push the organism's hunger back by 30s. | Fermented Spider Eye |
+| Shadow | **Duskblade** | Hits blind the target for 2s and deal 40% more damage at light level 7 or lower. | Black Dye |
+| Radiation | **Isotope Cleaver** | Every hit adds 2 Radiation Sickness stacks. | Glowstone Dust |
+| Luminary | **Dawn Saber** | Sets undead on fire and deals 50% more damage to them. | Glowstone |
+| Magnetar | **Lodestone Flail** | Right-click hooks the mob you're looking at and yanks it to you (3s cooldown). | Lodestone |
+| Venom | **Viper Kukri** | Each hit on the same mob raises its poison by one level, up to Poison IV. | Spider Eye |
+| Verdant | **Thornbranch Staff** | Hits entangle the target (Slowness III, 2s). Right-click bonemeals a 5x5 area (10s cooldown). | Oak Sapling |
+| Earthshaper | **Quarry Maul** | Mines like a pickaxe. Hits send a tremor that hurts mobs behind the target. | Iron Pickaxe |
+| Beastcaller | **Packleader's Spear** | Hits mark the target for 10s; your animals and spirit wolves go after marked mobs. | Bone |
+| Chrono | **Hourglass Blade** | Hits slow the target (Slowness II, 2s). Right-click rewinds your last 3 seconds (20s cooldown). | Clock |
+| Swarm | **Stinger Rapier** | Fast hits that poison, and each hit leaves an insect stinging the target for 3s. | Honeycomb |
+| Graviton | **Event Horizon** | Hits pin the target to the ground (Slowness III, 2s). | Obsidian |
+| Tidecaller | **Coral Trident** | Right-click throws it and it always comes back. Twice as strong in water or rain. | Prismarine Shard |
+| Crystalline | **Geode Blade** | Hits have a 25% chance to burst into shards that hit nearby mobs. | Amethyst Block |
+| Elastic | **Recoil Hammer** | Hits knock mobs twice as far and bounce you up a little. | Slime Ball |
+| Soulbinder | **Reaper's Sickle** | Kills with it give 2 souls instead of 1. | Soul Sand |
+| Micro | **Scale Hammer** | Grows with you: quicker but weaker while tiny, crushing while big. | Iron Block |
+| Tax Man | **Gavel of Collections** | Hits sometimes knock gold nuggets out of the target. Right-click: 10 Revenue for a slam that stuns mobs around you (5s cooldown). | Gold Block |
+| Landlord | **Master Key** | Hits deal 50% more on your Property. Right-click: your next hit evicts the mob (5s cooldown). | Tripwire Hook |
 
 ## Bullet
 
@@ -253,3 +291,15 @@ Permanent hawk wings, folded on your back on the ground and spread while you gli
 - **Dive Strike:** used in the air, it plunges you down. The landing hits everything around you harder the farther you fell.
 
 The Hawk Feather (2 from a Feather plus Brown Dye) is used to craft the Talon Glaive.
+
+## The v0.19 mutations
+
+Eighteen new base mutations. Each has 3 actives, an Omega ultimate, 8 secondaries (2 of them actives), a weapon, a Catalyst and its own Gene Lab theme. The full list of abilities is in **DESIGN.md**. A few things worth knowing:
+
+- **Meters on the HUD:** Luminary's *Radiance*, Soulbinder's *Souls*, Tax Man's *Revenue*, Micro's size, and Landlord's *Property*.
+- **Shadow** merges into darkness (light 7 or lower) and is pulled out by bright light. Merged, you can't attack or break blocks.
+- **Soulbinder** burns in daylight without a helmet and heals at half rate. Raised undead and summoned animals are your *minions*: they follow you, fight what you fight, never hurt players, and vanish after a while or when you leave.
+- **Micro** cycles normal, tiny and big with Size Shift. Tiny: dodge 20% of hits, no fall damage, weak hits. Big: more health, reach and damage, slower and hungrier.
+- **Tax Man** earns Revenue from kills and spends it on Garnish and Bribe. Iron golems hate you and villagers charge more.
+- **Landlord** claims up to 3 Overworld chunks with Stake Claim. On your Property you're strong, trespassers glow, and every 10 minutes you collect rent (emeralds per villager, gold nuggets per animal). Far from it you're homesick.
+- **Chrono's** Time Stop freezes every mob within 32 blocks for 5 seconds. Damage dealt to frozen mobs lands all at once when time restarts.
