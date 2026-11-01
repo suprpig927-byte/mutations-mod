@@ -1,0 +1,10 @@
+RCON> time set midnight => Set minecraft:overworld to time marker minecraft:midnight
+
+RCON> forceload add 2000 2000 2090 2024 => Marked 12 chunks in Overworld from [125, 125] to [130, 126] to be force loaded
+
+RCON> forceload add 2000 2032 2090 2056 => Marked 12 chunks in Overworld from [125, 127] to [130, 128] to be force loaded
+
+waited 5
+RCON> execute positioned 2000 70 2000 run mutation test18 => Started v0.19 mutation tests
+
+waited 75
