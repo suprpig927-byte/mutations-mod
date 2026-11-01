@@ -92,9 +92,7 @@ public final class ExtraHud {
     }
 
     private static boolean isOre(BlockState s) {
-        return s.is(BlockTags.COAL_ORES) || s.is(BlockTags.IRON_ORES) || s.is(BlockTags.COPPER_ORES) || s.is(BlockTags.GOLD_ORES)
-                || s.is(BlockTags.REDSTONE_ORES) || s.is(BlockTags.LAPIS_ORES) || s.is(BlockTags.DIAMOND_ORES) || s.is(BlockTags.EMERALD_ORES)
-                || s.is(net.minecraft.world.level.block.Blocks.NETHER_QUARTZ_ORE) || s.is(net.minecraft.world.level.block.Blocks.ANCIENT_DEBRIS);
+        return s.is(net.neoforged.neoforge.common.Tags.Blocks.ORES) || s.is(BlockTags.GOLD_ORES) || s.is(BlockTags.IRON_ORES) || s.is(BlockTags.COPPER_ORES);
     }
 
     private static void scan(LocalPlayer p, boolean ores, boolean compass) {
