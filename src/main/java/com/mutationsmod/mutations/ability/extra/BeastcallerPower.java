@@ -88,7 +88,7 @@ public class BeastcallerPower implements ExtraPower {
                     wolf.tame(p);
                     if (alpha) Powers.mult(wolf, Attributes.ATTACK_DAMAGE, "alpha_fang", 0.5);
                 }
-                Powers.sound(p, SoundEvents.WOLF_HOWL, 1.5f, 1f);
+                Powers.sound(p, SoundEvents.WOLF_SHAKE, 1.5f, 1f);
                 return true;
             }
             case COMMAND -> {
@@ -97,7 +97,7 @@ public class BeastcallerPower implements ExtraPower {
                 for (TamableAnimal pet : pets(p, 32)) pet.setTarget(t);
                 Minions.attack(p, t);
                 Kit.glow(t, 100);
-                Powers.sound(p, SoundEvents.WOLF_GROWL, 1f, 1f);
+                Powers.sound(p, SoundEvents.WOLF_SHAKE, 1f, 1f);
                 return true;
             }
             case WILD_SENSE, HAWK_EYE -> {
@@ -129,7 +129,7 @@ public class BeastcallerPower implements ExtraPower {
             Vec3 at = p.position().subtract(dir.scale(2)).add(side.scale(i * 1.6));
             horse.snapTo(at.x, at.y, at.z, p.getYRot(), 0);
             horse.setNoAi(true);
-            horse.setInvulnerable(true);
+            horse.setPermanentlyInvulnerable(true);
             horse.addTag(Minions.TAG);
             level.addFreshEntity(horse);
             herd.add(horse);

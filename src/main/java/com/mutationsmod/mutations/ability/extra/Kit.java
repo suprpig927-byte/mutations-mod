@@ -85,7 +85,7 @@ public final class Kit {
     // ---------------------------------------------------------------- mobs
 
     public static boolean isUndead(LivingEntity e) {
-        return e.getType().is(EntityTypeTags.UNDEAD);
+        return e.typeHolder().is(EntityTypeTags.UNDEAD);
     }
 
     public static boolean isMetal(ItemStack s) {

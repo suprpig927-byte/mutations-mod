@@ -41,7 +41,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 
 /** Verdant: a plant mutant. Roots, thorns, fast growth; meat gives no food. */
 public class VerdantPower implements ExtraPower {
@@ -72,7 +72,7 @@ public class VerdantPower implements ExtraPower {
         Powers.add(p, Attributes.ARMOR, "barkskin", d.has(Secondary.BARKSKIN) && still ? 4 : 0);
         Powers.add(p, Attributes.KNOCKBACK_RESISTANCE, "deep_roots", d.has(Secondary.DEEP_ROOTS) && p.isShiftKeyDown() ? 1 : 0);
         if (d.has(Secondary.SUN_FED) && level.dimension() == Level.OVERWORLD && !Powers.isNight(level) && level.canSeeSky(p.blockPosition().above())) {
-            p.getFoodData().setExhaustion(0f);
+            if (p.getFoodData().getSaturationLevel() < 2f) p.getFoodData().setSaturation(2f);
         }
     }
 
@@ -234,7 +234,7 @@ public class VerdantPower implements ExtraPower {
     }
 
     /** Green Thumb: grown crops drop 50% more. */
-    public static void onBreak(BlockEvent.BreakEvent e) {
+    public static void onBreak(BreakBlockEvent e) {
         if (!(e.getPlayer() instanceof ServerPlayer p) || !(e.getLevel() instanceof ServerLevel level)) return;
         MutationData d = ModAttachments.get(p);
         if (!d.has(Secondary.GREEN_THUMB)) return;

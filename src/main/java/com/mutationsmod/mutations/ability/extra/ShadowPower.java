@@ -210,7 +210,7 @@ public class ShadowPower implements ExtraPower {
     }
 
     /** Merged shadows can't break blocks. */
-    public static void onBreak(net.neoforged.neoforge.event.level.BlockEvent.BreakEvent e) {
+    public static void onBreak(net.neoforged.neoforge.event.level.block.BreakBlockEvent e) {
         if (e.getPlayer() instanceof ServerPlayer p && merged(ModAttachments.get(p)) && ModAttachments.get(p).has(Mutation.SHADOW)) e.setCanceled(true);
     }
 }

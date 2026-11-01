@@ -144,7 +144,7 @@ public class MagnetarPower implements ExtraPower {
             case SHRAPNEL_BURST -> {
                 int have = p.isCreative() ? 8 : Math.min(8, p.getInventory().countItem(Items.IRON_NUGGET));
                 if (have <= 0) { p.sendOverlayMessage(Component.literal("You need iron nuggets.").withStyle(ChatFormatting.GRAY)); return false; }
-                if (!p.isCreative()) p.getInventory().clearOrCountMatchingItems(s -> s.is(Items.IRON_NUGGET), have, p.inventoryMenu.getCraftSlots());
+                if (!p.isCreative()) p.getInventory().clearOrCountMatchingItems(s -> s.is(Items.IRON_NUGGET), false, have, p.inventoryMenu.getCraftSlots());
                 for (int i = 0; i < have; i++) {
                     double ang = i * Math.PI * 2 / have;
                     MutantShot s = new MutantShot(level, p, new ItemStack(Items.IRON_NUGGET), 5f * Powers.power(d), 0, 0.02f, null);
