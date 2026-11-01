@@ -136,7 +136,7 @@ public final class Test18 {
                 } else if (step == all.size() + 2) {
                     what = "KILL";
                     if (target != null) {
-                        int inv = target.invulnerableTime;
+                        int inv = target.hurtTime;
                         boolean ok = target.hurtServer(level, level.damageSources().playerAttack(p), 1000f);
                         MutationsMod.LOGGER.info("T18 {} KILL ok={} inv={} invuln={} removed={} hp={} dist={}", m, ok, inv, target.isInvulnerable(), target.isRemoved(), target.getHealth(), target.distanceTo(p));
                     }
