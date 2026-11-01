@@ -150,6 +150,12 @@ public final class MutationCommand {
                             src.sendSuccess(() -> Component.literal("Reset cooldowns for " + name(p)), true);
                         })))))
 
+                .then(Commands.literal("test18").executes(ctx -> {
+                    var src = ctx.getSource();
+                    com.mutationsmod.mutations.debug.Test18.start(src.getLevel(), net.minecraft.core.BlockPos.containing(src.getPosition()));
+                    src.sendSuccess(() -> Component.literal("Started v0.19 mutation tests"), true);
+                    return 1;
+                }))
                 .then(Commands.literal("newtest").executes(ctx -> {
                     var src = ctx.getSource();
                     com.mutationsmod.mutations.debug.NewMutationTest.start(src.getLevel(), net.minecraft.core.BlockPos.containing(src.getPosition()));

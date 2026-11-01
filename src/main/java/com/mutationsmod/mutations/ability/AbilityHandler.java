@@ -128,6 +128,7 @@ public final class AbilityHandler {
         com.mutationsmod.mutations.debug.OmegaTest.tick(level);
         com.mutationsmod.mutations.debug.WeaponTest.tick(level);
         com.mutationsmod.mutations.debug.NewMutationTest.tick(level);
+        com.mutationsmod.mutations.debug.Test18.tick(level);
         Siren.tickLevel(level);
         com.mutationsmod.mutations.ability.extra.ExtraPowers.tickLevel(level);
     }
